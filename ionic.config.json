@@ -1,0 +1,7 @@
+{
+  "name": "flightdrone",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
