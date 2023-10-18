@@ -3,6 +3,7 @@
     "conventionalCommits.scopes": [
         "map",
         "ui",
-        "ci/di"
+        "ci/di",
+        "routing"
     ]
 }
