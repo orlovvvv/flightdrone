@@ -1,6 +1,15 @@
 import { Component } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
-import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonLabel,
+  IonItem,
+  IonAccordion,
+  IonAccordionGroup,
+} from '@ionic/angular/standalone';
+import { MapComponent } from '../map/map.component';
 
 @Component({
   selector: 'app-home',
@@ -8,9 +17,17 @@ import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/stan
   styleUrls: ['home.page.scss'],
   standalone: true,
   imports: [
-    // IonHeader, IonToolbar, IonTitle, IonContent, 
-    IonicModule],
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonLabel,
+    IonItem,
+    IonAccordion,
+    IonAccordionGroup,
+    MapComponent,
+  ],
 })
 export class HomePage {
-  constructor() { }
+  constructor() {}
 }
