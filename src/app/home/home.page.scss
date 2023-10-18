@@ -25,3 +25,9 @@
 #container a {
   text-decoration: none;
 }
+
+ion-menu::part(container) {
+  border-radius: 20px 0 0 20px;
+
+  box-shadow: 4px 0px 16px rgba(255, 0, 255, 0.18);
+}

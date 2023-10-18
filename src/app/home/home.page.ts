@@ -8,8 +8,11 @@ import {
   IonItem,
   IonAccordion,
   IonAccordionGroup,
+  IonButtons,
+  IonMenu,
+  IonMenuButton,
 } from '@ionic/angular/standalone';
-import { MapComponent } from '../map/map.component';
+import { MapComponent } from '../map/feature/map.component';
 
 @Component({
   selector: 'app-home',
@@ -25,6 +28,9 @@ import { MapComponent } from '../map/map.component';
     IonItem,
     IonAccordion,
     IonAccordionGroup,
+    IonButtons,
+    IonMenu,
+    IonMenuButton,
     MapComponent,
   ],
 })

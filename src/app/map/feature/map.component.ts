@@ -7,6 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { GoogleMap } from '@capacitor/google-maps';
+import { Geolocation, Position } from '@capacitor/geolocation';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -20,19 +21,31 @@ export class MapComponent implements AfterViewInit {
   @ViewChild('map')
   mapRef!: ElementRef<HTMLElement>;
   newMap!: GoogleMap;
+  currentLocation!: Position;
 
   ngAfterViewInit() {
-    this.createMap();
+    this.printCurrentPosition().finally(() => this.createMap());
   }
+  printCurrentPosition = async () => {
+    this.currentLocation = await Geolocation.getCurrentPosition();
+
+    console.log('Current position:', this.currentLocation);
+  };
+
   async createMap() {
     this.newMap = await GoogleMap.create({
-      id: 'my-cool-map',
+      id: 'map',
       element: this.mapRef.nativeElement,
       apiKey: environment.apiKey,
+      region: 'pl',
       config: {
         center: {
-          lat: 52.237049,
-          lng: 21.017532,
+          lat: this.currentLocation.coords.latitude
+            ? this.currentLocation.coords.latitude
+            : 52.237049,
+          lng: this.currentLocation.coords.longitude
+            ? this.currentLocation.coords.longitude
+            : 21.017532,
         },
         restriction: {
           latLngBounds: {
