@@ -1,18 +1,17 @@
-<ion-header role="menubar">
-  <ion-toolbar>
-    <ion-title slot="start"> FlightDrone </ion-title>
-    <ion-buttons slot="end">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<ion-toolbar class="menubar" role="menubar">
+  <ion-title slot="start"> FlightDrone </ion-title>
+  <ion-searchbar color="dark" class="searchbox" role="searchbox" slot="end" />
+  <ion-buttons slot="end">
+    <ion-menu-button></ion-menu-button>
+  </ion-buttons>
+</ion-toolbar>
 
-<ion-content id="main-content">
+<ion-content id="main-content" fullscreen>
   <ion-accordion-group
     expand="inset"
     style="
       position: absolute;
-      top: 12px;
+      top: calc(12px + 56px);
       left: 12px;
       right: 12px;
       max-width: 384px;

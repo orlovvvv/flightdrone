@@ -11,6 +11,7 @@ import {
   IonButtons,
   IonMenu,
   IonMenuButton,
+  IonSearchbar,
 } from '@ionic/angular/standalone';
 import { MapComponent } from '../map/feature/map.component';
 
@@ -31,6 +32,7 @@ import { MapComponent } from '../map/feature/map.component';
     IonButtons,
     IonMenu,
     IonMenuButton,
+    IonSearchbar,
     MapComponent,
   ],
 })
