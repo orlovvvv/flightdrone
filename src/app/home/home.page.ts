@@ -12,6 +12,7 @@ import {
   IonMenu,
   IonMenuButton,
   IonSearchbar,
+  IonFooter,
 } from '@ionic/angular/standalone';
 import { MapComponent } from '../map/feature/map.component';
 
@@ -22,6 +23,7 @@ import { MapComponent } from '../map/feature/map.component';
   standalone: true,
   imports: [
     IonHeader,
+    IonFooter,
     IonToolbar,
     IonTitle,
     IonContent,
