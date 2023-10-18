@@ -49,10 +49,10 @@ export class MapComponent implements AfterViewInit {
         },
         restriction: {
           latLngBounds: {
-            west: 14.0745211117,
-            south: 49.0273953314,
-            east: 24.0299857927,
-            north: 54.8515359564,
+            west: 14.075,
+            south: 49.155,
+            east: 24.155,
+            north: 54.852,
           },
           strictBounds: false,
         },
