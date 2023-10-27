@@ -26,36 +26,40 @@
   >
     <ion-accordion role="banner" value="first">
       <ion-item slot="header" color="light">
-        <ion-label>Notifications</ion-label>
+        <ion-label>Pogoda</ion-label>
       </ion-item>
-      <div class="ion-padding" slot="content">First Content</div>
+      <div class="ion-padding" slot="content">Aktualna pozycja</div>
     </ion-accordion>
     <ion-accordion value="second">
       <ion-item slot="header" color="light">
-        <ion-label>Most tracked drones</ion-label>
+        <ion-label>Dane lotu</ion-label>
       </ion-item>
-      <div class="ion-padding" slot="content">Second Content</div>
+      <div class="ion-padding" slot="content">Zgłoszone dane lotu</div>
     </ion-accordion>
     <ion-accordion value="third">
       <ion-item slot="header" color="light">
-        <ion-label>Favourite locations</ion-label>
+        <ion-label>Historia</ion-label>
       </ion-item>
-      <div class="ion-padding" slot="content">Third Content</div>
+      <div class="ion-padding" slot="content">Archiwalne Check-in</div>
     </ion-accordion>
   </ion-accordion-group>
   <app-map />
 </ion-content>
 
-<ion-menu role="menu" contentId="main-content" side="end">
+<ion-menu class="menu" role="menu" contentId="main-content" side="end">
   <ion-header>
     <ion-toolbar>
-      <ion-title>Menu Title</ion-title>
+      <ion-title class="menu-title">Jan Kowalski</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content class="ion-padding">This is the menu content.</ion-content>
+  
+  <ion-content class="ion-padding">Numer operatora</ion-content>
+  <ion-content class="ion-padding">Numer pilota</ion-content>
+  <ion-content class="ion-padding"> </ion-content>
+  <ion-content class="ion-padding">Ustawienia</ion-content>
   <ion-footer>
     <ion-toolbar>
-      <ion-title>Menu Footer</ion-title>
+      <ion-title>Wyloguj</ion-title>
     </ion-toolbar>
   </ion-footer>
 </ion-menu>
