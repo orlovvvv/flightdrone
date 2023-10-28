@@ -3,11 +3,9 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   Component,
   ElementRef,
-  OnInit,
   ViewChild,
 } from '@angular/core';
 import { GoogleMap } from '@capacitor/google-maps';
-import { Geolocation, Position } from '@capacitor/geolocation';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -21,18 +19,30 @@ export class MapComponent implements AfterViewInit {
   @ViewChild('map')
   mapRef!: ElementRef<HTMLElement>;
   newMap!: GoogleMap;
-  currentLocation!: Position;
 
   ngAfterViewInit() {
-    this.printCurrentPosition().finally(() => this.createMap());
+    this.createMap();
   }
-  printCurrentPosition = async () => {
-    this.currentLocation = await Geolocation.getCurrentPosition();
-
-    console.log('Current position:', this.currentLocation);
-  };
 
   async createMap() {
+    const head = document.head;
+    const insertBefore = head.insertBefore;
+    head.insertBefore = <T extends Node>(
+      newElement: T,
+      referenceElement: Node
+    ): T => {
+      if (
+        newElement instanceof Element &&
+        newElement?.hasAttribute('href') &&
+        newElement?.getAttribute('href')?.includes('fonts.googleapis')
+      ) {
+        return newElement;
+      }
+
+      insertBefore.call(head, newElement, referenceElement);
+      return newElement;
+    };
+
     this.newMap = await GoogleMap.create({
       id: 'map',
       element: this.mapRef.nativeElement,
@@ -40,12 +50,8 @@ export class MapComponent implements AfterViewInit {
       region: 'pl',
       config: {
         center: {
-          lat: this.currentLocation.coords.latitude
-            ? this.currentLocation.coords.latitude
-            : 52.237049,
-          lng: this.currentLocation.coords.longitude
-            ? this.currentLocation.coords.longitude
-            : 21.017532,
+          lat: 52.237049,
+          lng: 21.017532,
         },
         restriction: {
           latLngBounds: {

@@ -1,65 +1,7 @@
-<ion-toolbar class="menubar" role="menubar">
-  <ion-title slot="start"> FlightDrone </ion-title>
-  <ion-searchbar
-    color="light"
-    class="searchbox"
-    role="searchbox"
-    slot="end"
-    placeholder="Wyszukaj..."
-  />
-  <ion-buttons slot="end">
-    <ion-menu-button></ion-menu-button>
-  </ion-buttons>
-</ion-toolbar>
-
-<ion-content id="main-content" fullscreen>
-  <ion-accordion-group
-    expand="inset"
-    style="
-      position: absolute;
-      top: calc(12px + 56px);
-      left: 12px;
-      right: 12px;
-      max-width: 384px;
-      z-index: 1;
-    "
-  >
-    <ion-accordion role="banner" value="first">
-      <ion-item slot="header" color="light">
-        <ion-label>Pogoda</ion-label>
-      </ion-item>
-      <div class="ion-padding" slot="content">Aktualna pozycja</div>
-    </ion-accordion>
-    <ion-accordion value="second">
-      <ion-item slot="header" color="light">
-        <ion-label>Dane lotu</ion-label>
-      </ion-item>
-      <div class="ion-padding" slot="content">Zgłoszone dane lotu</div>
-    </ion-accordion>
-    <ion-accordion value="third">
-      <ion-item slot="header" color="light">
-        <ion-label>Historia</ion-label>
-      </ion-item>
-      <div class="ion-padding" slot="content">Archiwalne Check-in</div>
-    </ion-accordion>
-  </ion-accordion-group>
+<ion-content [fullscreen]="true">
+  <app-header />
   <app-map />
+  <app-widgets />
+  <app-map-settings />
+  <app-check-in />
 </ion-content>
-
-<ion-menu class="menu" role="menu" contentId="main-content" side="end">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title class="menu-title">Jan Kowalski</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  
-  <ion-content class="ion-padding">Numer operatora</ion-content>
-  <ion-content class="ion-padding">Numer pilota</ion-content>
-  <ion-content class="ion-padding"> </ion-content>
-  <ion-content class="ion-padding">Ustawienia</ion-content>
-  <ion-footer>
-    <ion-toolbar>
-      <ion-title>Wyloguj</ion-title>
-    </ion-toolbar>
-  </ion-footer>
-</ion-menu>
