@@ -88,14 +88,14 @@ export class CheckInComponent implements OnInit {
 
   canDismiss = async () => {
     const actionSheet = await this.actionSheetCtrl.create({
-      header: 'Are you sure?',
+      header: 'Czy na pewno?',
       buttons: [
         {
-          text: 'Yes',
+          text: 'Tak',
           role: 'confirm',
         },
         {
-          text: 'No',
+          text: 'Nie',
           role: 'cancel',
         },
       ],
