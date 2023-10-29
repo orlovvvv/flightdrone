@@ -99,6 +99,7 @@ export class CheckInComponent implements OnInit {
           role: 'cancel',
         },
       ],
+      cssClass: 'action-sheet',
     });
 
     actionSheet.present();
