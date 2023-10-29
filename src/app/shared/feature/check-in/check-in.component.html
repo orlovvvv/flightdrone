@@ -12,28 +12,63 @@
   [presentingElement]="checkInModal"
 >
   <ng-template>
-    <ion-header>
+    <ion-content>
       <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-button (click)="cancel()">
-            <ion-icon name="close" />
-          </ion-button>
-        </ion-buttons>
-        <ion-title>Welcome</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
-        </ion-buttons>
+        <ion-title>Wprowadź dane lotu</ion-title>
       </ion-toolbar>
-    </ion-header>
-    <ion-content class="ion-padding">
       <ion-item>
-        <ion-input
-          label="Enter your name"
-          labelPlacement="stacked"
-          type="text"
-          placeholder="Your name"
-        ></ion-input>
+        <ion-list>
+          <ion-item>
+            <ion-input label="Promień lotu" placeholder="650" type="number" /> m
+          </ion-item>
+          <ion-item>
+            <ion-input
+              label="Maksymalna wysokość lotu"
+              placeholder="50"
+              type="number"
+            />
+            m
+          </ion-item>
+          <ion-item>
+            <ion-input
+              label="Czas trwania lotu"
+              type="number"
+              placeholder="40"
+            />
+            min
+          </ion-item>
+          <ion-item>
+            <ion-select
+              label="Wybierz drona"
+              interface="action-sheet"
+              [interfaceOptions]="customActionSheetOptions"
+              cancelText="Anuluj"
+            >
+              <ion-select-option value="dji2_mini_pro"
+                >DJI2 Mini Pro</ion-select-option
+              >
+              <ion-select-option value="agras_t40">Agras T40</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-button slot="start"
+              ><ion-icon name="locate"></ion-icon
+            ></ion-button>
+            <ion-input label="Dł. geo." placeholder="22.15"></ion-input>
+            <ion-input label="Szer. geo." placeholder="54.12"></ion-input>
+          </ion-item>
+        </ion-list>
       </ion-item>
     </ion-content>
+    <ion-footer>
+      <ion-toolbar style="padding-left: 1rem; padding-right: 1rem">
+        <ion-button fill="clear" slot="start" (click)="cancel()" color="danger">
+          Anuluj
+        </ion-button>
+        <ion-button fill="clear" slot="end" (click)="cancel()" color="primary">
+          Zatwierdź
+        </ion-button>
+      </ion-toolbar>
+    </ion-footer>
   </ng-template>
 </ion-modal>
