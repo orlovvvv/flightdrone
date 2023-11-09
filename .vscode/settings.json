@@ -1,9 +1,4 @@
 {
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "conventionalCommits.scopes": [
-        "map",
-        "ui",
-        "ci/di",
-        "routing"
-    ]
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "conventionalCommits.scopes": ["map", "ui", "ci/di", "routing", "core"]
 }
