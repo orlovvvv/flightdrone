@@ -6,6 +6,22 @@
 	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-18-bookworm",
 	"features": {
 		"ghcr.io/devcontainers-contrib/features/ionic-cli:2": {}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"yoavbls.pretty-ts-errors",
+				"esbenp.prettier-vscode",
+				"quicktype.quicktype",
+				"nhoizey.gremlins",
+				"Exelord.git-commits",
+				"dbaeumer.vscode-eslint",
+				"steoates.autoimport",
+				"vivaxy.vscode-conventional-commits",
+				"cyrilletuzi.angular-schematics",
+				"Angular.ng-template"
+			]
+		}
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
