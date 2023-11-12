@@ -19,7 +19,8 @@
 				"steoates.autoimport",
 				"vivaxy.vscode-conventional-commits",
 				"cyrilletuzi.angular-schematics",
-				"Angular.ng-template"
+				"Angular.ng-template",
+				"joshuamorony.angular-inline-jumper"
 			]
 		}
 	}
