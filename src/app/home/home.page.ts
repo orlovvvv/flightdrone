@@ -1,5 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, inject } from '@angular/core';
 import { IonContent } from '@ionic/angular/standalone';
 import { LoginService } from '../auth/login/data/login.service';
 import { AuthService } from '../shared/data/auth.service';
@@ -30,17 +29,8 @@ import { WidgetsComponent } from '../shared/ui/widgets/widgets.component';
     MapComponent,
   ],
 })
-export class HomePage {
+export default class HomePage {
   public loginService = inject(LoginService);
   public authService = inject(AuthService);
-  private router = inject(Router);
 
-  constructor() {
-
-    effect(() => {
-      if (this.authService.user()) {
-        this.router.navigate(['auth', 'login']);
-      }
-    });
-  }
 }

@@ -6,8 +6,8 @@ export const SessionGuard = (): CanActivateFn => {
   return () => {
     const authService = inject(AuthService);
     const router = inject(Router);
-
-    if (authService.user() !== null) {
+    console.log(authService.user().status)
+    if (authService.user().status === 'success') {
       return true;
     }
 

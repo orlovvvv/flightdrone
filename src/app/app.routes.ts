@@ -5,11 +5,11 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () =>
-      import('./auth/login/login.page').then((m) => m.LoginPage),
+      import('./auth/login/login.page'),
   },
   {
     path: 'home',
-    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
+    loadComponent: () => import('./home/home.page'),
     canActivate: [SessionGuard]
   },
   {

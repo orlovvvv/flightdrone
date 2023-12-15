@@ -43,8 +43,8 @@ import { LoginFormComponent } from './ui/login-form.component';
       </ion-card-header>
       <ion-card-content>
         <app-login-form
-          [loginStatus]="loginService.status()"
-          (login)="loginService.login$.next($event)"
+          [loginStatus]="authService.user().status"
+          (login)="authService.login$.next($event)"
         />
       </ion-card-content>
     </ion-card>
@@ -110,17 +110,14 @@ ion-input {
 }`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginPage {
-  public loginService = inject(LoginService);
+export default class LoginPage {
   public authService = inject(AuthService);
   private router = inject(Router);
 
   constructor() {
     effect(() => {
-      if (this.authService.user()) {
-        console.log('it works')
-        this.router.navigate(['home']);
-      }
+      console.log(this.authService.user().session ?? this.router.navigate(['home']))
+      this.authService.user().session ?? this.router.navigate(['home']);
     });
   }
 }
