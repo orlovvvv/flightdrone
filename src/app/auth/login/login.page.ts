@@ -18,7 +18,6 @@ import {
   IonSpinner,
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/shared/data/auth.service';
-import { LoginService } from './data/login.service';
 import { LoginFormComponent } from './ui/login-form.component';
 
 @Component({
@@ -116,8 +115,9 @@ export default class LoginPage {
 
   constructor() {
     effect(() => {
-      console.log(this.authService.user().session ?? this.router.navigate(['home']))
-      this.authService.user().session ?? this.router.navigate(['home']);
+      if (this.authService.user().session) {
+        this.router.navigate(['home'])
+      }
     });
   }
 }

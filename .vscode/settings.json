@@ -6,6 +6,7 @@
     "ci/di",
     "routing",
     "core",
-    "service"
+    "service",
+    "login"
   ]
 }
