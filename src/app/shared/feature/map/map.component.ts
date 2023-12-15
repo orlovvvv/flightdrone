@@ -31,6 +31,7 @@ export class MapComponent implements AfterViewInit {
 
   async createMap() {
     const head = document.head;
+    //* Prevent font download when map requests data
     const insertBefore = head.insertBefore;
     head.insertBefore = <T extends Node>(
       newElement: T,
