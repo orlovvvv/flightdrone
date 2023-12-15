@@ -6,7 +6,22 @@ import { IonSearchbar } from '@ionic/angular/standalone';
   imports: [IonSearchbar],
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss'],
+  template: `
+    <ion-searchbar
+      color="light"
+      class="searchbox"
+      role="searchbox"
+      placeholder="Wyszukaj..."
+      cancelButtonIcon="true"
+    />
+  `,
+  styles: `
+  .searchbox {
+  text-align: start;
+  max-width: 384px;
+  width: 100%;
+  --border-radius: 20px;
+}
+`,
 })
 export class SearchComponent {}

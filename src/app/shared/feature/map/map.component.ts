@@ -10,8 +10,16 @@ import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-map',
-  templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss'],
+  template: `<capacitor-google-map #map /> `,
+  styles: `
+  capacitor-google-map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+  `,
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

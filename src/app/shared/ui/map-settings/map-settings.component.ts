@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   IonFab,
   IonFabButton,
@@ -13,13 +13,25 @@ import { addOutline, removeOutline, eyeOutline } from 'ionicons/icons';
   imports: [IonFab, IonFabButton, IonIcon, IonFabList],
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-map-settings',
-  templateUrl: './map-settings.component.html',
-  styleUrls: ['./map-settings.component.scss'],
+  template: `
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+      <ion-fab-button size="small">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-fab-button>
+
+      <ion-fab-button size="small">
+        <ion-icon name="remove-outline"></ion-icon>
+      </ion-fab-button>
+
+      <ion-fab-button size="small">
+        <ion-icon name="eye-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  `,
+  styles: '',
 })
-export class MapSettingsComponent implements OnInit {
+export class MapSettingsComponent {
   constructor() {
     addIcons({ addOutline, removeOutline, eyeOutline });
   }
-
-  ngOnInit() {}
 }
