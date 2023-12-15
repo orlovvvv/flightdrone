@@ -11,5 +11,4 @@ import { IonApp } from '@ionic/angular/standalone';
   imports: [IonApp, RouterOutlet],
 })
 export class AppComponent {
-  constructor() { }
 }

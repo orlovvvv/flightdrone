@@ -1,30 +1,27 @@
 import { Injectable, computed, signal } from '@angular/core';
+import { Account, Client, ID, Models } from 'appwrite';
+import { connect } from 'ngxtension/connect';
 import {
   EMPTY,
   Subject,
   asapScheduler,
-  asyncScheduler,
   catchError,
   defer,
-  from,
   map,
   merge,
   scheduled,
   switchMap,
-  tap,
 } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Account, Client, ID, Models } from 'appwrite';
-import { connect } from 'ngxtension/connect';
 import { Credentials } from '../types/credentials';
-import { LoginState, LoginStatus } from '../types/login';
+import { LoginStatus } from '../types/login';
 
 export type AuthUser = Models.Session | undefined;
 
 type AuthState = {
   session: AuthUser;
   status: LoginStatus;
-}
+};
 
 @Injectable({
   providedIn: 'root',
@@ -58,13 +55,18 @@ export class AuthService {
 
   user = computed(() => this.state());
 
-
   // selectors
   constructor() {
     const nextState$ = merge(
-      this.userAuthenticated$.pipe(map((session) => ({ session: session, status: 'success' as const }))),
-      this.login$.pipe(map(() => ({ session: undefined, status: 'authenticating' as const }))),
-      this.error$.pipe(map(() => ({ session: undefined, status: 'error' as const })))
+      this.userAuthenticated$.pipe(
+        map((session) => ({ session: session, status: 'success' as const }))
+      ),
+      this.login$.pipe(
+        map(() => ({ session: undefined, status: 'authenticating' as const }))
+      ),
+      this.error$.pipe(
+        map(() => ({ session: undefined, status: 'error' as const }))
+      )
     );
     connect(this.state).with(nextState$);
   }
@@ -76,8 +78,18 @@ export class AuthService {
     );
   }
   logout() {
-    return scheduled(this.account.deleteSession('current'), asapScheduler).pipe(
-      tap(() => this.state.update((value) => ({ ...value, session: undefined, status: 'pending' as const })))
+    this.state.update((value) => ({
+      ...value,
+      session: undefined,
+      status: 'pending' as const,
+    }))
+    return scheduled(
+      this.account.deleteSession('current').then(() => {
+
+        console.log(this.state())
+          ;
+      }),
+      asapScheduler
     );
   }
   createAccount(credentials: Credentials) {

@@ -1,17 +1,16 @@
+import { provideHttpClient } from '@angular/common/http';
 import { enableProdMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import {
   RouteReuseStrategy,
-  provideRouter,
-  withViewTransitions,
+  provideRouter
 } from '@angular/router';
 import {
   IonicRouteStrategy,
   provideIonicAngular,
 } from '@ionic/angular/standalone';
-import { provideHttpClient } from '@angular/common/http';
-import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
+import { routes } from './app/app.routes';
 import { environment } from './environments/environment';
 
 if (environment.production) {
@@ -21,8 +20,8 @@ if (environment.production) {
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideIonicAngular(),
-    provideRouter(routes, withViewTransitions()),
+    provideIonicAngular({ mode: 'md' }),
+    provideRouter(routes),
     provideHttpClient(),
   ],
 });

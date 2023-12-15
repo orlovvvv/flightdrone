@@ -55,13 +55,17 @@ ion-icon {
 }
 
 .login-card {
-  max-width: 768px;
-  width: 100%;
-  height: 100%;
-  max-height: 384px;
-  display: block;
+  max-width: 468px;
+  max-height: 240px;
+  position: absolute;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
   margin: auto;
 }
+
 .logo-icon {
   width: 100%;
   height: 256px;

@@ -9,8 +9,8 @@ export const routes: Routes = [
   },
   {
     path: 'home',
+    canActivate: [SessionGuard()],
     loadComponent: () => import('./home/home.page'),
-    canActivate: [SessionGuard]
   },
   {
     path: '**',

@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonContent } from '@ionic/angular/standalone';
-import { LoginService } from '../auth/login/data/login.service';
 import { AuthService } from '../shared/data/auth.service';
 import { CheckInComponent } from '../shared/feature/check-in/check-in.component';
 import { MapComponent } from '../shared/feature/map/map.component';
@@ -12,7 +12,7 @@ import { WidgetsComponent } from '../shared/ui/widgets/widgets.component';
   selector: 'app-home',
   template: `
   <ion-content [fullscreen]="true">
-    <app-header />
+    <app-header [loginStatus]="authService.user().status" />
     <app-map />
     <app-widgets />
     <app-map-settings />
@@ -30,7 +30,14 @@ import { WidgetsComponent } from '../shared/ui/widgets/widgets.component';
   ],
 })
 export default class HomePage {
-  public loginService = inject(LoginService);
   public authService = inject(AuthService);
+  private router = inject(Router);
 
+  constructor() {
+    effect(() => {
+      if (!this.authService.user().session) {
+        this.router.navigate(['auth', 'login'])
+      }
+    });
+  }
 }
