@@ -2,8 +2,9 @@ import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Input,
-  inject,
+  Output
 } from '@angular/core';
 import {
   IonButton,
@@ -11,7 +12,6 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
-import { AuthService } from '../../data/auth.service';
 import { SearchComponent } from '../../feature/search/search.component';
 import { LoginStatus } from '../../types/login';
 
@@ -38,7 +38,8 @@ import { LoginStatus } from '../../types/login';
       <app-search slot="end" />
       <ion-button
         slot="end"
-        (click)="logout()"
+        shape="round"
+        (click)="logout.emit()"
         [disabled]="loginStatus === 'pending'"
       >
         Wyloguj się</ion-button
@@ -49,10 +50,5 @@ import { LoginStatus } from '../../types/login';
 })
 export class HeaderComponent {
   @Input({ required: true }) loginStatus: LoginStatus = 'pending';
-  // todo: refactor for input instead of service use
-  private authService = inject(AuthService);
-
-  logout() {
-    this.authService.logout();
-  }
+  @Output() logout = new EventEmitter<void>()
 }

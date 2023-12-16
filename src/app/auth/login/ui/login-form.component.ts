@@ -74,9 +74,7 @@ export class LoginFormComponent {
   @Input({ required: true }) loginStatus: LoginStatus = 'pending';
   @Output() login = new EventEmitter<Credentials>();
 
-  private fb = inject(FormBuilder);
-
-  loginForm = this.fb.nonNullable.group({
+  loginForm = inject(FormBuilder).nonNullable.group({
     email: [''],
     password: [''],
   });

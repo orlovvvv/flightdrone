@@ -12,8 +12,8 @@ import { WidgetsComponent } from '../shared/ui/widgets/widgets.component';
   selector: 'app-home',
   template: `
   <ion-content [fullscreen]="true">
-    <app-header [loginStatus]="authService.user().status" />
     <app-map />
+    <app-header [loginStatus]="authService.user().status" (logout)="logout()" />
     <app-widgets />
     <app-map-settings />
     <app-check-in />
@@ -39,5 +39,9 @@ export default class HomePage {
         this.router.navigate(['auth', 'login'])
       }
     });
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

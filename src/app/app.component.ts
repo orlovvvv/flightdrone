@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { IonApp } from '@ionic/angular/standalone';
+import { IonContent, IonRouterOutlet } from '@ionic/angular/standalone';
+import { Animations } from './shared/animation/animation';
+
 
 @Component({
   selector: 'app-root',
   template: `
-      <router-outlet/>
+    <ion-router-outlet></ion-router-outlet>
   `,
   standalone: true,
-  imports: [IonApp, RouterOutlet],
+  imports: [IonContent, IonRouterOutlet],
+  animations: [Animations]
 })
 export class AppComponent {
 }

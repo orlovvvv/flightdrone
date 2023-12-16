@@ -37,6 +37,7 @@ import { LoginFormComponent } from './ui/login-form.component';
   ],
   template: `
     <ion-card class="login-card rounded">
+      @if(authService.user().session === undefined){
       <ion-card-header>
         <ion-card-title> Logowanie </ion-card-title>
       </ion-card-header>
@@ -46,6 +47,11 @@ import { LoginFormComponent } from './ui/login-form.component';
           (login)="authService.login$.next($event)"
         />
       </ion-card-content>
+       } @else { 
+        <ion-card-content>
+          <ion-spinner class="login-spinner" name="circular" color="primary"></ion-spinner>
+        </ion-card-content>
+       }
     </ion-card>
   `,
   styles: `
@@ -89,28 +95,14 @@ ion-input {
 
 .login-spinner {
   margin: 0 !important;
-  height: 56px;
-  width: 56px;
+  height: 36px;
+  width: 36px;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
-@media screen and (max-width: 769px) {
-  .login-card {
-    max-width: 768px;
-    width: 100%;
-    height: 100%;
-    max-height: 586px;
-    display: block;
-    margin: auto;
-  }
-  .logo-icon {
-    width: 100%;
-    height: 196px;
-  }
-}`,
+`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class LoginPage {

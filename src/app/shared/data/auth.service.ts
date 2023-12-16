@@ -36,6 +36,9 @@ export class AuthService {
   // sources
   error$ = new Subject<any>();
   login$ = new Subject<Credentials>();
+  session$ = scheduled(this.account.getSession('current'), asapScheduler).pipe(
+    catchError(() => EMPTY)
+  );
   userAuthenticated$ = this.login$.pipe(
     switchMap((credentials) =>
       this.login(credentials).pipe(
@@ -58,6 +61,9 @@ export class AuthService {
   // selectors
   constructor() {
     const nextState$ = merge(
+      this.session$.pipe(
+        map((session) => ({ session: session, status: 'success' as const }))
+      ),
       this.userAuthenticated$.pipe(
         map((session) => ({ session: session, status: 'success' as const }))
       ),
@@ -77,21 +83,17 @@ export class AuthService {
       this.account.createEmailSession(credentials.email, credentials.password)
     );
   }
-  logout() {
-    this.state.update((value) => ({
-      ...value,
-      session: undefined,
-      status: 'pending' as const,
-    }))
-    return scheduled(
-      this.account.deleteSession('current').then(() => {
 
-        console.log(this.state())
-          ;
-      }),
-      asapScheduler
-    );
+  logout() {
+    return scheduled(this.account.deleteSession('current').finally(() => {
+      this.state.update((value) => ({
+        ...value,
+        session: undefined,
+        status: 'pending' as const,
+      }));
+    }), asapScheduler);
   }
+
   createAccount(credentials: Credentials) {
     return scheduled(
       defer(() =>

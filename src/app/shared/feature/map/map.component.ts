@@ -13,8 +13,9 @@ import { environment } from 'src/environments/environment';
   template: `<capacitor-google-map #map /> `,
   styles: `
   capacitor-google-map {
-  width: 100%;
-  height: 100%;
+ display: inline-block;
+width: 100%;
+height: 100%;
 }
   `,
   standalone: true,
