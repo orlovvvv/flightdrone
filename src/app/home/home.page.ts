@@ -2,7 +2,7 @@ import { Component, effect, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonContent } from '@ionic/angular/standalone';
 import { LoginService } from '../auth/login/data-access/login.service';
-import { AuthService } from '../shared/data/auth.service';
+import { AuthService } from '../shared/data-access/auth.service';
 import { CheckInComponent } from '../shared/feature/check-in/check-in.component';
 import { MapComponent } from '../shared/feature/map/map.component';
 import { HeaderComponent } from '../shared/ui/header/header.component';

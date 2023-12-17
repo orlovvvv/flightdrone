@@ -17,7 +17,7 @@ import {
   IonInput,
   IonSpinner,
 } from '@ionic/angular/standalone';
-import { AuthService } from 'src/app/shared/data/auth.service';
+import { AuthService } from 'src/app/shared/data-access/auth.service';
 import { LoginService } from './data-access/login.service';
 import { LoginFormComponent } from './ui/login-form.component';
 

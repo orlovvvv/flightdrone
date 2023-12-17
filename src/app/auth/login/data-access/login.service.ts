@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { signalSlice } from 'ngxtension/signal-slice';
 import { EMPTY, Observable, Subject, catchError, map, merge, startWith, switchMap } from 'rxjs';
-import { AuthService } from 'src/app/shared/data/auth.service';
+import { AuthService } from 'src/app/shared/data-access/auth.service';
 import { Credentials } from 'src/app/shared/types/credentials';
 
 export type LoginStatus = 'pending' | 'authenticating' | 'success' | 'error';
