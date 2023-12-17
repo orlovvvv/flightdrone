@@ -18,6 +18,7 @@ import {
   IonSpinner,
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/shared/data/auth.service';
+import { LoginService } from './data-access/login.service';
 import { LoginFormComponent } from './ui/login-form.component';
 
 @Component({
@@ -37,14 +38,14 @@ import { LoginFormComponent } from './ui/login-form.component';
   ],
   template: `
     <ion-card class="login-card rounded">
-      @if(authService.user().session === undefined){
+      @if(authService.state.user() === null){
       <ion-card-header>
         <ion-card-title> Logowanie </ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <app-login-form
-          [loginStatus]="authService.user().status"
-          (login)="authService.login$.next($event)"
+          [loginStatus]="loginService.state.status()"
+          (login)="loginService.state.login($event)"
         />
       </ion-card-content>
        } @else { 
@@ -106,13 +107,15 @@ ion-input {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class LoginPage {
+  public loginService = inject(LoginService);
   public authService = inject(AuthService);
+
   private router = inject(Router);
 
   constructor() {
     effect(() => {
-      if (this.authService.user().session) {
-        this.router.navigate(['home'])
+      if (this.authService.state.user()) {
+        this.router.navigate(['home']);
       }
     });
   }

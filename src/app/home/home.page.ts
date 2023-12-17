@@ -1,6 +1,7 @@
 import { Component, effect, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonContent } from '@ionic/angular/standalone';
+import { LoginService } from '../auth/login/data-access/login.service';
 import { AuthService } from '../shared/data/auth.service';
 import { CheckInComponent } from '../shared/feature/check-in/check-in.component';
 import { MapComponent } from '../shared/feature/map/map.component';
@@ -13,7 +14,7 @@ import { WidgetsComponent } from '../shared/ui/widgets/widgets.component';
   template: `
   <ion-content [fullscreen]="true">
     <app-map />
-    <app-header [loginStatus]="authService.user().status" (logout)="logout()" />
+    <app-header [loginStatus]="loginService.state.status()" (logout)="logout()" />
     <app-widgets />
     <app-map-settings />
     <app-check-in />
@@ -31,12 +32,13 @@ import { WidgetsComponent } from '../shared/ui/widgets/widgets.component';
 })
 export default class HomePage {
   public authService = inject(AuthService);
+  public loginService = inject(LoginService)
   private router = inject(Router);
 
   constructor() {
     effect(() => {
-      if (!this.authService.user().session) {
-        this.router.navigate(['auth', 'login'])
+      if (!this.authService.state.user()) {
+        this.router.navigate(['auth', 'login']);
       }
     });
   }

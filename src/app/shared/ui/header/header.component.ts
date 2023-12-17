@@ -40,7 +40,6 @@ import { LoginStatus } from '../../types/login';
         slot="end"
         shape="round"
         (click)="logout.emit()"
-        [disabled]="loginStatus === 'pending'"
       >
         Wyloguj się</ion-button
       >

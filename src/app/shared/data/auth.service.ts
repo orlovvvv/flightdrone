@@ -1,103 +1,72 @@
-import { Injectable, computed, signal } from '@angular/core';
-import { Account, Client, ID, Models } from 'appwrite';
-import { connect } from 'ngxtension/connect';
+import { Injectable, inject } from '@angular/core';
+import { ID, Models } from 'appwrite';
+import { signalSlice } from 'ngxtension/signal-slice';
 import {
-  EMPTY,
   Subject,
   asapScheduler,
-  catchError,
   defer,
   map,
   merge,
   scheduled,
   switchMap,
+  tap
 } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { AUTH } from 'src/main';
 import { Credentials } from '../types/credentials';
-import { LoginStatus } from '../types/login';
 
-export type AuthUser = Models.Session | undefined;
+export type AuthUser = Models.User<Models.Preferences> | null | undefined;
 
-type AuthState = {
-  session: AuthUser;
-  status: LoginStatus;
-};
+interface AuthState {
+  user: AuthUser;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   // dependencies
-  private readonly client = new Client()
-    .setEndpoint(environment.endpoint)
-    .setProject(environment.projectId);
-  private readonly account = new Account(this.client);
+  private auth = inject(AUTH);
+
+  private initialState: AuthState = {
+    user: undefined,
+  };
 
   // sources
-  error$ = new Subject<any>();
-  login$ = new Subject<Credentials>();
-  session$ = scheduled(this.account.getSession('current'), asapScheduler).pipe(
-    catchError(() => EMPTY)
-  );
-  userAuthenticated$ = this.login$.pipe(
-    switchMap((credentials) =>
-      this.login(credentials).pipe(
-        catchError((err) => {
-          this.error$.next(err);
-          return EMPTY;
-        })
-      )
-    )
-  );
+  private user$ = new Subject<AuthState>()
+  private initialState$ = scheduled(this.auth.get().catch(() => null), asapScheduler);
+  private sources$ = merge(this.initialState$.pipe<AuthState>(map((user) => ({ user }))), this.user$);
 
   // state
-  private state = signal<AuthState>({
-    session: undefined,
-    status: 'pending',
+  state = signalSlice({
+    initialState: this.initialState,
+    sources: [this.sources$],
   });
 
-  user = computed(() => this.state());
 
-  // selectors
-  constructor() {
-    const nextState$ = merge(
-      this.session$.pipe(
-        map((session) => ({ session: session, status: 'success' as const }))
-      ),
-      this.userAuthenticated$.pipe(
-        map((session) => ({ session: session, status: 'success' as const }))
-      ),
-      this.login$.pipe(
-        map(() => ({ session: undefined, status: 'authenticating' as const }))
-      ),
-      this.error$.pipe(
-        map(() => ({ session: undefined, status: 'error' as const }))
-      )
-    );
-    connect(this.state).with(nextState$);
-  }
-
-  // methods
   login(credentials: Credentials) {
-    return defer(() =>
-      this.account.createEmailSession(credentials.email, credentials.password)
+    return scheduled(
+      this.auth.createEmailSession(credentials.email, credentials.password),
+      asapScheduler
+    ).pipe(
+      switchMap(() => scheduled(this.auth.get().catch(() => null), asapScheduler)),
+      tap((user) => {
+        return this.user$.next({ user });
+      }),
     );
   }
 
   logout() {
-    return scheduled(this.account.deleteSession('current').finally(() => {
-      this.state.update((value) => ({
-        ...value,
-        session: undefined,
-        status: 'pending' as const,
-      }));
-    }), asapScheduler);
+    return scheduled(
+      this.auth
+        .deleteSession('current').catch(() => undefined).finally(() => this.user$.next({ user: null })),
+      asapScheduler
+    )
   }
 
   createAccount(credentials: Credentials) {
     return scheduled(
       defer(() =>
-        this.account.create(
+        this.auth.create(
           ID.unique(),
           credentials.email,
           credentials.password,
