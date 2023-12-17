@@ -1,5 +1,5 @@
 import { provideHttpClient } from '@angular/common/http';
-import { enableProdMode } from '@angular/core';
+import { enableProdMode, isDevMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import {
   RouteReuseStrategy,
@@ -12,6 +12,7 @@ import {
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
 import { environment } from './environments/environment';
+import { provideServiceWorker } from '@angular/service-worker';
 
 if (environment.production) {
   enableProdMode();
@@ -23,5 +24,9 @@ bootstrapApplication(AppComponent, {
     provideIonicAngular({ mode: 'md' }),
     provideRouter(routes),
     provideHttpClient(),
-  ],
+    provideServiceWorker('ngsw-worker.js', {
+        enabled: !isDevMode(),
+        registrationStrategy: 'registerWhenStable:30000'
+    })
+],
 });
