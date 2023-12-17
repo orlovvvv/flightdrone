@@ -36,12 +36,12 @@ export class LoginService {
         $.pipe(
           switchMap((credentials) =>
             this.authService.login(credentials).pipe(
-              startWith({ status: 'authenticating' as const }),
               map(() => ({ status: 'success' as const })),
               catchError((err) => {
                 this.error$.next(err);
                 return EMPTY;
               }),
+              startWith({ status: 'authenticating' as const }),
             )
           )
         ),

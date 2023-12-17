@@ -7,14 +7,14 @@ import {
   inject,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { IonButton, IonInput } from '@ionic/angular/standalone';
+import { IonButton, IonInput, IonSpinner } from '@ionic/angular/standalone';
 import { Credentials } from 'src/app/shared/types/credentials';
 import { LoginStatus } from 'src/app/shared/types/login';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [ReactiveFormsModule, IonButton, IonInput],
+  imports: [ReactiveFormsModule, IonButton, IonInput, IonSpinner],
   template: `
     <form
       [formGroup]="loginForm"
@@ -45,7 +45,9 @@ import { LoginStatus } from 'src/app/shared/types/login';
         type="submit"
         [disabled]="loginStatus === 'authenticating'"
       >
-        Zaloguj się
+        @if (loginStatus !== 'authenticating') { Zaloguj się } @else {
+        <ion-spinner class="button-spinner" name="circular"></ion-spinner>
+        }
       </ion-button>
     </form>
   `,
@@ -64,8 +66,9 @@ import { LoginStatus } from 'src/app/shared/types/login';
         margin: 5px 0;
       }
 
-      mat-spinner {
-        margin: 1rem 0;
+      .button-spinner {
+        width:  1rem;
+        height: 1rem;
       }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

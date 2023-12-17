@@ -37,7 +37,7 @@ import { LoginFormComponent } from './ui/login-form.component';
     LoginFormComponent,
   ],
   template: `
-    <ion-card class="login-card rounded">
+    <ion-card class="login-card rounded" @fadeInOut>
       @if(authService.state.user() === null){
       <ion-card-header>
         <ion-card-title> Logowanie </ion-card-title>
