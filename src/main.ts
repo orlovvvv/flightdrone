@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { InjectionToken, enableProdMode, isDevMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import {
@@ -13,7 +13,6 @@ import {
 import { Account, Client } from 'appwrite';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
-import { errorHandlerInterceptor } from './app/shared/interceptor/error-handler.interceptor';
 import { environment } from './environments/environment';
 
 if (environment.production) {
@@ -39,7 +38,7 @@ bootstrapApplication(AppComponent, {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular({ mode: 'md' }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([errorHandlerInterceptor])),
+    provideHttpClient(),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000'

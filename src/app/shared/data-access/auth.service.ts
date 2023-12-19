@@ -13,6 +13,7 @@ import {
 } from 'rxjs';
 import { AUTH } from 'src/main';
 import { Credentials } from '../types/credentials';
+import { ToastService } from '../utils/toast.service';
 
 export type AuthUser = Models.User<Models.Preferences> | null | undefined;
 
@@ -26,7 +27,7 @@ interface AuthState {
 export class AuthService {
   // dependencies
   private auth = inject(AUTH);
-
+  private toast = inject(ToastService)
   private initialState: AuthState = {
     user: undefined,
   };
@@ -42,10 +43,10 @@ export class AuthService {
     sources: [this.sources$],
   });
 
-
   login(credentials: Credentials) {
     return scheduled(
-      this.auth.createEmailSession(credentials.email, credentials.password),
+      this.auth.createEmailSession(credentials.email, credentials.password).catch((err) =>
+        this.toast.errorToast('bottom', err.message)),
       asapScheduler
     ).pipe(
       switchMap(() => scheduled(this.auth.get().catch(() => null), asapScheduler)),
@@ -58,7 +59,8 @@ export class AuthService {
   logout() {
     return scheduled(
       this.auth
-        .deleteSession('current').catch(() => undefined).finally(() => this.user$.next({ user: null })),
+        .deleteSession('current').catch(() => undefined).catch((err) =>
+          this.toast.errorToast('bottom', err.message)).finally(() => this.user$.next({ user: null })),
       asapScheduler
     )
   }
@@ -71,7 +73,8 @@ export class AuthService {
           credentials.email,
           credentials.password,
           credentials.name
-        )
+        ).catch((err) =>
+          this.toast.errorToast('bottom', err.message))
       ),
       asapScheduler
     );

@@ -3,7 +3,8 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   Component,
   ElementRef,
-  ViewChild,
+  Input,
+  ViewChild
 } from '@angular/core';
 import { GoogleMap } from '@capacitor/google-maps';
 import { environment } from 'src/environments/environment';
@@ -21,10 +22,24 @@ height: 100%;
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
+
+/*
+* *
+* * This component is responsible for:
+* * - Creating a map
+* * - Displaying markers on the map
+* * - Handling map events
+* *
+*/
+
 export class MapComponent implements AfterViewInit {
+  @Input() zoom: number = 6;
+  @Input() mode: 'normal' | 'satellite' = 'normal';
   @ViewChild('map')
   mapRef!: ElementRef<HTMLElement>;
   newMap!: GoogleMap;
+
+
 
   ngAfterViewInit() {
     this.createMap();
@@ -74,7 +89,7 @@ export class MapComponent implements AfterViewInit {
         fullscreenControl: false,
         streetViewControl: false,
         zoomControl: false,
-        zoom: 6,
+        zoom: this.zoom,
         mapId: 'ee2cd9275b9b5193',
       },
     });

@@ -34,7 +34,7 @@ import { LoginFormComponent } from './ui/login-form.component';
     IonSpinner,
     ReactiveFormsModule,
     IonIcon,
-    LoginFormComponent,
+    LoginFormComponent
   ],
   template: `
     <ion-card class="login-card rounded" @fadeInOut>
@@ -64,7 +64,6 @@ ion-icon {
 .login-card {
   max-width: 468px;
   max-height: 240px;
-  position: absolute;
   position: absolute;
   left: 0;
   right: 0;

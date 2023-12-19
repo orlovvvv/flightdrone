@@ -12,8 +12,8 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
-import { SearchComponent } from '../../feature/search/search.component';
-import { LoginStatus } from '../../types/login';
+import { SearchComponent } from '../feature/search.component';
+import { LoginStatus } from '../types/login';
 
 @Component({
   standalone: true,
@@ -34,7 +34,7 @@ import { LoginStatus } from '../../types/login';
       color="none"
       style="position: absolute; top: 0;"
     >
-      <ion-title slot="start"> FlightDrone </ion-title>
+      <ion-title slot="start" color="light"> FlightDrone </ion-title>
       <app-search slot="end" />
       <ion-button
         slot="end"
