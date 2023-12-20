@@ -23,6 +23,7 @@ import { LoginFormComponent } from './ui/login-form.component';
 
 @Component({
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     IonButton,
@@ -103,7 +104,6 @@ ion-input {
   transform: translate(-50%, -50%);
 }
 `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class LoginPage {
   public loginService = inject(LoginService);
