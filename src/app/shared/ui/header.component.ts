@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
   Output
 } from '@angular/core';
 import {
@@ -13,7 +12,6 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { SearchComponent } from '../feature/search.component';
-import { LoginStatus } from '../types/login';
 
 @Component({
   standalone: true,
@@ -48,6 +46,5 @@ import { LoginStatus } from '../types/login';
   styles: ``,
 })
 export class HeaderComponent {
-  @Input({ required: true }) loginStatus: LoginStatus = 'pending';
   @Output() logout = new EventEmitter<void>()
 }

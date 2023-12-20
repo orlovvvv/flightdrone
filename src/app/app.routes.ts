@@ -3,20 +3,27 @@ import { isAuthenticatedGuard } from './shared/guard/auth.guard';
 
 export const routes: Routes = [
   {
-    path: 'login',
+    path: 'auth/login',
     loadComponent: () =>
       import('./auth/login/login.page'),
-    title: 'Login'
+    title: 'Logowanie'
+  },
+  {
+    path: 'auth/register',
+    loadComponent: () => import('./auth/register/register.page'),
+    title: 'Rejestracja'
   },
   {
     path: 'home',
     canActivate: [isAuthenticatedGuard()],
     loadComponent: () => import('./home/home.page'),
-    title: 'Home'
+    title: 'Strona główna'
   },
   {
     path: '**',
-    redirectTo: 'login',
+    redirectTo: 'auth/login',
     pathMatch: 'full',
   },
+
+
 ];

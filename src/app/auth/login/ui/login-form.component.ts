@@ -41,12 +41,13 @@ import { LoginStatus } from 'src/app/shared/types/login';
         tabindex="2"
       ></ion-input>
       <ion-button
-        color="primary"
+        fill="outline"
+        color="dark"
         type="submit"
         [disabled]="loginStatus === 'authenticating'"
       >
         @if (loginStatus !== 'authenticating') { Zaloguj się } @else {
-        <ion-spinner class="button-spinner" name="circular"></ion-spinner>
+        <ion-spinner class="button-spinner" name="circular" color="dark"></ion-spinner>
         }
       </ion-button>
     </form>

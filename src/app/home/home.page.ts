@@ -1,8 +1,8 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonContent } from '@ionic/angular/standalone';
-import { LoginService } from '../auth/login/data-access/login.service';
 import { AuthService } from '../shared/data-access/auth.service';
+import { LoginService } from '../shared/data-access/login.service';
 import { CheckInComponent } from '../shared/feature/check-in.component';
 import { MapComponent } from '../shared/feature/map.component';
 import { HeaderComponent } from '../shared/ui/header.component';
@@ -14,7 +14,7 @@ import { WidgetsComponent } from '../shared/ui/widgets.component';
   template: `
   <ion-content [fullscreen]="true">
     <app-map [zoom]="zoom()" />
-    <app-header [loginStatus]="loginService.state.status()" (logout)="logout()" />
+    <app-header (logout)="loginService.state.logout()" />
     <app-widgets />
     <app-map-settings (increaseZoom)="increaseZoom()" (decreaseZoom)="decraseZoom()" (toggleMapMode)="toggleMapMode()" />
     <app-check-in />
@@ -54,9 +54,5 @@ export default class HomePage {
       }
       console.log(this.zoom())
     });
-  }
-
-  logout() {
-    this.authService.logout();
   }
 }

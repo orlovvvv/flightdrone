@@ -1,47 +1,49 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   effect,
   inject,
 } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import {
   IonButton,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
-  IonSpinner
+  IonIcon,
+  IonInput,
+  IonSpinner,
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/shared/data-access/auth.service';
 import { LoginService } from '../../shared/data-access/login.service';
-import { LoginFormComponent } from './ui/login-form.component';
+
 
 @Component({
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    RouterLink,
+    CommonModule,
     IonButton,
+    IonInput,
     IonCard,
     IonCardHeader,
     IonCardTitle,
     IonCardContent,
     IonSpinner,
-    LoginFormComponent
+    ReactiveFormsModule,
+    IonIcon
   ],
   template: `
     <ion-card class="login-card rounded" @fadeInOut>
       @if(authService.state.user() === null){
       <ion-card-header>
-        <ion-card-title > Logowanie </ion-card-title>
+        <ion-card-title> Rejestracja </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <app-login-form
-          [loginStatus]="loginService.state.status()"
-          (login)="loginService.state.login($event)"
-        />
-        <ion-button routerLink="/auth/register"> Utwórz konto </ion-button>
+       Register form will be here
       </ion-card-content>
        } @else { 
         <ion-card-content>
@@ -58,7 +60,7 @@ ion-icon {
 
 .login-card {
   max-width: 468px;
-  max-height: fit-content;
+  max-height: 240px;
   position: absolute;
   left: 0;
   right: 0;
@@ -97,13 +99,9 @@ ion-input {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
-ion-button {
-  width: 100%;
-}
 `,
 })
-export default class LoginPage {
+export default class RegisterPage {
   public loginService = inject(LoginService);
   public authService = inject(AuthService);
 

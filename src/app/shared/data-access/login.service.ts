@@ -45,6 +45,17 @@ export class LoginService {
             )
           )
         ),
+      logout: (_state, $: Observable<void>) => $.pipe(
+        switchMap(() =>
+          this.authService.logout().pipe(
+            map(() => ({ status: 'pending' as const })),
+            catchError((err) => {
+              this.error$.next(err);
+              return EMPTY;
+            }),
+          )
+        )
+      )
     },
   });
 
