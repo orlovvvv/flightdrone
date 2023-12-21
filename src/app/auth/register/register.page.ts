@@ -67,6 +67,7 @@ ion-icon {
   transform: translate(-50%, -50%);
   width: 100%;
   max-width: 578px;
+  min-height: 558px;
   display: flex;
   flex-direction: column;
   justify-content: center;
