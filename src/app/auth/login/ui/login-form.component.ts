@@ -41,13 +41,16 @@ import { LoginStatus } from 'src/app/shared/types/login';
         tabindex="2"
       ></ion-input>
       <ion-button
-        fill="outline"
-        color="dark"
+        color="tertiary"
         type="submit"
         [disabled]="loginStatus === 'authenticating'"
       >
         @if (loginStatus !== 'authenticating') { Zaloguj się } @else {
-        <ion-spinner class="button-spinner" name="circular" color="dark"></ion-spinner>
+        <ion-spinner
+          class="button-spinner"
+          name="circular"
+          color="dark"
+        ></ion-spinner>
         }
       </ion-button>
     </form>
@@ -57,6 +60,8 @@ import { LoginStatus } from 'src/app/shared/types/login';
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin-bottom: 32px;
+
       }
 
       ion-button {
@@ -68,8 +73,8 @@ import { LoginStatus } from 'src/app/shared/types/login';
       }
 
       .button-spinner {
-        width:  1rem;
-        height: 1rem;
+        width:  16px;
+        height: 16px;
       }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

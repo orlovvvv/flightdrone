@@ -1,49 +1,50 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   effect,
   inject,
 } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
-  IonButton,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
-  IonIcon,
-  IonInput,
+  IonNote,
   IonSpinner,
+  IonText
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/shared/data-access/auth.service';
 import { LoginService } from '../../shared/data-access/login.service';
+import { RegisterFormComponent } from './ui/register-form.component';
 
 
 @Component({
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
-    IonButton,
-    IonInput,
+    RouterLink,
+    IonNote,
+    IonText,
     IonCard,
     IonCardHeader,
     IonCardTitle,
     IonCardContent,
     IonSpinner,
-    ReactiveFormsModule,
-    IonIcon
+    RegisterFormComponent,
   ],
   template: `
     <ion-card class="login-card rounded" @fadeInOut>
       @if(authService.state.user() === null){
       <ion-card-header>
-        <ion-card-title> Rejestracja </ion-card-title>
+        <ion-card-title> 
+          Rejestracja 
+        </ion-card-title>
       </ion-card-header>
-      <ion-card-content>
-       Register form will be here
+      <ion-card-content style="text-align: center">
+       <app-register-form style="text-align: left" registerStatus="pending" />
+        <ion-note  > Masz już konto? <ion-text routerLink="/auth/login" color="primary"> Zaloguj się </ion-text> </ion-note>
+
       </ion-card-content>
        } @else { 
         <ion-card-content>
@@ -59,14 +60,19 @@ ion-icon {
 }
 
 .login-card {
-  max-width: 468px;
-  max-height: 240px;
+  max-width: 578px;
+  height: 100%;
+  max-height: 680px;
   position: absolute;
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
 }
 
 .logo-icon {
@@ -87,7 +93,7 @@ ion-input {
   margin-bottom: 12px;
   --border-radius: 12px;
   --border-width: 2px;
-  --border-color: var(--ion-color-primary);
+  --border-color: var(--ion-color-tertiary);
 }
 
 .login-spinner {
@@ -98,6 +104,10 @@ ion-input {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+ion-text:hover {
+  cursor: pointer;
 }
 `,
 })

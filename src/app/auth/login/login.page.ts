@@ -6,12 +6,13 @@ import {
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import {
-  IonButton,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
-  IonSpinner
+  IonNote,
+  IonSpinner,
+  IonText
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/shared/data-access/auth.service';
 import { LoginService } from '../../shared/data-access/login.service';
@@ -22,7 +23,8 @@ import { LoginFormComponent } from './ui/login-form.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
-    IonButton,
+    IonNote,
+    IonText,
     IonCard,
     IonCardHeader,
     IonCardTitle,
@@ -36,12 +38,14 @@ import { LoginFormComponent } from './ui/login-form.component';
       <ion-card-header>
         <ion-card-title > Logowanie </ion-card-title>
       </ion-card-header>
-      <ion-card-content>
+      <ion-card-content style="text-align: center">
         <app-login-form
+        style="text-align: left"
           [loginStatus]="loginService.state.status()"
           (login)="loginService.state.login($event)"
         />
-        <ion-button routerLink="/auth/register"> Utwórz konto </ion-button>
+        <ion-note  > Nie masz konta? <ion-text routerLink="/auth/register" color="primary" class="create-account-link"> Utwórz konto </ion-text> </ion-note>
+       
       </ion-card-content>
        } @else { 
         <ion-card-content>
@@ -57,14 +61,20 @@ ion-icon {
 }
 
 .login-card {
-  max-width: 468px;
-  max-height: fit-content;
+  max-width: 578px;
+  height: 100%;
+  max-height: 320px;
   position: absolute;
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  
 }
 
 .logo-icon {
@@ -85,7 +95,7 @@ ion-input {
   margin-bottom: 12px;
   --border-radius: 12px;
   --border-width: 2px;
-  --border-color: var(--ion-color-primary);
+  --border-color: var(--ion-color-tertiary);
 }
 
 .login-spinner {
@@ -100,6 +110,10 @@ ion-input {
 
 ion-button {
   width: 100%;
+}
+
+ion-text:hover {
+  cursor: pointer;
 }
 `,
 })
