@@ -1,6 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { InjectionToken, enableProdMode, isDevMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import {
   RouteReuseStrategy,
   provideRouter
@@ -38,6 +39,7 @@ bootstrapApplication(AppComponent, {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular({ mode: 'md' }),
     provideRouter(routes),
+    provideAnimations(),
     provideHttpClient(),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),

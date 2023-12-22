@@ -12,7 +12,7 @@ import {
   IonCardTitle,
   IonNote,
   IonSpinner,
-  IonText
+  IonText,
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/shared/data-access/auth.service';
 import { LoginService } from '../../shared/data-access/login.service';
@@ -30,28 +30,35 @@ import { LoginFormComponent } from './ui/login-form.component';
     IonCardTitle,
     IonCardContent,
     IonSpinner,
-    LoginFormComponent
+    LoginFormComponent,
   ],
   template: `
     <ion-card class="login-card rounded" @fadeInOut>
       @if(authService.state.user() === null){
       <ion-card-header>
-        <ion-card-title > Logowanie </ion-card-title>
+        <ion-card-title> Logowanie </ion-card-title>
       </ion-card-header>
-      <ion-card-content style="text-align: center">
+      <ion-card-content>
         <app-login-form
-        style="text-align: left"
           [loginStatus]="loginService.state.status()"
           (login)="loginService.state.login($event)"
         />
-        <ion-note  > Nie masz konta? <ion-text routerLink="/auth/register" color="primary" class="create-account-link"> Utwórz konto </ion-text> </ion-note>
-       
+        <ion-note>
+          Nie masz konta?
+          <ion-text routerLink="/auth/register" color="primary">
+            Utwórz konto
+          </ion-text>
+        </ion-note>
       </ion-card-content>
-       } @else { 
-        <ion-card-content>
-          <ion-spinner class="login-spinner" name="circular" color="primary"></ion-spinner>
-        </ion-card-content>
-       }
+      } @else {
+      <ion-card-content>
+        <ion-spinner
+          class="login-spinner"
+          name="circular"
+          color="primary"
+        ></ion-spinner>
+      </ion-card-content>
+      }
     </ion-card>
   `,
   styles: `
@@ -110,9 +117,19 @@ ion-button {
   width: 100%;
 }
 
+ion-note {
+   position: absolute;
+  bottom: 0;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
 ion-text:hover {
   cursor: pointer;
 }
+
+
 `,
 })
 export default class LoginPage {

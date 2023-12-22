@@ -41,9 +41,9 @@ import { RegisterFormComponent } from './ui/register-form.component';
           Rejestracja 
         </ion-card-title>
       </ion-card-header>
-      <ion-card-content style="text-align: center">
-       <app-register-form style="text-align: left" registerStatus="pending" />
-        <ion-note  > Masz już konto? <ion-text routerLink="/auth/login" color="primary"> Zaloguj się </ion-text> </ion-note>
+      <ion-card-content >
+       <app-register-form registerStatus="pending" />
+        <ion-note> Masz już konto? <ion-text routerLink="/auth/login" color="primary"> Zaloguj się </ion-text> </ion-note>
 
       </ion-card-content>
        } @else { 
@@ -102,6 +102,14 @@ ion-input {
   position: fixed;
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+ion-note {
+   position: absolute;
+  bottom: 0;
+  left: 50%;
+  margin-right: -50%;
   transform: translate(-50%, -50%);
 }
 

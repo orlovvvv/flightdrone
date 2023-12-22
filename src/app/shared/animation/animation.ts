@@ -3,18 +3,17 @@ import {
     keyframes,
     style,
     transition,
-    trigger,
+    trigger
 } from '@angular/animations';
 
 export const Animations = [
     trigger('pageTransition', [
         transition('* <=> *', [
             animate(
-                '0.7s ease',
-                keyframes([
-                    style({ transform: 'translateY(20px)', opacity: 0 }),
-                    style({ transform: 'translateY(2px)', opacity: 0.2 }),
-                    style({ transform: 'translateY(0px)', opacity: 1 }),
+                '500ms cubic-bezier(0.2, 0.0, 0, 1.0)'
+                , keyframes([
+                    style({ opacity: 0 }),
+                    style({ opacity: 1 }),
                 ])
             ),
         ]),
