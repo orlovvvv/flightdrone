@@ -34,7 +34,7 @@ module.exports = async function (req, res) {
       return res.send("Hello, World!");
     }
   } catch (error) {
-    console.error("Error handling user registration:", error);
+    log("Error handling user registration:", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -42,7 +42,7 @@ module.exports = async function (req, res) {
 async function createProfile(userId) {
   try {
     const profileData = {
-      user_id: userId,
+      userId: userId,
       // Add other profile properties as needed
     };
 
@@ -55,7 +55,7 @@ async function createProfile(userId) {
 
     return profile;
   } catch (error) {
-    console.error("Error creating profile:", error);
+    log("Error creating profile:", error);
     throw error;
   }
 }
