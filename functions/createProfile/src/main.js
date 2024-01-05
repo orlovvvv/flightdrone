@@ -36,7 +36,7 @@ module.exports = async function (req, res) {
     );
 
     return res.json({
-      profile: JSON.stringify(profile),
+      profile: "Profile created successfully",
     });
   } catch (error) {
     return res.json({ error: "Internal Server Error" });
