@@ -1,26 +1,31 @@
+// Perform all your imports
 const sdk = require("node-appwrite");
-// This is your Appwrite function
-// It's executed each time we get a request
-export default async ({ req, res, log, error }) => {
-  // Why not try the Appwrite SDK?
-  //
-  const client = new sdk.Client()
+
+module.exports = async function (req, res) {
+  const client = new sdk.Client();
+  //   if (
+  //   !req.variables['APPWRITE_FUNCTION_ENDPOINT'] ||
+  //   !req.variables['APPWRITE_FUNCTION_API_KEY']
+  // ) {
+  //   console.warn("Environment variables are not set. Function cannot use Appwrite SDK.");
+  // } else {
+  //   client
+  //     .setEndpoint(req.variables['APPWRITE_FUNCTION_ENDPOINT'])
+  //     .setProject(req.variables['APPWRITE_FUNCTION_PROJECT_ID'])
+  //     .setKey(req.variables['APPWRITE_FUNCTION_API_KEY'])
+  //     .setSelfSigned(true);
+  // }
+
+  client
     .setEndpoint("https://cloud.appwrite.io/v1")
     .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
     .setKey(process.env.APPWRITE_API_KEY);
 
-  // You can log messages to the console
-  log("Hello, Logs!");
+  const database = new sdk.Databases(client);
 
-  // If something goes wrong, log an error
-  error("Hello, Errors!");
-
-  // The `req` object contains the request data
   if (req.method === "POST") {
     // Send a response with the res object helpers
     // `res.send()` dispatches a string back to the client
-    const userId = req.body.$id;
-    const database = new sdk.Databases(client);
 
     try {
       if (req.method === "POST") {
@@ -51,4 +56,8 @@ export default async ({ req, res, log, error }) => {
       return res.status(500).json({ error: "Internal Server Error" });
     }
   }
+
+  res.json({
+    areDevelopersAwesome: true,
+  });
 };
