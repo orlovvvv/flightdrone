@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild, inject } from '@angular/core'
 import {
   IonButton,
   IonButtons,
@@ -17,8 +17,10 @@ import {
   IonSelectOption,
   IonTitle,
   IonToolbar,
-} from '@ionic/angular/standalone';
-import { CheckInFormComponent } from '../ui/check-in-form.component';
+} from '@ionic/angular/standalone'
+import { GeolocationService } from '../data-access/geolocation.service'
+import { CheckInFormComponent } from '../ui/check-in-form.component'
+import { GeolocationButtonComponent } from '../ui/geolocation-button.component'
 
 
 @Component({
@@ -42,6 +44,7 @@ import { CheckInFormComponent } from '../ui/check-in-form.component';
     IonSelectOption,
     IonFooter,
     CheckInFormComponent,
+    GeolocationButtonComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-check-in',
@@ -67,6 +70,7 @@ import { CheckInFormComponent } from '../ui/check-in-form.component';
 
           <ion-footer>
             <ion-toolbar>
+              <app-geolocation-button (location)="geolocationService.state.locate()"/>
               <ion-button slot="start" (click)="cancel()" color="danger"
                 >Anuluj</ion-button
               >
@@ -107,16 +111,21 @@ ion-toolbar {
  * *
  */
 export class CheckInComponent {
-  @ViewChild(IonModal) modal!: IonModal;
+  public geolocationService = inject(GeolocationService)
+  @ViewChild(IonModal) modal!: IonModal
 
   checkInModal: HTMLElement | null = null;
 
   cancel() {
-    this.modal.dismiss(null, 'cancel');
+    this.modal.dismiss(null, 'cancel')
   }
 
   confirm() {
-    this.modal.dismiss('confirm');
+    this.modal.dismiss('confirm')
+  }
+
+  constructor() {
+    // effect(() => console.log(this.geolocationService.state.position()))
   }
 
 }

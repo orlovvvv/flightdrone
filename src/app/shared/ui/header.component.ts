@@ -1,17 +1,17 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Output
-} from '@angular/core';
+} from '@angular/core'
 import {
   IonButton,
   IonHeader,
   IonTitle,
   IonToolbar,
-} from '@ionic/angular/standalone';
-import { SearchComponent } from '../feature/search.component';
+} from '@ionic/angular/standalone'
+import { SearchComponent } from '../feature/search.component'
 
 @Component({
   standalone: true,

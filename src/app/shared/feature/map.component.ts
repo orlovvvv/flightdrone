@@ -5,18 +5,18 @@ import {
   ElementRef,
   Input,
   ViewChild
-} from '@angular/core';
-import { GoogleMap } from '@capacitor/google-maps';
-import { environment } from 'src/environments/environment';
+} from '@angular/core'
+import { GoogleMap } from '@capacitor/google-maps'
+import { environment } from 'src/environments/environment'
 
 @Component({
   selector: 'app-map',
   template: `<capacitor-google-map #map /> `,
   styles: `
   capacitor-google-map {
- display: inline-block;
-width: 100%;
-height: 100%;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
 }
   `,
   standalone: true,
@@ -24,31 +24,27 @@ height: 100%;
 })
 
 /*
-* *
-* * This component is responsible for:
-* * - Creating a map
-* * - Displaying markers on the map
-* * - Handling map events
-* *
-*/
-
+ * *
+ * * This component is responsible for:
+ * * - Creating a map
+ * * - Displaying markers on the map
+ * * - Handling map events
+ * *
+ */
 export class MapComponent implements AfterViewInit {
   @Input() zoom: number = 6;
   @Input() mode: 'normal' | 'satellite' = 'normal';
-  @ViewChild('map')
-  mapRef!: ElementRef<HTMLElement>;
-  newMap!: GoogleMap;
-
-
+  @ViewChild('map') mapRef!: ElementRef<HTMLElement>
+  newMap!: GoogleMap
 
   ngAfterViewInit() {
-    this.createMap();
+    this.createMap()
   }
 
   async createMap() {
-    const head = document.head;
+    const head = document.head
     //* Prevent font download when map requests data
-    const insertBefore = head.insertBefore;
+    const insertBefore = head.insertBefore
     head.insertBefore = <T extends Node>(
       newElement: T,
       referenceElement: Node
@@ -58,12 +54,12 @@ export class MapComponent implements AfterViewInit {
         newElement?.hasAttribute('href') &&
         newElement?.getAttribute('href')?.includes('fonts.googleapis')
       ) {
-        return newElement;
+        return newElement
       }
 
-      insertBefore.call(head, newElement, referenceElement);
-      return newElement;
-    };
+      insertBefore.call(head, newElement, referenceElement)
+      return newElement
+    }
 
     this.newMap = await GoogleMap.create({
       id: 'map',
@@ -92,6 +88,6 @@ export class MapComponent implements AfterViewInit {
         zoom: this.zoom,
         mapId: 'ee2cd9275b9b5193',
       },
-    });
+    })
   }
 }

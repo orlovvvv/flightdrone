@@ -3,8 +3,8 @@ import {
   Component,
   effect,
   inject,
-} from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+} from '@angular/core'
+import { Router, RouterLink } from '@angular/router'
 import {
   IonCard,
   IonCardContent,
@@ -13,10 +13,10 @@ import {
   IonNote,
   IonSpinner,
   IonText
-} from '@ionic/angular/standalone';
-import { AuthService } from 'src/app/shared/data-access/auth.service';
-import { LoginService } from '../../shared/data-access/login.service';
-import { RegisterFormComponent } from './ui/register-form.component';
+} from '@ionic/angular/standalone'
+import { AuthService } from 'src/app/shared/data-access/auth.service'
+import { RegisterService } from './data-access/register.service'
+import { RegisterFormComponent } from './ui/register-form.component'
 
 
 @Component({
@@ -119,16 +119,15 @@ ion-text:hover {
 `,
 })
 export default class RegisterPage {
-  public loginService = inject(LoginService);
+  public registerService = inject(RegisterService);
   public authService = inject(AuthService);
-
   private router = inject(Router);
 
   constructor() {
     effect(() => {
       if (this.authService.state.user()) {
-        this.router.navigate(['home']);
+        this.router.navigate(['home'])
       }
-    });
+    })
   }
 }
