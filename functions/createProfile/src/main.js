@@ -1,61 +1,55 @@
-const sdk = require("node-appwrite");
+import { Client, Databases } from "node-appwrite";
 
-/*
-  'req' variable has:
-    'headers' - object with request headers
-    'payload' - request body data as a string
-    'variables' - object with function variables
+// This is your Appwrite function
+// It's executed each time we get a request
+export default async ({ req, res, log, error }) => {
+  // Why not try the Appwrite SDK?
+  //
+  const client = new Client()
+    .setEndpoint("https://cloud.appwrite.io/v1")
+    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
+    .setKey(process.env.APPWRITE_API_KEY);
 
-  'res' variable has:
-    'send(text, status)' - function to return text response. Status code defaults to 200
-    'json(obj, status)' - function to return JSON response. Status code defaults to 200
+  // You can log messages to the console
+  log("Hello, Logs!");
 
-  If an error is thrown, a response with code 500 will be returned.
-*/
+  // If something goes wrong, log an error
+  error("Hello, Errors!");
 
-module.exports = async function (req, res) {
-  const client = new sdk.Client();
+  // The `req` object contains the request data
+  if (req.method === "POST") {
+    // Send a response with the res object helpers
+    // `res.send()` dispatches a string back to the client
+    const userId = req.body.$id;
+    const database = new Databases(client);
 
-  // You can remove services you don't use
-  const account = new sdk.Account(client);
-  try {
-    if (req.method === "POST") {
-      const userId = req.body.$id; // Assuming the user ID is in the request body
+    try {
+      if (req.method === "POST") {
+        const userId = req.body.$id; // Assuming the user ID is in the request body
 
-      // Call the createProfile function to create a profile entry
-      const profile = await createProfile(userId);
+        const profileData = {
+          userId: userId,
+          // Add other profile properties as needed
+        };
 
-      log("Profile created:", profile);
+        // Call the createProfile function to create a profile entry
+        const profile = await database.createDocument(
+          process.env.DATABASE_ID,
+          process.env.DATABASE_COLLECTION,
+          profileData,
+        );
 
-      return res.json({
-        message: "Profile created successfully",
-      });
-    } else {
-      return res.send("Hello, World!");
+        log("Profile created:", profile);
+
+        return res.json({
+          message: "Profile created successfully",
+        });
+      } else {
+        return res.send("Hello, World!");
+      }
+    } catch (error) {
+      log("Error handling user registration:", error);
+      return res.status(500).json({ error: "Internal Server Error" });
     }
-  } catch (error) {
-    log("Error handling user registration:", error);
-    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
-async function createProfile(userId) {
-  try {
-    const profileData = {
-      userId: userId,
-      // Add other profile properties as needed
-    };
-
-    // Create a new profile document in the 'Profile' collection
-    const profile = await sdk.createDocument(
-      process.env.DATABASE_ID,
-      process.env.DATABASE_COLLECTION,
-      profileData,
-    );
-
-    return profile;
-  } catch (error) {
-    log("Error creating profile:", error);
-    throw error;
-  }
-}
