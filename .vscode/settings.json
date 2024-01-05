@@ -12,6 +12,7 @@
     "auth",
     "check-in",
     "register",
-    "geolocation"
+    "geolocation",
+    "functions"
   ]
 }
