@@ -13,52 +13,32 @@ import {
   map,
   merge,
   scheduled,
-  switchMap,
+  switchMap
 } from 'rxjs'
+
 type GeolocationState = {
   position: Position | null | undefined
-  // permission: PermissionStatus | null | undefined
-  error: string | null
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class GeolocationService {
-  // printCurrentPosition = async () => {
-  //   const coordinates = await Geolocation.getCurrentPosition()
-
-  //   console.log('Current position:', coordinates)
-  //   return coordinates
-  // };
-
-  // private initialCoordinates = toSignal(scheduled(this.printCurrentPosition(), asapScheduler))
-  // coordinates = computed(() => this.initialCoordinates())
-
-  // todo: figure out state managment for coordinates
-
   // sources
   geolocation$ = new Subject<GeolocationState>();
   getIninitalPosition$ = scheduled(
     Geolocation.getCurrentPosition().catch(() => null),
     asapScheduler
   );
-  error$ = new Subject<string | null>();
 
   sources$ = merge(
-    this.error$.pipe(map((error) => ({ error }))),
     this.geolocation$,
     this.getIninitalPosition$.pipe(map((position) => ({ position })))
-    // this.permission$.pipe(
-    //   map((permission) => ({ permission }))
-    // ),
   );
 
   // initial state
   private initialState: GeolocationState = {
     position: undefined,
-    // permission: undefined,
-    error: null,
   };
 
 
@@ -84,8 +64,7 @@ export class GeolocationService {
         .catch(() => null),
       asapScheduler
     ).pipe(
-      catchError((err) => {
-        this.error$.next(err)
+      catchError(() => {
         return EMPTY
       }),
     )

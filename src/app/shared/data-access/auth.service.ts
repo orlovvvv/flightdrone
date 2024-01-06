@@ -1,6 +1,6 @@
-import { Injectable, inject } from '@angular/core';
-import { ID, Models } from 'appwrite';
-import { signalSlice } from 'ngxtension/signal-slice';
+import { Injectable, inject } from '@angular/core'
+import { ID, Models } from 'appwrite'
+import { signalSlice } from 'ngxtension/signal-slice'
 import {
   Subject,
   asapScheduler,
@@ -10,14 +10,14 @@ import {
   scheduled,
   switchMap,
   tap
-} from 'rxjs';
-import { AUTH } from 'src/main';
-import { Credentials } from '../types/credentials';
+} from 'rxjs'
+import { APPWRITE } from 'src/main'
+import { Credentials } from '../types/credentials'
 
-export type AuthUser = Models.User<Models.Preferences> | null | undefined;
+export type AuthUser = Models.User<Models.Preferences> | null | undefined
 
 interface AuthState {
-  user: AuthUser;
+  user: AuthUser
 }
 
 @Injectable({
@@ -25,11 +25,11 @@ interface AuthState {
 })
 export class AuthService {
   // dependencies
-  private auth = inject(AUTH);
+  private appwrite = inject(APPWRITE);
 
   // sources
   private user$ = new Subject<AuthState>()
-  private isAuthenticated$ = scheduled(this.auth.get().catch(() => null), asapScheduler);
+  private isAuthenticated$ = scheduled(this.appwrite.account.get().catch(() => null), asapScheduler);
   private sources$ = merge(this.isAuthenticated$.pipe<AuthState>(map((user) => ({ user }))), this.user$);
 
   // state
@@ -45,19 +45,19 @@ export class AuthService {
 
   login(credentials: Credentials) {
     return scheduled(
-      this.auth.createEmailSession(credentials.email, credentials.password),
+      this.appwrite.account.createEmailSession(credentials.email, credentials.password),
       asapScheduler
     ).pipe(
-      switchMap(() => scheduled(this.auth.get().catch(() => null), asapScheduler)),
+      switchMap(() => scheduled(this.appwrite.account.get().catch(() => null), asapScheduler)),
       tap((user) => {
-        return this.user$.next({ user });
+        return this.user$.next({ user })
       }),
-    );
+    )
   }
 
   logout() {
     return scheduled(
-      this.auth
+      this.appwrite.account
         .deleteSession('current').catch(() => undefined).finally(() => this.user$.next({ user: null })),
       asapScheduler
     )
@@ -66,7 +66,7 @@ export class AuthService {
   createAccount(credentials: Credentials) {
     return scheduled(
       defer(() =>
-        this.auth.create(
+        this.appwrite.account.create(
           ID.unique(),
           credentials.email,
           credentials.password,
@@ -74,6 +74,8 @@ export class AuthService {
         )
       ),
       asapScheduler
-    );
+    )
   }
+
+
 }

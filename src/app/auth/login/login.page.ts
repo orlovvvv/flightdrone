@@ -3,8 +3,8 @@ import {
   Component,
   effect,
   inject,
-} from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+} from '@angular/core'
+import { Router, RouterLink } from '@angular/router'
 import {
   IonCard,
   IonCardContent,
@@ -13,10 +13,12 @@ import {
   IonNote,
   IonSpinner,
   IonText,
-} from '@ionic/angular/standalone';
-import { AuthService } from 'src/app/shared/data-access/auth.service';
-import { LoginService } from '../../shared/data-access/login.service';
-import { LoginFormComponent } from './ui/login-form.component';
+} from '@ionic/angular/standalone'
+import { AuthService } from 'src/app/shared/data-access/auth.service'
+import { ToastErrorComponent } from 'src/app/shared/ui/toast-error.component'
+import { LoginService } from './data-access/login.service'
+import { LoginFormComponent } from './ui/login-form.component'
+
 
 @Component({
   standalone: true,
@@ -31,6 +33,8 @@ import { LoginFormComponent } from './ui/login-form.component';
     IonCardContent,
     IonSpinner,
     LoginFormComponent,
+    ToastErrorComponent
+
   ],
   template: `
     <ion-card class="login-card rounded" @fadeInOut>
@@ -60,6 +64,10 @@ import { LoginFormComponent } from './ui/login-form.component';
       </ion-card-content>
       }
     </ion-card>
+       
+
+    <app-toast-error [error]="this.loginService.state.status()" [message]="'Nierpawidłowy login lub hasło'" />
+
   `,
   styles: `
 ion-icon {
@@ -141,8 +149,8 @@ export default class LoginPage {
   constructor() {
     effect(() => {
       if (this.authService.state.user()) {
-        this.router.navigate(['home']);
+        this.router.navigate(['home'])
       }
-    });
+    })
   }
 }

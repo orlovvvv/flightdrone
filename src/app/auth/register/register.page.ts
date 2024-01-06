@@ -12,12 +12,12 @@ import {
   IonCardTitle,
   IonNote,
   IonSpinner,
-  IonText
+  IonText,
 } from '@ionic/angular/standalone'
 import { AuthService } from 'src/app/shared/data-access/auth.service'
+import { ToastErrorComponent } from 'src/app/shared/ui/toast-error.component'
 import { RegisterService } from './data-access/register.service'
 import { RegisterFormComponent } from './ui/register-form.component'
-
 
 @Component({
   standalone: true,
@@ -32,26 +32,37 @@ import { RegisterFormComponent } from './ui/register-form.component'
     IonCardContent,
     IonSpinner,
     RegisterFormComponent,
+    ToastErrorComponent,
   ],
   template: `
     <ion-card class="login-card rounded" @fadeInOut>
-      @if(authService.state.user() === null){
+      @if(!authService.state.user()){
       <ion-card-header>
-        <ion-card-title> 
-          Rejestracja 
-        </ion-card-title>
+        <ion-card-title> Rejestracja </ion-card-title>
       </ion-card-header>
-      <ion-card-content >
-       <app-register-form registerStatus="pending" />
-        <ion-note> Masz już konto? <ion-text routerLink="/auth/login" color="primary"> Zaloguj się </ion-text> </ion-note>
-
+      <ion-card-content>
+        <app-register-form
+          [registerStatus]="this.registerService.state.status()"
+          (register)="registerService.state.createUser($event)"
+        />
+        <ion-note>
+          Masz już konto?
+          <ion-text routerLink="/auth/login" color="primary">
+            Zaloguj się
+          </ion-text>
+        </ion-note>
       </ion-card-content>
-       } @else { 
-        <ion-card-content>
-          <ion-spinner class="login-spinner" name="circular" color="primary"></ion-spinner>
-        </ion-card-content>
-       }
+      } @else {
+      <ion-card-content>
+        <ion-spinner
+          class="login-spinner"
+          name="circular"
+          color="primary"
+        ></ion-spinner>
+      </ion-card-content>
+      }
     </ion-card>
+    <app-toast-error [error]="this.registerService.state.status()" [message]="'Na podany adres zostało już założone konto'" />
   `,
   styles: `
 ion-icon {
@@ -128,6 +139,7 @@ export default class RegisterPage {
       if (this.authService.state.user()) {
         this.router.navigate(['home'])
       }
+      console.log(this.registerService.state.status())
     })
   }
 }

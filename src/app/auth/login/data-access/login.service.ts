@@ -1,13 +1,13 @@
-import { Injectable, inject } from '@angular/core';
-import { signalSlice } from 'ngxtension/signal-slice';
-import { EMPTY, Observable, Subject, catchError, map, merge, startWith, switchMap } from 'rxjs';
-import { AuthService } from 'src/app/shared/data-access/auth.service';
-import { Credentials } from 'src/app/shared/types/credentials';
+import { Injectable, inject } from '@angular/core'
+import { signalSlice } from 'ngxtension/signal-slice'
+import { EMPTY, Observable, Subject, catchError, map, merge, startWith, switchMap } from 'rxjs'
+import { AuthService } from 'src/app/shared/data-access/auth.service'
+import { Credentials } from 'src/app/shared/types/credentials'
 
-export type LoginStatus = 'pending' | 'authenticating' | 'success' | 'error';
+export type LoginStatus = 'pending' | 'authenticating' | 'success' | 'error'
 
 interface LoginState {
-  status: LoginStatus;
+  status: LoginStatus
 }
 
 @Injectable({
@@ -22,7 +22,6 @@ export class LoginService {
 
   // sources
   private error$ = new Subject<void>();
-
   private sources$ = merge(
     this.error$.pipe(map(() => ({ status: 'error' as const })))
   );
@@ -38,8 +37,8 @@ export class LoginService {
             this.authService.login(credentials).pipe(
               map(() => ({ status: 'success' as const })),
               catchError((err) => {
-                this.error$.next(err);
-                return EMPTY;
+                this.error$.next(err)
+                return EMPTY
               }),
               startWith({ status: 'authenticating' as const }),
             )
@@ -50,8 +49,8 @@ export class LoginService {
           this.authService.logout().pipe(
             map(() => ({ status: 'pending' as const })),
             catchError((err) => {
-              this.error$.next(err);
-              return EMPTY;
+              this.error$.next(err)
+              return EMPTY
             }),
           )
         )

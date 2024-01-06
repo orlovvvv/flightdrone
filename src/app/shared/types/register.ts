@@ -1,5 +1,5 @@
-export type RegisterStatus = 'pending' | 'authenticating' | 'success' | 'error';
+export type RegisterStatus = 'pending' | 'creating' | 'success' | 'error'
 
 export type RegisterState = {
-    status: RegisterStatus;
+    status: RegisterStatus
 }
