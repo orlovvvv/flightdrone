@@ -20,7 +20,8 @@ import { WidgetsComponent } from '../shared/ui/widgets.component'
     <app-widgets />
     <app-map-settings />
     <app-check-in />
-  </ion-content>`,
+  </ion-content>
+  `,
   styles: ``,
   standalone: true,
   imports: [

@@ -64,10 +64,7 @@ import { LoginFormComponent } from './ui/login-form.component'
       </ion-card-content>
       }
     </ion-card>
-       
-
     <app-toast-error [error]="this.loginService.state.status()" [message]="'Nierpawidłowy login lub hasło'" />
-
   `,
   styles: `
 ion-icon {
@@ -139,11 +136,11 @@ ion-text:hover {
 
 
 `,
+
 })
 export default class LoginPage {
   public loginService = inject(LoginService);
   public authService = inject(AuthService);
-
   private router = inject(Router);
 
   constructor() {

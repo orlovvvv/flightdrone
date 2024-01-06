@@ -9,7 +9,7 @@ import {
   merge,
   scheduled,
   switchMap,
-  tap
+  tap,
 } from 'rxjs'
 import { APPWRITE } from 'src/main'
 import { Credentials } from '../types/credentials'
@@ -28,9 +28,15 @@ export class AuthService {
   private appwrite = inject(APPWRITE);
 
   // sources
-  private user$ = new Subject<AuthState>()
-  private isAuthenticated$ = scheduled(this.appwrite.account.get().catch(() => null), asapScheduler);
-  private sources$ = merge(this.isAuthenticated$.pipe<AuthState>(map((user) => ({ user }))), this.user$);
+  private user$ = new Subject<AuthState>();
+  private isAuthenticated$ = scheduled(
+    this.appwrite.account.get().catch(() => null),
+    asapScheduler
+  );
+  private sources$ = merge(
+    this.isAuthenticated$.pipe<AuthState>(map((user) => ({ user }))),
+    this.user$
+  );
 
   // state
   private initialState: AuthState = {
@@ -40,25 +46,35 @@ export class AuthService {
   state = signalSlice({
     initialState: this.initialState,
     sources: [this.sources$],
+    // todo: implement actionSources
   });
-
 
   login(credentials: Credentials) {
     return scheduled(
-      this.appwrite.account.createEmailSession(credentials.email, credentials.password),
+      this.appwrite.account.createEmailSession(
+        credentials.email,
+        credentials.password
+      ),
       asapScheduler
     ).pipe(
-      switchMap(() => scheduled(this.appwrite.account.get().catch(() => null), asapScheduler)),
+      switchMap(() =>
+        scheduled(
+          this.appwrite.account.get().catch(() => null),
+          asapScheduler
+        )
+      ),
       tap((user) => {
         return this.user$.next({ user })
-      }),
+      })
     )
   }
 
   logout() {
     return scheduled(
       this.appwrite.account
-        .deleteSession('current').catch(() => undefined).finally(() => this.user$.next({ user: null })),
+        .deleteSession('current')
+        .catch(() => undefined)
+        .finally(() => this.user$.next({ user: null })),
       asapScheduler
     )
   }
@@ -76,6 +92,4 @@ export class AuthService {
       asapScheduler
     )
   }
-
-
 }

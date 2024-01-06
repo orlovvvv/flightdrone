@@ -42,7 +42,7 @@ import { RegisterFormComponent } from './ui/register-form.component'
       </ion-card-header>
       <ion-card-content>
         <app-register-form
-          [registerStatus]="this.registerService.state.status()"
+          [registerStatus]="registerService.state.status()"
           (register)="registerService.state.createUser($event)"
         />
         <ion-note>

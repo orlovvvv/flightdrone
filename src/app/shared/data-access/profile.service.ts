@@ -22,12 +22,15 @@ import { RemoveProfile } from './../types/profile'
   providedIn: 'root',
 })
 export class ProfileService {
-  apiProfile =
-    environment.apiEndpoint + environment.profileCollectionId + '/documents'; // + documentId
-
+  // dependencies
   private appwrite = inject(APPWRITE);
   private http = inject(HttpClient);
   private authService = inject(AuthService);
+
+  apiProfile =
+    environment.apiEndpoint + environment.profileCollectionId + '/documents'; // + documentId
+
+  // initial state
   private initialState: ProfileState = {
     profile: undefined,
     loaded: false,
@@ -50,85 +53,80 @@ export class ProfileService {
     this.error$.pipe(map((error) => ({ error })))
   );
 
+  // state
   state = signalSlice({
     initialState: this.initialState,
     sources: [this.sources$],
     actionSources: {
-      create: (_, $: Observable<string>) =>
+      add: (_, $: Observable<Omit<Profile, 'id'>>) =>
         $.pipe(
-          switchMap((userId) =>
-            this.create(userId).pipe(
-              switchMap((document) =>
-                this.http
-                  .get<Profile>(this.apiProfile + document.$id)
-                  .pipe(
-                    map((profile) => ({ profile, loaded: true, error: null }))
-                  )
-              )
+          switchMap((profile) =>
+            scheduled(
+              this.appwrite.database
+                .createDocument(
+                  environment.databaseId,
+                  environment.profileCollectionId,
+                  this.authService.state().user?.$id!,
+                  profile
+                )
+                .then((document) =>
+                  ({ id: document.$id, ...profile })),
+              asapScheduler
+            ).pipe(
+              catchError((err) => {
+                this.error$.next(err)
+                return EMPTY
+              }),
+              map((profile) =>
+                ({ profile, loaded: true, error: null }))
             )
           )
         ),
       edit: (_, $: Observable<EditProfile>) =>
-        $.pipe(switchMap((edit) => this.edit(edit))),
+        $.pipe(
+          switchMap((update) =>
+            scheduled(
+              this.appwrite.database
+                .updateDocument(
+                  environment.databaseId,
+                  environment.profileCollectionId,
+                  update.id,
+                  update.data
+                )
+                .then((document) => ({ id: document.$id, ...update.data })),
+              asapScheduler
+            ).pipe(
+              catchError((err) => {
+                this.error$.next(err)
+                return EMPTY
+              }),
+              map((profile) => ({
+                profile,
+              }))
+            )
+          )
+        ),
       remove: (_, $: Observable<RemoveProfile>) =>
-        $.pipe(switchMap((removeProfile) => this.remove(removeProfile))),
+        $.pipe(
+          switchMap((id) =>
+            scheduled(
+              this.appwrite.database
+                .deleteDocument(
+                  environment.databaseId,
+                  environment.profileCollectionId,
+                  id
+                )
+                .then(() => id),
+              asapScheduler
+            ).pipe(
+              catchError((err) => {
+                this.error$.next(err)
+                return EMPTY
+              }),
+              map(() => ({ profile: null }))
+            )
+          )
+        ),
     },
   });
-
-  create(userId: string) {
-    return scheduled(
-      this.appwrite.database.createDocument(
-        environment.databaseId,
-        environment.profileCollectionId,
-        userId,
-        {}
-      ),
-      asapScheduler
-    ).pipe(
-      catchError((err) => {
-        this.error$.next(err)
-        return EMPTY
-      })
-    )
-  }
-
-  edit(editProfile: EditProfile) {
-    return scheduled(
-      this.appwrite.database.updateDocument(
-        environment.databaseId,
-        environment.profileCollectionId,
-        editProfile.id,
-        editProfile.data
-      ),
-      asapScheduler
-    ).pipe(
-      switchMap((document) =>
-        this.http.get<Profile>(this.apiProfile + `/${document.$id}`).pipe(
-          catchError((err) => {
-            this.error$.next(err)
-            return EMPTY
-          }),
-          map((profile) =>
-            ({ profile }))
-        )
-      )
-    )
-  }
-
-  remove(id: RemoveProfile) {
-    return scheduled(
-      this.appwrite.database.deleteDocument(
-        environment.databaseId,
-        environment.profileCollectionId,
-        id
-      ),
-      asapScheduler
-    ).pipe(
-      catchError((err) => {
-        this.error$.next(err)
-        return EMPTY
-      }),
-      map(() => ({ profile: null }))
-    )
-  }
 }
