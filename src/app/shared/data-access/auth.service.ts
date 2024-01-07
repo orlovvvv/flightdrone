@@ -2,17 +2,19 @@ import { Injectable, inject } from '@angular/core'
 import { ID, Models } from 'appwrite'
 import { signalSlice } from 'ngxtension/signal-slice'
 import {
+  EMPTY,
+  Observable,
   Subject,
   asapScheduler,
+  catchError,
   defer,
   map,
   merge,
   scheduled,
-  switchMap,
-  tap,
+  switchMap
 } from 'rxjs'
+import { Credentials } from 'src/app/shared/types/credentials'
 import { APPWRITE } from 'src/main'
-import { Credentials } from '../types/credentials'
 
 export type AuthUser = Models.User<Models.Preferences> | null | undefined
 
@@ -47,49 +49,86 @@ export class AuthService {
     initialState: this.initialState,
     sources: [this.sources$],
     // todo: implement actionSources
+    actionSources: {
+      signin: (_, $: Observable<Credentials>) => $.pipe(
+        switchMap(
+          (credentials) => scheduled(
+            this.appwrite.account.createEmailSession(
+              credentials.email,
+              credentials.password
+            ),
+            asapScheduler
+          ).pipe(
+            switchMap(() =>
+              scheduled(
+                this.appwrite.account.get().catch(() => null),
+                asapScheduler
+              )
+            ),
+            map((user) => ({ user })),
+          )
+        )
+      ),
+      signout: (_, $: Observable<void>) => $.pipe(
+        switchMap(
+          () => scheduled(
+            this.appwrite.account
+              .deleteSession('current'),
+            asapScheduler
+          ).pipe(
+            catchError(
+              () => EMPTY
+            ),
+            map(
+              () => ({ user: null })
+            )
+          )
+        )
+      ),
+      signup: (_, $: Observable<Credentials>) => $.pipe(
+        switchMap(
+          (credentials) => scheduled(
+            defer(() =>
+              this.appwrite.account.create(
+                ID.unique(),
+                credentials.email,
+                credentials.password,
+                credentials.name
+              )
+            ),
+            asapScheduler
+          ).pipe(
+            catchError(
+              () => EMPTY
+            ),
+            map(
+              () => ({ user: null })
+            )
+          )
+        )
+      )
+
+    }
   });
 
-  login(credentials: Credentials) {
-    return scheduled(
-      this.appwrite.account.createEmailSession(
-        credentials.email,
-        credentials.password
-      ),
-      asapScheduler
-    ).pipe(
-      switchMap(() =>
-        scheduled(
-          this.appwrite.account.get().catch(() => null),
-          asapScheduler
-        )
-      ),
-      tap((user) => {
-        return this.user$.next({ user })
-      })
-    )
-  }
+  // login(credentials: Credentials) {
+  //   return scheduled(
+  //     this.appwrite.account.createEmailSession(
+  //       credentials.email,
+  //       credentials.password
+  //     ),
+  //     asapScheduler
+  //   ).pipe(
+  //     switchMap(() =>
+  //       scheduled(
+  //         this.appwrite.account.get().catch(() => null),
+  //         asapScheduler
+  //       )
+  //     ),
+  //     tap((user) => {
+  //       return this.user$.next({ user })
+  //     })
+  //   )
+  // }
 
-  logout() {
-    return scheduled(
-      this.appwrite.account
-        .deleteSession('current')
-        .catch(() => undefined)
-        .finally(() => this.user$.next({ user: null })),
-      asapScheduler
-    )
-  }
-
-  createAccount(credentials: Credentials) {
-    return scheduled(
-      defer(() =>
-        this.appwrite.account.create(
-          ID.unique(),
-          credentials.email,
-          credentials.password,
-          credentials.name
-        )
-      ),
-      asapScheduler
-    )
-  }
 }

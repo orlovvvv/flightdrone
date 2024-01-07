@@ -1,6 +1,16 @@
 import { Injectable, inject } from '@angular/core'
 import { signalSlice } from 'ngxtension/signal-slice'
-import { EMPTY, Observable, Subject, catchError, map, merge, startWith, switchMap } from 'rxjs'
+import {
+  Observable,
+  asapScheduler,
+  catchError,
+  map,
+  merge,
+  of,
+  scheduled,
+  startWith,
+  switchMap,
+} from 'rxjs'
 import { AuthService } from 'src/app/shared/data-access/auth.service'
 import { Credentials } from 'src/app/shared/types/credentials'
 
@@ -11,7 +21,7 @@ interface LoginState {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoginService {
   private authService = inject(AuthService);
@@ -21,10 +31,8 @@ export class LoginService {
   };
 
   // sources
-  private error$ = new Subject<void>();
-  private sources$ = merge(
-    this.error$.pipe(map(() => ({ status: 'error' as const })))
-  );
+
+  private sources$ = merge(of(this.initialState));
 
   // state
   state = signalSlice({
@@ -34,28 +42,26 @@ export class LoginService {
       login: (_state, $: Observable<Credentials>) =>
         $.pipe(
           switchMap((credentials) =>
-            this.authService.login(credentials).pipe(
+            scheduled(this.authService.state.signin(credentials), asapScheduler).pipe(
               map(() => ({ status: 'success' as const })),
-              catchError((err) => {
-                this.error$.next(err)
-                return EMPTY
+              catchError(() => {
+                return of({ status: 'error' as const })
               }),
-              startWith({ status: 'authenticating' as const }),
+              startWith({ status: 'authenticating' as const })
             )
           )
         ),
-      logout: (_state, $: Observable<void>) => $.pipe(
-        switchMap(() =>
-          this.authService.logout().pipe(
-            map(() => ({ status: 'pending' as const })),
-            catchError((err) => {
-              this.error$.next(err)
-              return EMPTY
-            }),
+      logout: (_state, $: Observable<void>) =>
+        $.pipe(
+          switchMap(() =>
+            scheduled(this.authService.state.signout(), asapScheduler).pipe(
+              map(() => ({ status: 'pending' as const })),
+              catchError((error) => {
+                return of({ status: 'error' as const })
+              })
+            )
           )
-        )
-      )
+        ),
     },
   });
-
 }

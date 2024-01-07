@@ -1,35 +1,32 @@
 import { Injectable, inject } from '@angular/core'
 import { signalSlice } from 'ngxtension/signal-slice'
 import {
-  EMPTY,
   Observable,
   Subject,
   catchError,
   map,
   merge,
+  of,
   startWith,
   switchMap,
 } from 'rxjs'
 import { AuthService } from 'src/app/shared/data-access/auth.service'
 import { Credentials } from 'src/app/shared/types/credentials'
 
-
 export type RegisterStatus = 'pending' | 'creating' | 'success' | 'error'
 
 interface RegisterState {
   status: RegisterStatus
-  error: string | null
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RegisterService {
   private authService = inject(AuthService);
 
   private initialState: RegisterState = {
     status: 'pending',
-    error: null,
   };
 
   // sources
@@ -48,9 +45,8 @@ export class RegisterService {
           switchMap((credentials) =>
             this.authService.createAccount(credentials).pipe(
               map(() => ({ status: 'success' as const })),
-              catchError((err) => {
-                this.error$.next(err)
-                return EMPTY
+              catchError(() => {
+                return of({ status: 'error' as const })
               }),
               startWith({ status: 'creating' as const })
             )
