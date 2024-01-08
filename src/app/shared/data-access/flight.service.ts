@@ -1,4 +1,3 @@
-import { GeolocationService } from './geolocation.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { ID } from 'appwrite';
@@ -15,6 +14,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
+import { AuthService } from 'src/app/shared/data-access/auth.service';
 import { environment } from 'src/environments/environment';
 import { APPWRITE } from 'src/main';
 import {
@@ -25,6 +25,8 @@ import {
   RemoveFlight,
 } from '../types/flight';
 import { AddFlight } from './../types/flight';
+import { GeolocationService } from './geolocation.service';
+import { ProfileService } from './profile.service';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +34,8 @@ import { AddFlight } from './../types/flight';
 export class FlightService {
   // depedencies
   private appwrite = inject(APPWRITE);
+  private authService = inject(AuthService);
+  private profileService = inject(ProfileService);
   private geolocationService = inject(GeolocationService);
   private http = inject(HttpClient);
 
@@ -69,13 +73,14 @@ export class FlightService {
         $.pipe().pipe(
           switchMap((flight) =>
             scheduled(
-              this.geolocationService.state
-                .locate()
-                .then((geolocation) => ({ ...flight, latitude: geolocation.position?.coords.latitude, longitude: geolocation.position?.coords.longitude })),
+              this.geolocationService.state.locate().then((geolocation) => ({
+                ...flight,
+                latitude: geolocation.position?.coords.latitude,
+                longitude: geolocation.position?.coords.longitude,
+              })),
               asapScheduler
             ).pipe(
-              tap((flight) =>
-                console.log('Dane lotu', flight)),
+              tap((flight) => console.log('Dane lotu', flight)),
               switchMap((flight) =>
                 scheduled(
                   this.appwrite.database
@@ -85,6 +90,7 @@ export class FlightService {
                       ID.unique(),
                       {
                         ...flight,
+                        profile: this.profileService.state().profile?.$id,
                       }
                     )
                     .then((document) => document as unknown as Flight),
@@ -114,14 +120,7 @@ export class FlightService {
                   update.id,
                   update.data
                 )
-                .then((document) => ({
-                  $id: document.$id,
-                  $createdAt: document.$createdAt,
-                  $updatedAt: document.$updatedAt,
-                  $databaseId: document.$databaseId,
-                  $collectionId: document.$collectionId,
-                  ...update.data,
-                })),
+                .then((document) => document as unknown as Flight),
               asapScheduler
             ).pipe(
               catchError((err) => {

@@ -1,8 +1,9 @@
 import { Component, effect, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonContent } from '@ionic/angular/standalone';
-import { LoginService } from '../auth/login/data-access/login.service';
+import { IonButton, IonContent } from '@ionic/angular/standalone';
+import { APPWRITE } from 'src/main';
 import { AuthService } from '../shared/data-access/auth.service';
+import { DroneService } from '../shared/data-access/drone.service';
 import { FlightService } from '../shared/data-access/flight.service';
 import { GeolocationService } from '../shared/data-access/geolocation.service';
 import { ProfileService } from '../shared/data-access/profile.service';
@@ -37,13 +38,16 @@ import { WidgetsComponent } from '../shared/ui/widgets.component';
     MapSettingsComponent,
     WidgetsComponent,
     MapComponent,
+    IonButton,
     ToastErrorComponent,
   ],
 })
 export default class HomePage {
   // dependencies
+  protected apprwrite = inject(APPWRITE);
   protected authService = inject(AuthService);
   protected profileService = inject(ProfileService);
+  protected droneService = inject(DroneService);
   protected geolocationService = inject(GeolocationService);
   protected flightsService = inject(FlightService);
   private router = inject(Router);
@@ -54,7 +58,7 @@ export default class HomePage {
       if (!this.authService.state.user()) {
         this.router.navigate(['auth', 'login']);
       }
-
+      console.log(this.droneService.state().drones);
     });
   }
 }

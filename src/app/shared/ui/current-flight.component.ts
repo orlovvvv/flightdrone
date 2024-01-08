@@ -20,9 +20,9 @@ import {
   IonSkeletonText,
 } from '@ionic/angular/standalone';
 import { Observable, interval, map, tap } from 'rxjs';
+import { Animations } from 'src/app/shared/animation/animation';
 import { EditFlight, Flight } from '../types/flight';
 import { remainingTime, timeToMinutes } from '../utils/remaining-time';
-import { Animations } from 'src/app/shared/animation/animation';
 
 @Component({
   selector: 'app-current-flight',
@@ -132,10 +132,13 @@ export class CurrentFlightComponent {
         this.endFlight.emit({
           id: this.flight!.$id,
           data: {
-            range: this.flight!.range,
-            height: this.flight!.height,
-            profile: this.flight!.profile,
-            drone: this.flight!.drone,
+            // ? might not need this
+            // latitude: this.flight.latitude,
+            // longitude: this.flight.longitude,
+            // profile: this.flight.profile,
+            range: this.flight.range,
+            height: this.flight.height,
+            drone: this.flight.drone.$id,
             duration: this.durationUsed(),
           },
         });

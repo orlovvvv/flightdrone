@@ -20,9 +20,11 @@ export type FlightState = {
   error: any | null;
 };
 
-export type AddFlight = Omit<
-  Flight,
-  '$id' | '$createdAt' | '$updatedAt' | '$databaseId' | '$collectionId' | 'latitude' | 'longitude'
->;
+export type AddFlight = Partial<{
+  duration: number;
+  range: number;
+  height: number;
+  drone: string;
+}>;
 export type EditFlight = { id: Flight['$id']; data: AddFlight };
 export type RemoveFlight = Flight['$id'];

@@ -1,4 +1,3 @@
-import { DroneService } from './../data-access/drone.service';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,6 +6,7 @@ import {
   effect,
   inject,
 } from '@angular/core';
+import { UTCDate } from '@date-fns/utc';
 import {
   IonButton,
   IonButtons,
@@ -26,16 +26,16 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
+import { AuthService } from 'src/app/shared/data-access/auth.service';
+import { FlightService } from 'src/app/shared/data-access/flight.service';
+import { ProfileService } from 'src/app/shared/data-access/profile.service';
+import { isTimeLeft } from 'src/app/shared/utils/remaining-time';
+import { Animations } from '../animation/animation';
 import { GeolocationService } from '../data-access/geolocation.service';
 import { CheckInFormComponent } from '../ui/check-in-form.component';
 import { CurrentFlightComponent } from '../ui/current-flight.component';
 import { GeolocationButtonComponent } from '../ui/geolocation-button.component';
-import { FlightService } from 'src/app/shared/data-access/flight.service';
-import { isTimeLeft } from 'src/app/shared/utils/remaining-time';
-import { ProfileService } from 'src/app/shared/data-access/profile.service';
-import { UTCDate } from '@date-fns/utc';
-import { AuthService } from 'src/app/shared/data-access/auth.service';
-import { Animations } from '../animation/animation'
+import { DroneService } from './../data-access/drone.service';
 @Component({
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -73,11 +73,24 @@ import { Animations } from '../animation/animation'
     --background: var(--ion-card-background)
     }
 
+    ion-input {
+        --padding-start: 12px;
+    }
+
 ion-title {
   padding: 0;
 }
 ion-toolbar {
   padding: 0 12px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 `,
@@ -104,22 +117,34 @@ ion-toolbar {
                 <ion-note class="ion-margin-horizontal">
                   Wprowadź dane lotu
                 </ion-note>
-                <ion-button class="cancel" color="danger" (click)="close()" slot="end">
+                <ion-button
+                  class="cancel"
+                  color="danger"
+                  (click)="close()"
+                  slot="end"
+                >
                   <ion-icon name="close" />
                 </ion-button>
               </ion-toolbar>
             </ion-header>
-              <app-check-in-form  [userDrones]="drones()" (flight)="flightService.state.add($event)"/>
+
+            <app-check-in-form
+              [userDrones]="drones()"
+              (flight)="flightService.state.add($event)"
+            />
           </div>
         </ng-template>
       </ion-modal>
       <!-- Current flight UI -->
     </ion-content>
     } @else {
-      <app-current-flight [flight]="flight()" (endFlight)="flightService.state.edit($event)" @inOut/>
+    <app-current-flight
+      [flight]="flight()"
+      (endFlight)="flightService.state.edit($event)"
+      @inOut
+    />
     }
   `,
-
 })
 /*
  * *
@@ -135,25 +160,42 @@ export class CheckInComponent {
   protected geolocationService = inject(GeolocationService);
   protected droneService = inject(DroneService);
   protected authService = inject(AuthService);
-  protected flightService = inject(FlightService)
+  protected flightService = inject(FlightService);
+  protected profileService = inject(ProfileService);
 
-  // current flight if exists
-  flight = computed(
-    () => {
-      return this.flightService.state().flights.filter(
+  flight = computed(() => {
+    return this.flightService
+      .state()
+      .flights.filter(
         (flight) =>
-          isTimeLeft(new UTCDate(`${flight.$createdAt}`).toString(), flight.duration)
-          && flight.profile.$id === this.authService.state().user?.$id
-      )[0]
-    }
+          isTimeLeft(
+            new UTCDate(`${flight.$createdAt}`).toString(),
+            flight.duration
+          ) && flight.profile.$id === this.profileService.state().profile?.$id
+      )[0];
+  });
 
-  )
+  drones = computed(() =>
+    this.droneService
+      .state()
+      .drones.filter(
+        (drone) =>
+          drone.profile.$id === this.profileService.state().profile?.$id
+      )
+  );
 
-  drones = computed(
-    () =>
-      this.droneService.state().drones.filter((drone) => drone.profile.$id === this.authService.state().user?.$id)
-  )
+  //   // submit event with additional data
+  //   addFlight(
+  //     $event: Partial<{
+  //       duration: number;
+  //       range: number;
+  //       height: number;
+  //       drone: Drone;
+  //     }>
+  //   ) {
 
+  //     const add: AddFlight = {...$event, }
+  //   }
 
   checkInModal: HTMLElement | null = null;
 
@@ -166,11 +208,6 @@ export class CheckInComponent {
   }
 
   constructor() {
-    effect(() => {
-
-      console.log(this.geolocationService.state().position)
-      console.log('User drones', this.drones())
-    }
-    )
+    effect(() => {});
   }
 }
