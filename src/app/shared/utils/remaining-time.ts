@@ -2,8 +2,8 @@
 import { isBefore, addMinutes, differenceInMilliseconds, format } from 'date-fns';
 import { UTCDate } from "@date-fns/utc";
 
-export function remainingTime(createdAt: string, duration: string) {
-  const dueDate = addMinutes(new UTCDate(createdAt).toString(), parseInt(duration));
+export function remainingTime(createdAt: string, duration: number) {
+  const dueDate = addMinutes(new UTCDate(createdAt).toString(), duration);
   const now = new Date();
   if (!isBefore(now, dueDate)) {
     return 'Czas minął';
@@ -11,14 +11,14 @@ export function remainingTime(createdAt: string, duration: string) {
   const result = differenceInMilliseconds(
     dueDate, now
   )
-  const durationUsed = parseInt(duration) / result * 60000
+  const durationUsed = duration / result * 60000
   console.log(durationUsed)
   const timer = format(new UTCDate(result), 'HH:mm:ss');
   return timer;
 }
 
-export function isTimeLeft(createdAt: string, duration: string) {
-  const dueDate = addMinutes(new UTCDate(createdAt).toString(), parseInt(duration));
+export function isTimeLeft(createdAt: string, duration: number) {
+  const dueDate = addMinutes(new UTCDate(createdAt).toString(), duration);
   const now = new Date();
   return isBefore(now, dueDate)
 }

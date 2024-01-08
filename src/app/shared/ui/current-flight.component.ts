@@ -17,12 +17,13 @@ import {
   IonCardSubtitle,
   IonCardTitle,
   IonIcon,
-  IonSpinner,
+  IonSkeletonText,
 } from '@ionic/angular/standalone';
-import { Observable, Subject, interval, map, tap } from 'rxjs';
+import { Observable, interval, map, tap } from 'rxjs';
 import { EditFlight, Flight } from '../types/flight';
 import { remainingTime, timeToMinutes } from '../utils/remaining-time';
 import { Animations } from 'src/app/shared/animation/animation';
+
 @Component({
   selector: 'app-current-flight',
   standalone: true,
@@ -34,7 +35,7 @@ import { Animations } from 'src/app/shared/animation/animation';
     IonCardHeader,
     IonCardSubtitle,
     IonCardTitle,
-    IonSpinner,
+    IonSkeletonText,
     IonAlert,
     DatePipe,
     AsyncPipe,
@@ -42,29 +43,27 @@ import { Animations } from 'src/app/shared/animation/animation';
   animations: [Animations],
   template: `
     <ion-card class="current-flight">
-     
-        <ion-card-header @inOut>
-        <ion-card-title >{{  flight.drone.model }}</ion-card-title>
+      <ion-card-header @inOut>
+        <ion-card-title>{{ flight.drone.model }}</ion-card-title>
         <ion-card-subtitle>
-          Data rozpoczęcia: {{flight.$createdAt | date:"yyyy-MM-dd HH:mm:ss"}}</ion-card-subtitle
+          Data rozpoczęcia:
+          {{
+            flight.$createdAt | date : 'yyyy-MM-dd HH:mm:ss'
+          }}</ion-card-subtitle
         >
         <ion-button class="cancel" color="danger" id="present-alert">
           <ion-icon name="close" />
         </ion-button>
       </ion-card-header>
       <ion-card-content style="height: 160px;" @inOut>
-        <!-- | date : 'HH:mm:ss' -->
-        <h1 class="time">{{ timer$ | async}}</h1>
-
+        <h1 class="time">{{ timer$ | async }}</h1>
       </ion-card-content>
-      
-      
     </ion-card>
     <!-- Cofnirm ending flight -->
     <ion-alert
       trigger="present-alert"
       header="Zakończ lot"
-      message="Czy chcesz zakończyc lot?"
+      message="Czy chcesz zakończyć lot?"
       [buttons]="alertButtons"
     ></ion-alert>
   `,
@@ -88,7 +87,7 @@ import { Animations } from 'src/app/shared/animation/animation';
         left: 50%;
         margin-right: -50%;
         transform: translateX(-50%);
-        font-size: 3.5rem;
+        font-size: 3rem;
         font-weight: 300;
     }
 
@@ -98,13 +97,7 @@ import { Animations } from 'src/app/shared/animation/animation';
         right: 12px;
     }
 
-    .spinner {
-      position: fixed;
-        top: 50%;
-        left: 50%;
-        margin-right: -50%;
-        transform: translateX(-50%, -50%);
-    }
+    
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -113,24 +106,21 @@ export class CurrentFlightComponent {
   @Output() endFlight = new EventEmitter<EditFlight>();
 
   timer$ = new Observable<string>();
-  durationUsed = signal<number>(0)
+  durationUsed = signal<number>(0);
 
   constructor() {
-    this.timer$ =
-      interval(1000).pipe(
-        takeUntilDestroyed(),
-        map(() =>
-          remainingTime(this.flight.$createdAt, this.flight.duration)
-        ),
-        tap(
-          (time) =>
-            this.durationUsed.update(() => parseInt(this.flight.duration) - timeToMinutes(time))
-
+    this.timer$ = interval(1000).pipe(
+      takeUntilDestroyed(),
+      map(() => remainingTime(this.flight!.$createdAt, this.flight!.duration)),
+      tap((time) =>
+        this.durationUsed.update(
+          () => this.flight!.duration - timeToMinutes(time)
         )
-      );
+      )
+    );
   }
 
-  public alertButtons = [
+  protected alertButtons = [
     {
       text: 'Anuluj',
       role: 'cancel',
@@ -140,18 +130,15 @@ export class CurrentFlightComponent {
       role: 'confirm',
       handler: () => {
         this.endFlight.emit({
-          id: this.flight.$id,
+          id: this.flight!.$id,
           data: {
-            latitude: this.flight.latitude,
-            longitude: this.flight.longitude,
-            range: this.flight.range,
-            height: this.flight.height,
-            profile: this.flight.profile,
-            drone: this.flight.drone,
-            duration: this.durationUsed().toString()
-          }
-        })
-
+            range: this.flight!.range,
+            height: this.flight!.height,
+            profile: this.flight!.profile,
+            drone: this.flight!.drone,
+            duration: this.durationUsed(),
+          },
+        });
       },
     },
   ];

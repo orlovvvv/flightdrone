@@ -1,3 +1,4 @@
+import { GeolocationService } from './geolocation.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { ID } from 'appwrite';
@@ -12,11 +13,13 @@ import {
   merge,
   scheduled,
   switchMap,
+  tap,
 } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { APPWRITE } from 'src/main';
 import {
   EditFlight,
+  Flight,
   FlightState,
   Flights,
   RemoveFlight,
@@ -29,6 +32,7 @@ import { AddFlight } from './../types/flight';
 export class FlightService {
   // depedencies
   private appwrite = inject(APPWRITE);
+  private geolocationService = inject(GeolocationService);
   private http = inject(HttpClient);
 
   apiFLights =
@@ -65,33 +69,40 @@ export class FlightService {
         $.pipe().pipe(
           switchMap((flight) =>
             scheduled(
-              this.appwrite.database
-                .createDocument(
-                  environment.databaseId,
-                  environment.flightCollectionId,
-                  ID.unique(),
-                  flight
-                )
-                .then((document) => ({
-                  $id: document.$id,
-                  $createdAt: document.$createdAt,
-                  $updatedAt: document.$updatedAt,
-                  $databaseId: document.$databaseId,
-                  $collectionId: document.$collectionId,
-                  ...flight,
-                })),
+              this.geolocationService.state
+                .locate()
+                .then((geolocation) => ({ ...flight, latitude: geolocation.position?.coords.latitude, longitude: geolocation.position?.coords.longitude })),
               asapScheduler
             ).pipe(
-              catchError((err) => {
-                this.error$.next(err);
-                return EMPTY;
-              }),
-              map((flight) => ({
-                flights: [..._().flights, flight],
-              }))
+              tap((flight) =>
+                console.log('Dane lotu', flight)),
+              switchMap((flight) =>
+                scheduled(
+                  this.appwrite.database
+                    .createDocument(
+                      environment.databaseId,
+                      environment.flightCollectionId,
+                      ID.unique(),
+                      {
+                        ...flight,
+                      }
+                    )
+                    .then((document) => document as unknown as Flight),
+                  asapScheduler
+                ).pipe(
+                  catchError((err) => {
+                    this.error$.next(err);
+                    return EMPTY;
+                  }),
+                  map((flight) => ({
+                    flights: [..._().flights, flight],
+                  }))
+                )
+              )
             )
           )
         ),
+      // todo if add works then adjust the rest of actionSources
       edit: (_, $: Observable<EditFlight>) =>
         $.pipe(
           switchMap((update) =>

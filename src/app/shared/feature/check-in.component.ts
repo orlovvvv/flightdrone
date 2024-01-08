@@ -104,31 +104,19 @@ ion-toolbar {
                 <ion-note class="ion-margin-horizontal">
                   Wprowadź dane lotu
                 </ion-note>
+                <ion-button class="cancel" color="danger" (click)="close()" slot="end">
+                  <ion-icon name="close" />
+                </ion-button>
               </ion-toolbar>
             </ion-header>
-
-            <app-check-in-form />
-
-            <ion-footer>
-              <ion-toolbar>
-                <app-geolocation-button
-                  (location)="geolocationService.state.locate()"
-                />
-                <ion-button slot="start" (click)="cancel()" color="danger"
-                  >Anuluj</ion-button
-                >
-                <ion-button slot="end" (click)="confirm()" color="primary"
-                  >Zatwierdź</ion-button
-                >
-              </ion-toolbar>
-            </ion-footer>
+              <app-check-in-form  [userDrones]="drones()" (flight)="flightService.state.add($event)"/>
           </div>
         </ng-template>
       </ion-modal>
       <!-- Current flight UI -->
     </ion-content>
     } @else {
-      <app-current-flight [flight]="flight()" (endFlight)="this.flightsService.state.edit($event)" @inOut/>
+      <app-current-flight [flight]="flight()" (endFlight)="flightService.state.edit($event)" @inOut/>
     }
   `,
 
@@ -147,21 +135,29 @@ export class CheckInComponent {
   protected geolocationService = inject(GeolocationService);
   protected droneService = inject(DroneService);
   protected authService = inject(AuthService);
-  protected flightsService = inject(FlightService)
+  protected flightService = inject(FlightService)
 
   // current flight if exists
   flight = computed(
-    () => this.flightsService.state().flights.filter(
-      (flight) =>
-        isTimeLeft(new UTCDate(`${flight.$createdAt}`).toString(), flight.duration)
-        && flight.profile.$id === this.authService.state().user?.$id!
-    )[0]
+    () => {
+      return this.flightService.state().flights.filter(
+        (flight) =>
+          isTimeLeft(new UTCDate(`${flight.$createdAt}`).toString(), flight.duration)
+          && flight.profile.$id === this.authService.state().user?.$id
+      )[0]
+    }
+
+  )
+
+  drones = computed(
+    () =>
+      this.droneService.state().drones.filter((drone) => drone.profile.$id === this.authService.state().user?.$id)
   )
 
 
   checkInModal: HTMLElement | null = null;
 
-  cancel() {
+  close() {
     this.modal.dismiss(null, 'cancel');
   }
 
@@ -170,8 +166,11 @@ export class CheckInComponent {
   }
 
   constructor() {
-    effect(() => { }
+    effect(() => {
 
+      console.log(this.geolocationService.state().position)
+      console.log('User drones', this.drones())
+    }
     )
   }
 }

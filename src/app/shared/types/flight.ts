@@ -5,11 +5,11 @@ import { Profile } from './profile';
 export type Flights = Flight[];
 
 export type Flight = {
-  latitude: string;
-  longitude: string;
-  duration: string;
-  range: string;
-  height: string;
+  latitude: number;
+  longitude: number;
+  duration: number;
+  range: number;
+  height: number;
   drone: Drone;
   profile: Profile;
 } & Collection;
@@ -22,7 +22,7 @@ export type FlightState = {
 
 export type AddFlight = Omit<
   Flight,
-  '$id' | '$createdAt' | '$updatedAt' | '$databaseId' | '$collectionId'
+  '$id' | '$createdAt' | '$updatedAt' | '$databaseId' | '$collectionId' | 'latitude' | 'longitude'
 >;
 export type EditFlight = { id: Flight['$id']; data: AddFlight };
 export type RemoveFlight = Flight['$id'];
