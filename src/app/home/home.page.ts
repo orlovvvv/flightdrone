@@ -58,7 +58,6 @@ export default class HomePage {
       if (!this.authService.state.user()) {
         this.router.navigate(['auth', 'login']);
       }
-      console.log(this.droneService.state().drones);
     });
   }
 }

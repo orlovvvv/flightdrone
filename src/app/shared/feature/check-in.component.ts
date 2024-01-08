@@ -184,19 +184,6 @@ export class CheckInComponent {
       )
   );
 
-  //   // submit event with additional data
-  //   addFlight(
-  //     $event: Partial<{
-  //       duration: number;
-  //       range: number;
-  //       height: number;
-  //       drone: Drone;
-  //     }>
-  //   ) {
-
-  //     const add: AddFlight = {...$event, }
-  //   }
-
   checkInModal: HTMLElement | null = null;
 
   close() {

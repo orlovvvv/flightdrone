@@ -12,7 +12,6 @@ import {
   merge,
   scheduled,
   switchMap,
-  tap,
 } from 'rxjs';
 import { AuthService } from 'src/app/shared/data-access/auth.service';
 import { environment } from 'src/environments/environment';
@@ -80,7 +79,6 @@ export class FlightService {
               })),
               asapScheduler
             ).pipe(
-              tap((flight) => console.log('Dane lotu', flight)),
               switchMap((flight) =>
                 scheduled(
                   this.appwrite.database
@@ -108,7 +106,6 @@ export class FlightService {
             )
           )
         ),
-      // todo if add works then adjust the rest of actionSources
       edit: (_, $: Observable<EditFlight>) =>
         $.pipe(
           switchMap((update) =>
