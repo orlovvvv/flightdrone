@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { IonSearchbar } from '@ionic/angular/standalone';
+import { DroneService } from '../data-access/drone.service';
 
 @Component({
   standalone: true,
@@ -18,10 +19,12 @@ import { IonSearchbar } from '@ionic/angular/standalone';
   styles: `
   .searchbox {
   text-align: start;
-  max-width: 384px;
+  max-width: 260px;
   width: 100%;
   --border-radius: 20px;
 }
 `,
 })
-export class SearchComponent {}
+export class SearchComponent {
+  protected droneService = inject(DroneService);
+}

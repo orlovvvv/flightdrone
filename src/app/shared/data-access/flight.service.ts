@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http'
-import { Injectable, inject } from '@angular/core'
-import { ID } from 'appwrite'
-import { signalSlice } from 'ngxtension/signal-slice'
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { ID } from 'appwrite';
+import { signalSlice } from 'ngxtension/signal-slice';
 import {
   EMPTY,
   Observable,
@@ -12,16 +12,16 @@ import {
   merge,
   scheduled,
   switchMap,
-} from 'rxjs'
-import { environment } from 'src/environments/environment'
-import { APPWRITE } from 'src/main'
+} from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { APPWRITE } from 'src/main';
 import {
   EditFlight,
   FlightState,
   Flights,
-  RemoveFlight
-} from '../types/flight'
-import { AddFlight } from './../types/flight'
+  RemoveFlight,
+} from '../types/flight';
+import { AddFlight } from './../types/flight';
 
 @Injectable({
   providedIn: 'root',
@@ -43,12 +43,19 @@ export class FlightService {
 
   // sources
   private error$ = new Subject<string>();
-  private flightsLoaded$ = this.http.get<Flights>(this.apiFLights).pipe(
-    catchError((err) => {
-      this.error$.next(err)
-      return EMPTY
-    })
-  );
+  private flightsLoaded$ = scheduled(
+    this.appwrite.database.listDocuments(
+      environment.databaseId,
+      environment.flightCollectionId
+    ),
+    asapScheduler
+  ).pipe(map((documents) => documents.documents as unknown as Flights));
+  //   this.http.get<Flights>(this.apiFLights).pipe(
+  //     catchError((err) => {
+  //       this.error$.next(err);
+  //       return EMPTY;
+  //     })
+  //   );
   sources$ = merge(
     this.flightsLoaded$.pipe(map((flights) => ({ flights, loaded: true }))),
     this.error$.pipe(map((error) => ({ error })))
@@ -63,18 +70,26 @@ export class FlightService {
         $.pipe().pipe(
           switchMap((flight) =>
             scheduled(
-              this.appwrite.database.createDocument(
-                environment.databaseId,
-                environment.flightCollectionId,
-                ID.unique(),
-                flight
-              ).then((document) =>
-                ({ id: document.$id, ...flight })),
+              this.appwrite.database
+                .createDocument(
+                  environment.databaseId,
+                  environment.flightCollectionId,
+                  ID.unique(),
+                  flight
+                )
+                .then((document) => ({
+                  id: document.$id,
+                  createdAt: document.$createdAt,
+                  updatedAt: document.$updatedAt,
+                  databaseId: document.$databaseId,
+                  collectionId: document.$collectionId,
+                  ...flight,
+                })),
               asapScheduler
             ).pipe(
               catchError((err) => {
-                this.error$.next(err)
-                return EMPTY
+                this.error$.next(err);
+                return EMPTY;
               }),
               map((flight) => ({
                 flights: [..._().flights, flight],
@@ -86,20 +101,26 @@ export class FlightService {
         $.pipe(
           switchMap((update) =>
             scheduled(
-              this.appwrite.database.updateDocument(
-                environment.databaseId,
-                environment.flightCollectionId,
-                update.id,
-                update.data
-              ).then(
-                (document) =>
-                  ({ id: document.$id, ...update.data })
-              ),
+              this.appwrite.database
+                .updateDocument(
+                  environment.databaseId,
+                  environment.flightCollectionId,
+                  update.id,
+                  update.data
+                )
+                .then((document) => ({
+                  id: document.$id,
+                  createdAt: document.$createdAt,
+                  updatedAt: document.$updatedAt,
+                  databaseId: document.$databaseId,
+                  collectionId: document.$collectionId,
+                  ...update.data,
+                })),
               asapScheduler
             ).pipe(
               catchError((err) => {
-                this.error$.next(err)
-                return EMPTY
+                this.error$.next(err);
+                return EMPTY;
               }),
               map((update) => ({
                 flights: _().flights.map((flight) =>
@@ -113,16 +134,18 @@ export class FlightService {
         $.pipe(
           switchMap((id) =>
             scheduled(
-              this.appwrite.database.deleteDocument(
-                environment.databaseId,
-                environment.flightCollectionId,
-                id
-              ).then(() => (id)),
+              this.appwrite.database
+                .deleteDocument(
+                  environment.databaseId,
+                  environment.flightCollectionId,
+                  id
+                )
+                .then(() => id),
               asapScheduler
             ).pipe(
               catchError((err) => {
-                this.error$.next(err)
-                return EMPTY
+                this.error$.next(err);
+                return EMPTY;
               }),
               map((id) => ({
                 flights: _().flights.filter((flight) => flight.id !== id),

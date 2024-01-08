@@ -12,7 +12,7 @@
     "lint": "ng lint"
   },
   "engines": {
-    "node": " >=18 <19"
+    "node": " >=20"
   },
   "private": true,
   "dependencies": {
@@ -33,8 +33,12 @@
     "@capacitor/keyboard": "next",
     "@capacitor/status-bar": "next",
     "@ionic/angular": "7.6.3",
+    "@types/moment-duration-format": "^2.2.6",
     "appwrite": "13.0.1",
+    "date-fns": "^3.1.0",
     "ionicons": "7.2.2",
+    "moment": "^2.30.1",
+    "moment-duration-format": "^2.3.2",
     "ngxtension": "1.8.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

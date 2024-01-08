@@ -1,5 +1,3 @@
-
-
 export type Weather = {
     locationName: string
     temp: number

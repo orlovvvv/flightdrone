@@ -1,22 +1,24 @@
-import { Injectable, inject } from '@angular/core'
-import { signalSlice } from 'ngxtension/signal-slice'
+import { Injectable, inject } from '@angular/core';
+import { signalSlice } from 'ngxtension/signal-slice';
 import {
   Observable,
   Subject,
+  asapScheduler,
   catchError,
   map,
   merge,
   of,
+  scheduled,
   startWith,
   switchMap,
-} from 'rxjs'
-import { AuthService } from 'src/app/shared/data-access/auth.service'
-import { Credentials } from 'src/app/shared/types/credentials'
+} from 'rxjs';
+import { AuthService } from 'src/app/shared/data-access/auth.service';
+import { Credentials } from 'src/app/shared/types/credentials';
 
-export type RegisterStatus = 'pending' | 'creating' | 'success' | 'error'
+export type RegisterStatus = 'pending' | 'creating' | 'success' | 'error';
 
 interface RegisterState {
-  status: RegisterStatus
+  status: RegisterStatus;
 }
 
 @Injectable({
@@ -43,10 +45,13 @@ export class RegisterService {
       createUser: (_state, $: Observable<Credentials>) =>
         $.pipe(
           switchMap((credentials) =>
-            this.authService.createAccount(credentials).pipe(
+            scheduled(
+              this.authService.state.signup(credentials),
+              asapScheduler
+            ).pipe(
               map(() => ({ status: 'success' as const })),
               catchError(() => {
-                return of({ status: 'error' as const })
+                return of({ status: 'error' as const });
               }),
               startWith({ status: 'creating' as const })
             )
