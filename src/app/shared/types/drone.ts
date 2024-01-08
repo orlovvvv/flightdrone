@@ -21,7 +21,7 @@ export type DroneState = {
 
 export type AddDrone = Omit<
   Drone,
-  'id' | 'createdAt' | 'updatedAt' | 'databaseId' | 'collectionId' | 'flights'
+  '$id' | '$createdAt' | '$updatedAt' | '$databaseId' | '$collectionId'
 >;
-export type EditDrone = { id: Drone['id']; data: AddDrone };
-export type RemoveDrone = Drone['id'];
+export type EditDrone = { id: Drone['$id']; data: AddDrone };
+export type RemoveDrone = Drone['$id'];

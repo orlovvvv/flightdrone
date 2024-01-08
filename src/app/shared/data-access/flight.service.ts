@@ -50,12 +50,7 @@ export class FlightService {
     ),
     asapScheduler
   ).pipe(map((documents) => documents.documents as unknown as Flights));
-  //   this.http.get<Flights>(this.apiFLights).pipe(
-  //     catchError((err) => {
-  //       this.error$.next(err);
-  //       return EMPTY;
-  //     })
-  //   );
+
   sources$ = merge(
     this.flightsLoaded$.pipe(map((flights) => ({ flights, loaded: true }))),
     this.error$.pipe(map((error) => ({ error })))
@@ -78,11 +73,11 @@ export class FlightService {
                   flight
                 )
                 .then((document) => ({
-                  id: document.$id,
-                  createdAt: document.$createdAt,
-                  updatedAt: document.$updatedAt,
-                  databaseId: document.$databaseId,
-                  collectionId: document.$collectionId,
+                  $id: document.$id,
+                  $createdAt: document.$createdAt,
+                  $updatedAt: document.$updatedAt,
+                  $databaseId: document.$databaseId,
+                  $collectionId: document.$collectionId,
                   ...flight,
                 })),
               asapScheduler
@@ -109,11 +104,11 @@ export class FlightService {
                   update.data
                 )
                 .then((document) => ({
-                  id: document.$id,
-                  createdAt: document.$createdAt,
-                  updatedAt: document.$updatedAt,
-                  databaseId: document.$databaseId,
-                  collectionId: document.$collectionId,
+                  $id: document.$id,
+                  $createdAt: document.$createdAt,
+                  $updatedAt: document.$updatedAt,
+                  $databaseId: document.$databaseId,
+                  $collectionId: document.$collectionId,
                   ...update.data,
                 })),
               asapScheduler
@@ -124,7 +119,7 @@ export class FlightService {
               }),
               map((update) => ({
                 flights: _().flights.map((flight) =>
-                  flight.id === update.id ? { ...flight, ...update } : flight
+                  flight.$id === update.$id ? { ...flight, ...update } : flight
                 ),
               }))
             )
@@ -148,7 +143,7 @@ export class FlightService {
                 return EMPTY;
               }),
               map((id) => ({
-                flights: _().flights.filter((flight) => flight.id !== id),
+                flights: _().flights.filter((flight) => flight.$id !== id),
               }))
             )
           )

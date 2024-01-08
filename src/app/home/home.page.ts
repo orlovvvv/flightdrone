@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { IonContent } from '@ionic/angular/standalone';
 import { LoginService } from '../auth/login/data-access/login.service';
 import { AuthService } from '../shared/data-access/auth.service';
-import { DroneService } from '../shared/data-access/drone.service';
 import { FlightService } from '../shared/data-access/flight.service';
 import { GeolocationService } from '../shared/data-access/geolocation.service';
 import { ProfileService } from '../shared/data-access/profile.service';
@@ -43,12 +42,10 @@ import { WidgetsComponent } from '../shared/ui/widgets.component';
 })
 export default class HomePage {
   // dependencies
-  protected droneService = inject(DroneService);
-  protected flightsService = inject(FlightService);
-  protected profileService = inject(ProfileService);
   protected authService = inject(AuthService);
-  protected loginService = inject(LoginService);
+  protected profileService = inject(ProfileService);
   protected geolocationService = inject(GeolocationService);
+  protected flightsService = inject(FlightService);
   private router = inject(Router);
 
   constructor() {
@@ -57,7 +54,7 @@ export default class HomePage {
       if (!this.authService.state.user()) {
         this.router.navigate(['auth', 'login']);
       }
-      console.log(this.droneService.state().drones);
+
     });
   }
 }

@@ -22,7 +22,7 @@ export type FlightState = {
 
 export type AddFlight = Omit<
   Flight,
-  'id' | 'createdAt' | 'updatedAt' | 'databaseId' | 'collectionId'
+  '$id' | '$createdAt' | '$updatedAt' | '$databaseId' | '$collectionId'
 >;
-export type EditFlight = { id: Flight['id']; data: AddFlight };
-export type RemoveFlight = Flight['id'];
+export type EditFlight = { id: Flight['$id']; data: AddFlight };
+export type RemoveFlight = Flight['$id'];

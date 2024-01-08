@@ -75,12 +75,11 @@ export class DroneService {
                   add
                 )
                 .then((document) => ({
-                  id: document.$id,
-                  createdAt: document.$createdAt,
-                  updatedAt: document.$updatedAt,
-                  databaseId: document.$databaseId,
-                  collectionId: document.$collectionId,
-                  flights: [],
+                  $id: document.$id,
+                  $createdAt: document.$createdAt,
+                  $updatedAt: document.$updatedAt,
+                  $databaseId: document.$databaseId,
+                  $collectionId: document.$collectionId,
                   ...add,
                 })),
               asapScheduler
@@ -105,11 +104,11 @@ export class DroneService {
                   update.data
                 )
                 .then((document) => ({
-                  id: document.$id,
-                  createdAt: document.$createdAt,
-                  updatedAt: document.$updatedAt,
-                  databaseId: document.$databaseId,
-                  collectionId: document.$collectionId,
+                  $id: document.$id,
+                  $createdAt: document.$createdAt,
+                  $updatedAt: document.$updatedAt,
+                  $databaseId: document.$databaseId,
+                  $collectionId: document.$collectionId,
                   ...update.data,
                 })),
               asapScheduler
@@ -123,7 +122,7 @@ export class DroneService {
               .pipe(
                 map((update) => ({
                   drones: _().drones.map((drone) =>
-                    drone.id === update.id ? { ...drone, ...update } : drone
+                    drone.$id === update.$id ? { ...drone, ...update } : drone
                   ),
                 })),
                 catchError((err) => {
@@ -151,7 +150,7 @@ export class DroneService {
                 return EMPTY;
               }),
               map((id) => ({
-                drones: _().drones.filter((drone) => drone.id !== id),
+                drones: _().drones.filter((drone) => drone.$id !== id),
               }))
             )
           )

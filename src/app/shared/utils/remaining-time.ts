@@ -1,12 +1,32 @@
-import * as moment from 'moment';
-import 'moment-duration-format';
+
+import { isBefore, addMinutes, differenceInMilliseconds, format } from 'date-fns';
+import { UTCDate } from "@date-fns/utc";
 
 export function remainingTime(createdAt: string, duration: string) {
-  var dueDate = moment(createdAt).add(duration, 'minutes');
-  var now = moment().utc(false);
-  if (!moment(now).isBefore(dueDate)) {
+  const dueDate = addMinutes(new UTCDate(createdAt).toString(), parseInt(duration));
+  const now = new Date();
+  if (!isBefore(now, dueDate)) {
     return 'Czas minął';
   }
-  var diff_s = dueDate.diff(now, 'seconds');
-  return moment.duration(diff_s, 'seconds').format('HH:mm:ss').toString();
+  const result = differenceInMilliseconds(
+    dueDate, now
+  )
+  const durationUsed = parseInt(duration) / result * 60000
+  console.log(durationUsed)
+  const timer = format(new UTCDate(result), 'HH:mm:ss');
+  return timer;
 }
+
+export function isTimeLeft(createdAt: string, duration: string) {
+  const dueDate = addMinutes(new UTCDate(createdAt).toString(), parseInt(duration));
+  const now = new Date();
+  return isBefore(now, dueDate)
+}
+
+
+export function timeToMinutes(time: string) {
+  const [hours, minutes, seconds] = time.split(':').map(Number)
+  return Math.ceil(hours * 60 + minutes + seconds / 60)
+}
+
+

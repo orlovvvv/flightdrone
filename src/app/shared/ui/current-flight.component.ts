@@ -5,6 +5,7 @@ import {
   EventEmitter,
   Input,
   Output,
+  signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
@@ -16,10 +17,12 @@ import {
   IonCardSubtitle,
   IonCardTitle,
   IonIcon,
+  IonSpinner,
 } from '@ionic/angular/standalone';
-import { Observable, interval, map } from 'rxjs';
-import { Flight } from '../types/flight';
-import { remainingTime } from '../utils/remaining-time';
+import { Observable, Subject, interval, map, tap } from 'rxjs';
+import { EditFlight, Flight } from '../types/flight';
+import { remainingTime, timeToMinutes } from '../utils/remaining-time';
+import { Animations } from 'src/app/shared/animation/animation';
 @Component({
   selector: 'app-current-flight',
   standalone: true,
@@ -31,25 +34,31 @@ import { remainingTime } from '../utils/remaining-time';
     IonCardHeader,
     IonCardSubtitle,
     IonCardTitle,
+    IonSpinner,
     IonAlert,
     DatePipe,
     AsyncPipe,
   ],
+  animations: [Animations],
   template: `
     <ion-card class="current-flight">
-      <ion-card-header>
-        <ion-card-title> DJX PRO 1</ion-card-title>
+     
+        <ion-card-header @inOut>
+        <ion-card-title >{{  flight.drone.model }}</ion-card-title>
         <ion-card-subtitle>
-          Data rozpoczęcia: 2024-01-06 10:23:40</ion-card-subtitle
+          Data rozpoczęcia: {{flight.$createdAt | date:"yyyy-MM-dd HH:mm:ss"}}</ion-card-subtitle
         >
         <ion-button class="cancel" color="danger" id="present-alert">
           <ion-icon name="close" />
         </ion-button>
       </ion-card-header>
-      <ion-card-content style="height: 160px;">
+      <ion-card-content style="height: 160px;" @inOut>
         <!-- | date : 'HH:mm:ss' -->
-        <h1 class="time">{{ timer$ | async }}</h1>
+        <h1 class="time">{{ timer$ | async}}</h1>
+
       </ion-card-content>
+      
+      
     </ion-card>
     <!-- Cofnirm ending flight -->
     <ion-alert
@@ -88,20 +97,37 @@ import { remainingTime } from '../utils/remaining-time';
         top: 12px;
         right: 12px;
     }
+
+    .spinner {
+      position: fixed;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translateX(-50%, -50%);
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CurrentFlightComponent {
   @Input() flight!: Flight;
-  @Output() endFlight = new EventEmitter<void>();
-  timeLeft = '2024-01-07T23:20:00.000+01:00';
+  @Output() endFlight = new EventEmitter<EditFlight>();
+
   timer$ = new Observable<string>();
+  durationUsed = signal<number>(0)
+
   constructor() {
-    this.timer$ = interval(1000).pipe(
-      takeUntilDestroyed(),
-      //   todo: implement flight variables
-      map(() => remainingTime(this.timeLeft, '10'))
-    );
+    this.timer$ =
+      interval(1000).pipe(
+        takeUntilDestroyed(),
+        map(() =>
+          remainingTime(this.flight.$createdAt, this.flight.duration)
+        ),
+        tap(
+          (time) =>
+            this.durationUsed.update(() => parseInt(this.flight.duration) - timeToMinutes(time))
+
+        )
+      );
   }
 
   public alertButtons = [
@@ -113,7 +139,19 @@ export class CurrentFlightComponent {
       text: 'OK',
       role: 'confirm',
       handler: () => {
-        this.endFlight.emit();
+        this.endFlight.emit({
+          id: this.flight.$id,
+          data: {
+            latitude: this.flight.latitude,
+            longitude: this.flight.longitude,
+            range: this.flight.range,
+            height: this.flight.height,
+            profile: this.flight.profile,
+            drone: this.flight.drone,
+            duration: this.durationUsed().toString()
+          }
+        })
+
       },
     },
   ];

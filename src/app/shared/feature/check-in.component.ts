@@ -1,7 +1,10 @@
+import { DroneService } from './../data-access/drone.service';
 import {
   ChangeDetectionStrategy,
   Component,
   ViewChild,
+  computed,
+  effect,
   inject,
 } from '@angular/core';
 import {
@@ -27,9 +30,15 @@ import { GeolocationService } from '../data-access/geolocation.service';
 import { CheckInFormComponent } from '../ui/check-in-form.component';
 import { CurrentFlightComponent } from '../ui/current-flight.component';
 import { GeolocationButtonComponent } from '../ui/geolocation-button.component';
-
+import { FlightService } from 'src/app/shared/data-access/flight.service';
+import { isTimeLeft } from 'src/app/shared/utils/remaining-time';
+import { ProfileService } from 'src/app/shared/data-access/profile.service';
+import { UTCDate } from '@date-fns/utc';
+import { AuthService } from 'src/app/shared/data-access/auth.service';
+import { Animations } from '../animation/animation'
 @Component({
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     IonFab,
     IonButton,
@@ -52,11 +61,29 @@ import { GeolocationButtonComponent } from '../ui/geolocation-button.component';
     GeolocationButtonComponent,
     CurrentFlightComponent,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-check-in',
+  animations: [Animations],
+  styles: `
+  ion-modal#example-modal {
+    --width: fit-content;
+    --min-width: 250px;
+    --height: fit-content;
+    --border-radius: 24px;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+    --background: var(--ion-card-background)
+    }
+
+ion-title {
+  padding: 0;
+}
+ion-toolbar {
+  padding: 0 12px;
+}
+
+`,
   template: `
-    @if(false){
-    <ion-fab slot="fixed" vertical="bottom" horizontal="center">
+    @if(!flight()){
+    <ion-fab slot="fixed" vertical="bottom" horizontal="center" @inOut>
       <ion-button id="open-modal">
         <ion-icon slot="start" name="airplane"></ion-icon>
         CHECK IN
@@ -101,40 +128,36 @@ import { GeolocationButtonComponent } from '../ui/geolocation-button.component';
       <!-- Current flight UI -->
     </ion-content>
     } @else {
-    <app-current-flight />
-
+      <app-current-flight [flight]="flight()" (endFlight)="this.flightsService.state.edit($event)" @inOut/>
     }
   `,
-  styles: `
-  ion-modal#example-modal {
-    --width: fit-content;
-    --min-width: 250px;
-    --height: fit-content;
-    --border-radius: 24px;
-    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
-    --background: var(--ion-card-background)
-    }
 
-ion-title {
-  padding: 0;
-}
-ion-toolbar {
-  padding: 0 12px;
-}
-
-`,
 })
 /*
  * *
  * * This component is responsible for:
- * * - initializing user data
+ * * - initializing flight data
  * * - setting up check in form with user location and drones
- * * - passing data to service for saving
+ * * - passing data to flight.service
  * *
  */
 export class CheckInComponent {
-  public geolocationService = inject(GeolocationService);
+  // dependencies
   @ViewChild(IonModal) modal!: IonModal;
+  protected geolocationService = inject(GeolocationService);
+  protected droneService = inject(DroneService);
+  protected authService = inject(AuthService);
+  protected flightsService = inject(FlightService)
+
+  // current flight if exists
+  flight = computed(
+    () => this.flightsService.state().flights.filter(
+      (flight) =>
+        isTimeLeft(new UTCDate(`${flight.$createdAt}`).toString(), flight.duration)
+        && flight.profile.$id === this.authService.state().user?.$id!
+    )[0]
+  )
+
 
   checkInModal: HTMLElement | null = null;
 
@@ -147,6 +170,8 @@ export class CheckInComponent {
   }
 
   constructor() {
-    // effect(() => console.log(this.geolocationService.state.position()))
+    effect(() => { }
+
+    )
   }
 }

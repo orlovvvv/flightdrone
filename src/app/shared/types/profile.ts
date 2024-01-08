@@ -18,6 +18,6 @@ export type ProfileState = {
   error: string | null;
 };
 
-export type AddProfile = Omit<Profile, 'id'>;
-export type EditProfile = { id: Profile['id']; data: AddProfile };
-export type RemoveProfile = Profile['id'];
+export type AddProfile = Omit<Profile, '$id'>;
+export type EditProfile = { id: Profile['$id']; data: AddProfile };
+export type RemoveProfile = Profile['$id'];

@@ -24,7 +24,6 @@ import { RemoveProfile } from './../types/profile'
 export class ProfileService {
   // dependencies
   private appwrite = inject(APPWRITE);
-  private http = inject(HttpClient);
   private authService = inject(AuthService);
 
   apiProfile =
@@ -39,14 +38,15 @@ export class ProfileService {
 
   // sources
   private error$ = new Subject<string>();
-  private profileLoaded$ = this.http
-    .get<Profile>(this.apiProfile + `/${this.authService.state.user()?.$id}`)
-    .pipe(
-      catchError((err) => {
-        this.error$.next(err)
-        return EMPTY
-      })
-    );
+  private profileLoaded$ = scheduled(
+    this.appwrite.database.getDocument(
+      environment.databaseId,
+      environment.profileCollectionId,
+      this.authService.state().user?.$id!
+    ),
+    asapScheduler
+  ).pipe(map((document) => document as unknown as Profile));
+
 
   sources$ = merge(
     this.profileLoaded$.pipe(map((profile) => ({ profile, loaded: true }))),
@@ -93,7 +93,8 @@ export class ProfileService {
                   update.id,
                   update.data
                 )
-                .then((document) => ({ id: document.$id, ...update.data })),
+                .then((document) =>
+                  ({ $id: document.$id, ...update.data })),
               asapScheduler
             ).pipe(
               catchError((err) => {
