@@ -65,6 +65,62 @@ import { DroneService } from './../data-access/drone.service';
   ],
   selector: 'app-check-in',
   animations: [Animations],
+  template: `
+    @if(!flight()){
+    <ion-fab slot="fixed" vertical="bottom" horizontal="center" @inOut>
+      <ion-button id="open-modal">
+        <ion-icon slot="start" name="airplane"></ion-icon>
+        CHECK IN
+      </ion-button>
+    </ion-fab>
+  
+
+
+      <ion-modal
+        id="check-in-modal"
+        #modal
+        trigger="open-modal"
+        [showBackdrop]="false"
+      >
+        <ng-template class="modal-container">
+          <div class="header"> 
+                <div style="width: 100%;">
+                  <ion-title class="ion-margin-horizontal">Check in</ion-title>
+                <ion-note class="ion-margin-horizontal">
+                  Wprowadź dane lotu
+                </ion-note>
+                </div>
+
+                <ion-button
+                  class="cancel"
+                  color="danger"
+                  (click)="close()"
+                  slot="end"
+                >
+                  <ion-icon name="close" />
+                </ion-button>
+          </div>
+        
+        
+        <div class="content">
+            <app-check-in-form
+              [userDrones]="drones()"
+              (flight)="flightService.state.add($event)"
+              (dismiss)="close()"
+            />
+          </div>
+        </ng-template>
+      </ion-modal>
+
+    } @else {
+       <!-- Current flight UI -->
+    <app-current-flight
+      [flight]="flight()"
+      (endFlight)="flightService.state.edit($event)"
+      @inOut
+    />
+    }
+  `,
   styles: `
 
   ion-modal#check-in-modal {
@@ -105,60 +161,6 @@ import { DroneService } from './../data-access/drone.service';
   }
 
 `,
-  template: `
-    @if(!flight()){
-    <ion-fab slot="fixed" vertical="bottom" horizontal="center" @inOut>
-      <ion-button id="open-modal">
-        <ion-icon slot="start" name="airplane"></ion-icon>
-        CHECK IN
-      </ion-button>
-    </ion-fab>
-    <ion-content>
-
-
-      <ion-modal
-        id="check-in-modal"
-        #modal
-        trigger="open-modal"
-      >
-        <ng-template class="modal-container">
-          <div class="header"> 
-                <div style="width: 100%;">
-                  <ion-title class="ion-margin-horizontal">Check in</ion-title>
-                <ion-note class="ion-margin-horizontal">
-                  Wprowadź dane lotu
-                </ion-note>
-                </div>
-
-                <ion-button
-                  class="cancel"
-                  color="danger"
-                  (click)="close()"
-                  slot="end"
-                >
-                  <ion-icon name="close" />
-                </ion-button>
-          </div>
-        
-        
-        <div class="content">
-            <app-check-in-form
-              [userDrones]="drones()"
-              (flight)="flightService.state.add($event)"
-            />
-          </div>
-        </ng-template>
-      </ion-modal>
-      <!-- Current flight UI -->
-    </ion-content>
-    } @else {
-    <app-current-flight
-      [flight]="flight()"
-      (endFlight)="flightService.state.edit($event)"
-      @inOut
-    />
-    }
-  `,
 })
 /*
  * *

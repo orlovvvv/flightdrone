@@ -51,7 +51,7 @@ import { remainingTime, timeToMinutes } from '../utils/remaining-time';
             flight.$createdAt | date : 'yyyy-MM-dd HH:mm:ss'
           }}</ion-card-subtitle
         >
-        <ion-button class="cancel" color="danger" id="present-alert" size="small">
+        <ion-button class="cancel" color="danger" id="end-flight" size="small">
           <ion-icon name="close" />
         </ion-button>
       </ion-card-header>
@@ -61,7 +61,7 @@ import { remainingTime, timeToMinutes } from '../utils/remaining-time';
     </ion-card>
     <!-- Cofnirm ending flight -->
     <ion-alert
-      trigger="present-alert"
+      trigger="end-flight"
       header="Zakończ lot"
       message="Czy chcesz zakończyć lot?"
       [buttons]="alertButtons"
@@ -132,10 +132,6 @@ export class CurrentFlightComponent {
         this.endFlight.emit({
           id: this.flight!.$id,
           data: {
-            // ? might not need this
-            // latitude: this.flight.latitude,
-            // longitude: this.flight.longitude,
-            // profile: this.flight.profile,
             range: this.flight.range,
             height: this.flight.height,
             drone: this.flight.drone.$id,

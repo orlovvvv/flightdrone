@@ -17,6 +17,7 @@ import { environment } from 'src/environments/environment';
   display: block;
   height: 100svh;
   width: 100svw;
+
 }
   `,
   standalone: true,

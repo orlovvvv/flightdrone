@@ -29,31 +29,31 @@ import { LogoutComponent } from 'src/app/shared/ui/logout.component';
   selector: 'app-home',
   template: `
     <ion-menu contentId="main-content">
-       <ion-toolbar class="menu-header" role="menu-header">
-      <ion-title slot="start"> FlightDrone </ion-title>
-      <ion-menu-toggle slot="end" >
-        <ion-button class="cancel" color="danger" id="present-alert" >
-          <ion-icon name="close" />
-        </ion-button>
-      </ion-menu-toggle>
-    </ion-toolbar>
+      <ion-toolbar class="menu-header" role="menu-header">
+        <ion-title slot="start"> FlightDrone </ion-title>
+        <ion-menu-toggle slot="end">
+          <ion-button class="cancel" color="danger" id="present-alert">
+            <ion-icon name="close" />
+          </ion-button>
+        </ion-menu-toggle>
+      </ion-toolbar>
       <ion-content>
         <app-widgets />
       </ion-content>
       <ion-footer class="menu-footer" role="menu-footer">
-        <ion-toolbar >
+        <ion-toolbar>
           <app-logout (logout)="this.authService.state.signout()" />
         </ion-toolbar>
       </ion-footer>
     </ion-menu>
-    <div class="ion-page" id="main-content">
-      <ion-content [fullscreen]="true">
-        <app-map />
-        <app-header />
-        <!-- <app-map-settings /> -->
-        <app-check-in />
-      </ion-content>
-    </div>
+
+    <ion-content [fullscreen]="true" id="main-content" style="overflow-y: hidden;">
+      <app-map  style="overflow-y: hidden;"/>
+      <app-header />
+      <!-- <app-map-settings /> -->
+      <app-check-in />
+    </ion-content>
+
     <app-toast-error
       [error]="this.flightsService.state().error"
       [message]="this.flightsService.state().error"
@@ -84,7 +84,7 @@ import { LogoutComponent } from 'src/app/shared/ui/logout.component';
     IonToolbar,
     IonTitle,
     IonMenuToggle,
-    IonIcon
+    IonIcon,
   ],
 })
 export default class HomePage {

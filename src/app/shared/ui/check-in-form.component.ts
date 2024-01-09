@@ -41,6 +41,7 @@ import { OptionsPopoverComponent } from './options-popover.component';
     <form
       [formGroup]="checkInForm"
       (ngSubmit)="flight.emit(checkInForm.getRawValue())"
+      (submit)="dismiss.emit()"
     >
       <ion-list lines="none">
         <ion-item>
@@ -110,7 +111,6 @@ import { OptionsPopoverComponent } from './options-popover.component';
         color="tertiary"
         type="submit"
         [disabled]="!checkInForm.valid"
-        (click)="dismiss.emit()"
       >
         Start
       </ion-button>
