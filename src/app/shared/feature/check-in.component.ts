@@ -77,21 +77,21 @@ import { DroneService } from './../data-access/drone.service';
         --padding-start: 12px;
     }
 
-ion-title {
-  padding: 0;
-}
-ion-toolbar {
-  padding: 0 12px;
-}
+    ion-title {
+      padding: 0;
+    }
+    ion-toolbar {
+      padding: 0 12px;
+    }
 
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+    }
 
 `,
   template: `
@@ -195,6 +195,6 @@ export class CheckInComponent {
   }
 
   constructor() {
-    effect(() => {});
+    effect(() => { });
   }
 }

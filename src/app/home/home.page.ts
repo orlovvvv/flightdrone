@@ -32,7 +32,7 @@ import { LogoutComponent } from 'src/app/shared/ui/logout.component';
        <ion-toolbar class="menu-header" role="menu-header">
       <ion-title slot="start"> FlightDrone </ion-title>
       <ion-menu-toggle slot="end" >
-        <ion-button class="cancel" color="danger" id="present-alert" size="small" >
+        <ion-button class="cancel" color="danger" id="present-alert" >
           <ion-icon name="close" />
         </ion-button>
       </ion-menu-toggle>
@@ -61,8 +61,11 @@ import { LogoutComponent } from 'src/app/shared/ui/logout.component';
   `,
   styles: `
     ion-menu::part(container) {
-      border-radius: 0 20px 20px 0;
+      border-radius: 0 12px 12px 0;
       --min-width:300px;
+    }
+    .menu-header {
+      padding-inline: 6px;
     }
   `,
   standalone: true,
