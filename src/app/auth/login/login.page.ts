@@ -3,22 +3,24 @@ import {
   Component,
   effect,
   inject,
-} from '@angular/core'
-import { Router, RouterLink } from '@angular/router'
+} from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import {
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
+  IonContent,
+  IonGrid,
   IonNote,
+  IonRow,
   IonSpinner,
   IonText,
-} from '@ionic/angular/standalone'
-import { AuthService } from 'src/app/shared/data-access/auth.service'
-import { ToastErrorComponent } from 'src/app/shared/ui/toast-error.component'
-import { LoginService } from './data-access/login.service'
-import { LoginFormComponent } from './ui/login-form.component'
-
+} from '@ionic/angular/standalone';
+import { AuthService } from 'src/app/shared/data-access/auth.service';
+import { ToastErrorComponent } from 'src/app/shared/ui/toast-error.component';
+import { LoginService } from './data-access/login.service';
+import { LoginFormComponent } from './ui/login-form.component';
 
 @Component({
   standalone: true,
@@ -32,39 +34,48 @@ import { LoginFormComponent } from './ui/login-form.component'
     IonCardTitle,
     IonCardContent,
     IonSpinner,
+    IonContent,
+    IonGrid,
+    IonRow,
     LoginFormComponent,
-    ToastErrorComponent
-
+    ToastErrorComponent,
   ],
   template: `
-    <ion-card class="login-card rounded" @fadeInOut>
-      @if(authService.state.user() === null){
-      <ion-card-header>
-        <ion-card-title> Logowanie </ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <app-login-form
-          [loginStatus]="loginService.state.status()"
-          (login)="loginService.state.login($event)"
-        />
-        <ion-note>
-          Nie masz konta?
-          <ion-text routerLink="/auth/register" color="primary">
-            Utwórz konto
-          </ion-text>
-        </ion-note>
-      </ion-card-content>
-      } @else {
-      <ion-card-content>
-        <ion-spinner
-          class="login-spinner"
-          name="circular"
-          color="primary"
-        ></ion-spinner>
-      </ion-card-content>
-      }
-    </ion-card>
-    <app-toast-error [error]="this.loginService.state.status()" [message]="'Nierpawidłowy login lub hasło'" />
+    <ion-content class="ion-page">
+      <ion-grid style="height: 100%">
+        <ion-row justify-content-center align-items-center style="height: 100%">
+          <ion-card class="login-card rounded ion-no-margin" @fadeInOut>
+            @if(authService.state.user() === null){
+            <ion-card-header>
+              <ion-card-title> Logowanie </ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <app-login-form
+                [loginStatus]="loginService.state.status()"
+                (login)="loginService.state.login($event)"
+              />
+              <ion-note>
+                Nie masz konta?
+                <ion-text routerLink="/auth/register" color="primary">
+                  Utwórz konto
+                </ion-text>
+              </ion-note>
+            </ion-card-content>
+            } @else {
+            <ion-card-content>
+              <ion-spinner
+                class="login-spinner"
+                name="circular"
+                color="primary"
+              ></ion-spinner>
+            </ion-card-content>
+            }
+          </ion-card>
+          <app-toast-error
+            [error]="this.loginService.state.status()"
+            [message]="'Nierpawidłowy login lub hasło'"
+          /> </ion-row></ion-grid
+    ></ion-content>
   `,
   styles: `
 ion-icon {
@@ -73,17 +84,14 @@ ion-icon {
 }
 
 .login-card {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
+  margin: auto;
   width: 100%;
  max-width: 420px;
   min-height: 234px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  
   
 }
 
@@ -136,7 +144,6 @@ ion-text:hover {
 
 
 `,
-
 })
 export default class LoginPage {
   public loginService = inject(LoginService);
@@ -146,8 +153,8 @@ export default class LoginPage {
   constructor() {
     effect(() => {
       if (this.authService.state.user()) {
-        this.router.navigate(['home'])
+        this.router.navigate(['home']);
       }
-    })
+    });
   }
 }

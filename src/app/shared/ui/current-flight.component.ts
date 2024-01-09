@@ -42,7 +42,7 @@ import { remainingTime, timeToMinutes } from '../utils/remaining-time';
   ],
   animations: [Animations],
   template: `
-    <ion-card class="current-flight">
+    <ion-card class="current-flight ion-no-padding">
       <ion-card-header @inOut>
         <ion-card-title>{{ flight.drone.model }}</ion-card-title>
         <ion-card-subtitle>

@@ -3,21 +3,24 @@ import {
   Component,
   effect,
   inject,
-} from '@angular/core'
-import { Router, RouterLink } from '@angular/router'
+} from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import {
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
+  IonContent,
+  IonGrid,
   IonNote,
+  IonRow,
   IonSpinner,
   IonText,
-} from '@ionic/angular/standalone'
-import { AuthService } from 'src/app/shared/data-access/auth.service'
-import { ToastErrorComponent } from 'src/app/shared/ui/toast-error.component'
-import { RegisterService } from './data-access/register.service'
-import { RegisterFormComponent } from './ui/register-form.component'
+} from '@ionic/angular/standalone';
+import { AuthService } from 'src/app/shared/data-access/auth.service';
+import { ToastErrorComponent } from 'src/app/shared/ui/toast-error.component';
+import { RegisterService } from './data-access/register.service';
+import { RegisterFormComponent } from './ui/register-form.component';
 
 @Component({
   standalone: true,
@@ -31,38 +34,51 @@ import { RegisterFormComponent } from './ui/register-form.component'
     IonCardTitle,
     IonCardContent,
     IonSpinner,
+    IonContent,
+    IonGrid,
+    IonRow,
     RegisterFormComponent,
     ToastErrorComponent,
   ],
   template: `
-    <ion-card class="login-card rounded" @fadeInOut>
-      @if(!authService.state.user()){
-      <ion-card-header>
-        <ion-card-title> Rejestracja </ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <app-register-form
-          [registerStatus]="registerService.state.status()"
-          (register)="registerService.state.createUser($event)"
-        />
-        <ion-note>
-          Masz już konto?
-          <ion-text routerLink="/auth/login" color="primary">
-            Zaloguj się
-          </ion-text>
-        </ion-note>
-      </ion-card-content>
-      } @else {
-      <ion-card-content>
-        <ion-spinner
-          class="login-spinner"
-          name="circular"
-          color="primary"
-        ></ion-spinner>
-      </ion-card-content>
-      }
-    </ion-card>
-    <app-toast-error [error]="this.registerService.state.status()" [message]="'Na podany adres zostało już założone konto'" />
+    <ion-content class="ion-page">
+      <ion-grid style="height: 100%">
+        <ion-row justify-content-center align-items-center style="height: 100%">
+          <ion-card class="register-card ion-no-margin" @fadeInOut>
+            @if(!authService.state.user()){
+            <ion-card-header>
+              <ion-card-title> Rejestracja </ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <app-register-form
+                [registerStatus]="registerService.state.status()"
+                (register)="registerService.state.createUser($event)"
+              />
+              <ion-note>
+                Masz już konto?
+                <ion-text routerLink="/auth/login" color="primary">
+                  Zaloguj się
+                </ion-text>
+              </ion-note>
+            </ion-card-content>
+            } @else {
+            <ion-card-content>
+              <ion-spinner
+                class="login-spinner"
+                name="circular"
+                color="primary"
+              ></ion-spinner>
+            </ion-card-content>
+            }
+          </ion-card>
+        </ion-row>
+      </ion-grid>
+
+      <app-toast-error
+        [error]="this.registerService.state.status()"
+        [message]="'Na podany adres zostało już założone konto'"
+      />
+    </ion-content>
   `,
   styles: `
 ion-icon {
@@ -70,12 +86,9 @@ ion-icon {
   height: 24px;
 }
 
-.login-card {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
+.register-card {
+
+  margin: auto;
   width: 100%;
   max-width: 480px;
   min-height: 558px;
@@ -117,7 +130,7 @@ ion-input {
 }
 
 ion-note {
-   position: absolute;
+  position: absolute;
   bottom: 0;
   left: 50%;
   margin-right: -50%;
@@ -137,9 +150,9 @@ export default class RegisterPage {
   constructor() {
     effect(() => {
       if (this.authService.state.user()) {
-        this.router.navigate(['home'])
+        this.router.navigate(['home']);
       }
-      console.log(this.registerService.state.status())
-    })
+      console.log(this.registerService.state.status());
+    });
   }
 }
