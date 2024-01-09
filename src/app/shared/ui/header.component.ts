@@ -7,7 +7,9 @@ import {
 } from '@angular/core'
 import {
   IonButton,
+  IonButtons,
   IonHeader,
+  IonMenuButton,
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone'
@@ -21,6 +23,8 @@ import { SearchComponent } from '../feature/search.component'
     IonTitle,
     SearchComponent,
     IonButton,
+    IonButtons,
+    IonMenuButton,
     AsyncPipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,19 +36,16 @@ import { SearchComponent } from '../feature/search.component'
       color="none"
       style="position: absolute; top: 0;"
     >
-      <ion-title slot="start" color="light"> FlightDrone </ion-title>
-      <app-search slot="end" />
-      <ion-button
-        slot="end"
-        shape="round"
-        (click)="logout.emit()"
-      >
-        Wyloguj się</ion-button
-      >
+    <ion-title slot="start" color="light"> FlightDrone </ion-title>
+    <app-search slot="end" />
+       <ion-buttons slot="end">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+     
     </ion-toolbar>
   `,
   styles: ``,
 })
 export class HeaderComponent {
-  @Output() logout = new EventEmitter<void>()
+
 }

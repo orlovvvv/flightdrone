@@ -51,7 +51,7 @@ import { remainingTime, timeToMinutes } from '../utils/remaining-time';
             flight.$createdAt | date : 'yyyy-MM-dd HH:mm:ss'
           }}</ion-card-subtitle
         >
-        <ion-button class="cancel" color="danger" id="present-alert">
+        <ion-button class="cancel" color="danger" id="present-alert" size="small">
           <ion-icon name="close" />
         </ion-button>
       </ion-card-header>
