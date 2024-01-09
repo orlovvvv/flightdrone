@@ -122,7 +122,7 @@ export class SearchComponent {
   @ViewChild('search') search!: IonSearchbar;
 
   onDidPresent() {
-    this.search.setFocus();
+    setTimeout(() => this.search.setFocus(), 300)
   }
 
   protected flightService = inject(FlightService);
