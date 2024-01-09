@@ -1,33 +1,23 @@
-import { FlightService } from 'src/app/shared/data-access/flight.service';
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   ViewChild,
   computed,
   inject,
-  AfterViewInit
 } from '@angular/core';
 import {
   IonButton,
-
-  IonModal,
-
-  IonSearchbar,
   IonIcon,
+  IonModal,
+  IonSearchbar,
 } from '@ionic/angular/standalone';
-import { isTimeLeft } from 'src/app/shared/utils/remaining-time';
+import { FlightService } from 'src/app/shared/data-access/flight.service';
 import { ListFlightsComponent } from 'src/app/shared/ui/list-flights.component';
+import { isTimeLeft } from 'src/app/shared/utils/remaining-time';
 
 @Component({
   standalone: true,
-  imports: [
-    IonSearchbar,
-    IonModal,
-    IonButton,
-    IonIcon,
-    ListFlightsComponent
-  ],
+  imports: [IonSearchbar, IonModal, IonButton, IonIcon, ListFlightsComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-search',
   template: `
@@ -64,11 +54,14 @@ import { ListFlightsComponent } from 'src/app/shared/ui/list-flights.component';
             slot="end"
             size="small"
           >
-            <ion-icon name="close" size="small"/>
+            <ion-icon name="close" size="small" />
           </ion-button>
         </div>
         <div class="content">
-         <app-list-flights [flights]="activeFlights()" />
+          <app-list-flights
+            [flights]="activeFlights()"
+            [loaded]="flightService.state().loaded"
+          />
         </div>
       </ng-template>
     </ion-modal>
@@ -121,18 +114,21 @@ export class SearchComponent {
   @ViewChild(IonModal) modal!: IonModal;
   @ViewChild('search') search!: IonSearchbar;
 
-  onDidPresent() {
-    setTimeout(() => this.search.setFocus(), 300)
-  }
-
   protected flightService = inject(FlightService);
 
-  activeFlights = computed(() => this.flightService
-    .state()
-    .flights
-    .filter((flight) =>
-      isTimeLeft(flight.$createdAt, flight.duration)
-    )
+  value: string = '';
+  onDidPresent() {
+    setTimeout(() => this.search.setFocus(), 300);
+  }
+
+  activeFlights = computed(() =>
+    this.flightService
+      .state()
+      .flights.filter(
+        (flight) =>
+          isTimeLeft(flight.$createdAt, flight.duration) &&
+          JSON.stringify(flight).includes(this.value)
+      )
   );
 
   close() {

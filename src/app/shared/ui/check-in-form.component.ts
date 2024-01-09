@@ -46,46 +46,45 @@ import { OptionsPopoverComponent } from './options-popover.component';
       <ion-list lines="none">
         <ion-item>
           <ion-input
+            label="Promień lotu"
+            labelPlacement="stacked"
             placeholder="650"
             type="number"
             color="primary"
             formControlName="range"
             name="flight-range"
-            label="Promień lotu"
             errorText="Wprowadź prawidłowe dane"
-     
             tabindex="2"
           />
         </ion-item>
         <ion-item>
           <ion-input
+            label="Maksymalna wysokość lotu"
+            labelPlacement="stacked"
             placeholder="50"
             type="number"
             color="primary"
-   
             formControlName="height"
             name="max-height"
-            label="Maksymalna wysokość lotu"
             errorText="Wprowadź prawidłowe dane"
-
             tabindex="2"
           />
         </ion-item>
         <ion-item>
           <ion-input
             label="Czas trwania lotu"
+            labelPlacement="stacked"
             type="number"
             placeholder="40"
             formControlName="duration"
             name="duration"
             errorText="Wprowadź prawidłowe dane"
             color="primary"
-
             tabindex="2"
           />
         </ion-item>
         <ion-item>
-          <ion-label>Wybierz drona</ion-label>
+          <ion-label>Dron</ion-label>
           <!-- <app-options-popover [optionsList]="userDrones" /> -->
           <ion-select
             formControlName="drone"
@@ -93,7 +92,6 @@ import { OptionsPopoverComponent } from './options-popover.component';
             interface="popover"
             placeholder="Model"
             color="primary"
-
           >
             @for (drone of userDrones; track drone.$id) {
             <ion-select-option [value]="drone.$id">{{
@@ -163,7 +161,7 @@ export class CheckInFormComponent {
   @Input() userProfile!: Profile;
   @Input() userDrones: Drones = [];
   @Output() flight = new EventEmitter<AddFlight>();
-  @Output() dismiss = new EventEmitter<void>()
+  @Output() dismiss = new EventEmitter<void>();
   checkInForm = inject(FormBuilder).nonNullable.group({
     range: [0, Validators.required],
     height: [0, Validators.required],

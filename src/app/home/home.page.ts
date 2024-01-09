@@ -10,6 +10,7 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
+import { LogoutComponent } from 'src/app/shared/ui/logout.component';
 import { APPWRITE } from 'src/main';
 import { AuthService } from '../shared/data-access/auth.service';
 import { DroneService } from '../shared/data-access/drone.service';
@@ -18,11 +19,10 @@ import { GeolocationService } from '../shared/data-access/geolocation.service';
 import { ProfileService } from '../shared/data-access/profile.service';
 import { CheckInComponent } from '../shared/feature/check-in.component';
 import { MapComponent } from '../shared/feature/map.component';
+import { WidgetsComponent } from '../shared/feature/widgets.component';
 import { HeaderComponent } from '../shared/ui/header.component';
 import { MapSettingsComponent } from '../shared/ui/map-settings.component';
 import { ToastErrorComponent } from '../shared/ui/toast-error.component';
-import { WidgetsComponent } from '../shared/ui/widgets.component';
-import { LogoutComponent } from 'src/app/shared/ui/logout.component';
 
 @Component({
   selector: 'app-home',
@@ -31,8 +31,13 @@ import { LogoutComponent } from 'src/app/shared/ui/logout.component';
       <ion-toolbar class="menu-header" role="menu-header">
         <ion-title slot="start" size="small"> FlightDrone </ion-title>
         <ion-menu-toggle slot="end">
-          <ion-button class="cancel" color="danger" id="present-alert" size="small">
-            <ion-icon name="close" size="small"/>
+          <ion-button
+            class="cancel"
+            color="danger"
+            id="present-alert"
+            size="small"
+          >
+            <ion-icon name="close" size="small" />
           </ion-button>
         </ion-menu-toggle>
       </ion-toolbar>
@@ -46,8 +51,12 @@ import { LogoutComponent } from 'src/app/shared/ui/logout.component';
       </ion-footer>
     </ion-menu>
 
-    <ion-content [fullscreen]="true" id="main-content" style="overflow-y: hidden;">
-      <app-map  style="overflow-y: hidden;"/>
+    <ion-content
+      [fullscreen]="true"
+      id="main-content"
+      style="overflow-y: hidden;"
+    >
+      <app-map style="overflow-y: hidden;" />
       <app-header />
       <!-- <app-map-settings /> -->
       <app-check-in />
