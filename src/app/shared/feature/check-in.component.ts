@@ -1,4 +1,5 @@
 import {
+  AfterViewChecked,
   ChangeDetectionStrategy,
   Component,
   ViewChild,
@@ -21,6 +22,7 @@ import {
   IonList,
   IonModal,
   IonNote,
+  IonSearchbar,
   IonSelect,
   IonSelectOption,
   IonTitle,
@@ -64,13 +66,19 @@ import { DroneService } from './../data-access/drone.service';
   selector: 'app-check-in',
   animations: [Animations],
   styles: `
-  ion-modal#example-modal {
-    --width: fit-content;
-    --min-width: 250px;
+
+  ion-modal#check-in-modal {
     --height: fit-content;
-    --border-radius: 24px;
+    --max-width: 560px;
+    --width: 100%;
+    --border-radius: 12px;
     --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
-    --background: var(--ion-card-background)
+    }
+
+    .modal-container {
+      width: 100%;
+      max-width: 560px;
+      height: 450px;
     }
 
     ion-input {
@@ -84,14 +92,17 @@ import { DroneService } from './../data-access/drone.service';
       padding: 0 12px;
     }
 
-    .wrapper {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 100%;
-    }
+    .header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    padding: 6px;
+  }
+
+  .content {
+    height: 100%;
+  }
 
 `,
   template: `
@@ -103,20 +114,22 @@ import { DroneService } from './../data-access/drone.service';
       </ion-button>
     </ion-fab>
     <ion-content>
+
+
       <ion-modal
-        id="example-modal"
+        id="check-in-modal"
         #modal
         trigger="open-modal"
-        [showBackdrop]="false"
       >
-        <ng-template>
-          <div class="wrapper">
-            <ion-header>
-              <ion-toolbar>
-                <ion-title class="ion-margin-horizontal">Check in</ion-title>
+        <ng-template class="modal-container">
+          <div class="header"> 
+                <div style="width: 100%;">
+                  <ion-title class="ion-margin-horizontal">Check in</ion-title>
                 <ion-note class="ion-margin-horizontal">
                   Wprowadź dane lotu
                 </ion-note>
+                </div>
+
                 <ion-button
                   class="cancel"
                   color="danger"
@@ -125,9 +138,10 @@ import { DroneService } from './../data-access/drone.service';
                 >
                   <ion-icon name="close" />
                 </ion-button>
-              </ion-toolbar>
-            </ion-header>
-
+          </div>
+        
+        
+        <div class="content">
             <app-check-in-form
               [userDrones]="drones()"
               (flight)="flightService.state.add($event)"
@@ -157,11 +171,13 @@ import { DroneService } from './../data-access/drone.service';
 export class CheckInComponent {
   // dependencies
   @ViewChild(IonModal) modal!: IonModal;
+
   protected geolocationService = inject(GeolocationService);
   protected droneService = inject(DroneService);
   protected authService = inject(AuthService);
   protected flightService = inject(FlightService);
   protected profileService = inject(ProfileService);
+
 
   flight = computed(() => {
     return this.flightService

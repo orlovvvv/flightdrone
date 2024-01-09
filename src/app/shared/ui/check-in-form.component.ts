@@ -42,17 +42,17 @@ import { OptionsPopoverComponent } from './options-popover.component';
       [formGroup]="checkInForm"
       (ngSubmit)="flight.emit(checkInForm.getRawValue())"
     >
-      <ion-list>
+      <ion-list lines="none">
         <ion-item>
           <ion-input
             placeholder="650"
             type="number"
-            fill="outline"
+            color="primary"
             formControlName="range"
             name="flight-range"
             label="Promień lotu"
             errorText="Wprowadź prawidłowe dane"
-            [clearInput]="true"
+     
             tabindex="2"
           />
         </ion-item>
@@ -60,12 +60,13 @@ import { OptionsPopoverComponent } from './options-popover.component';
           <ion-input
             placeholder="50"
             type="number"
-            fill="outline"
+            color="primary"
+   
             formControlName="height"
             name="max-height"
             label="Maksymalna wysokość lotu"
             errorText="Wprowadź prawidłowe dane"
-            [clearInput]="true"
+
             tabindex="2"
           />
         </ion-item>
@@ -74,15 +75,15 @@ import { OptionsPopoverComponent } from './options-popover.component';
             label="Czas trwania lotu"
             type="number"
             placeholder="40"
-            fill="outline"
             formControlName="duration"
             name="duration"
             errorText="Wprowadź prawidłowe dane"
-            [clearInput]="true"
+            color="primary"
+
             tabindex="2"
           />
         </ion-item>
-        <ion-item>
+        <ion-item >
           <ion-label>Wybierz drona</ion-label>
           <!-- <app-options-popover [optionsList]="userDrones" /> -->
           <ion-select
@@ -90,6 +91,8 @@ import { OptionsPopoverComponent } from './options-popover.component';
             aria-label="select-popover"
             interface="popover"
             placeholder="Model"
+            color="primary"
+
           >
             @for (drone of userDrones; track drone.$id) {
             <ion-select-option [value]="drone.$id">{{
@@ -107,39 +110,49 @@ import { OptionsPopoverComponent } from './options-popover.component';
         color="tertiary"
         type="submit"
         [disabled]="!checkInForm.valid"
+        (click)="dismiss.emit()"
       >
         Start
       </ion-button>
     </form>
   `,
   styles: `
-form {
+    form {
         display: flex;
         flex-direction: column;
         align-items: center;
+        width: 100%;
         margin-bottom: 12px;
-      }
+        background: none;
+    }
 
-ion-list{
-    width: 100%;
-    padding: 12px
-}      
-ion-input {
-    margin: 12px;
-    --border-radius: 12px;
-    --border-width: 2px;
-    --border-color: var(--ion-color-tertiary);
-}
 
-ion-label {
-    width: fit-content;
-    text-wrap: none;
-}
+    ion-list {
+      height: 100%;
+      width: 100%;
+      background: none!important;
+    }
 
-ion-button {
-  width: 100%;
-  max-width: 384px;
-}
+
+    ion-label {
+        width: fit-content;
+        text-wrap: none;
+    }
+
+    ion-button {
+      width: 100%;
+      max-width: 384px;
+    }
+
+     ion-item {
+      margin-inline: 12px;
+      border-radius: 12px;
+      padding-top: 6px;
+  }
+    ion-input {
+      background: none;
+    }
+
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -147,7 +160,7 @@ export class CheckInFormComponent {
   @Input() userProfile!: Profile;
   @Input() userDrones: Drones = [];
   @Output() flight = new EventEmitter<AddFlight>();
-
+  @Output() dismiss = new EventEmitter<void>()
   checkInForm = inject(FormBuilder).nonNullable.group({
     range: [0, Validators.required],
     height: [0, Validators.required],

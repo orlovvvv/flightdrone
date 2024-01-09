@@ -2,35 +2,31 @@ import { FlightService } from 'src/app/shared/data-access/flight.service';
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   ViewChild,
   computed,
   inject,
+  AfterViewInit
 } from '@angular/core';
 import {
   IonButton,
-  IonItem,
-  IonLabel,
-  IonList,
+
   IonModal,
-  IonNote,
+
   IonSearchbar,
   IonIcon,
 } from '@ionic/angular/standalone';
-import { DatePipe } from '@angular/common';
 import { isTimeLeft } from 'src/app/shared/utils/remaining-time';
+import { ListFlightsComponent } from 'src/app/shared/ui/list-flights.component';
 
 @Component({
   standalone: true,
   imports: [
     IonSearchbar,
     IonModal,
-    IonList,
-    IonItem,
-    IonLabel,
-    IonNote,
     IonButton,
     IonIcon,
-    DatePipe,
+    ListFlightsComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-search',
@@ -46,6 +42,7 @@ import { isTimeLeft } from 'src/app/shared/utils/remaining-time';
       id="search-modal"
       #modal
       trigger="open-search-modal"
+      (didPresent)="onDidPresent()"
     >
       <ng-template class="modal-container">
         <div class="header">
@@ -58,6 +55,7 @@ import { isTimeLeft } from 'src/app/shared/utils/remaining-time';
             [autocomplete]="true"
             [autocorrect]="true"
             [debounce]="350"
+            #search
           />
           <ion-button
             class="cancel"
@@ -68,60 +66,27 @@ import { isTimeLeft } from 'src/app/shared/utils/remaining-time';
             <ion-icon name="close" />
           </ion-button>
         </div>
-
         <div class="content">
-          <ion-list>
-            @if (activeFlights().length <= 0) {
-            <ion-item style="width: 100%;">
-              <ion-label
-                class="ion-margin-horizontal"
-                style="font-size: small;"
-              >
-                Brak danych do wyświetlenia
-              </ion-label>
-            </ion-item>
-            } @for (flight of activeFlights(); track flight.$id) {
-            <ion-item style="width: 100%;" detail="true">
-              <ion-label
-                class="ion-margin-horizontal"
-                style="font-size: small;"
-              >
-                {{ 'Pilot: ' }}
-                {{ flight.profile.pilotNumber }}
-                {{ ' Dron:' }}
-                {{ flight.drone.serial }}
-                {{ ' Czas trwania: ' }}
-                {{ flight.duration }}
-                {{ ' minut' }}
-              </ion-label>
-              <ion-note
-                slot="end"
-                color="medium"
-                class="ion-margin-horizontal"
-                >{{ flight.$createdAt | date : 'yyyy-MM-dd' }}</ion-note
-              >
-            </ion-item>
-            }
-          </ion-list>
+         <app-list-flights [flights]="activeFlights()" />
         </div>
       </ng-template>
     </ion-modal>
   `,
   styles: `
    .searchbox#open-search-modal {
-  max-width: 180px;
-  width: 100%;
-  --border-radius: 12px;
+      max-width:200px;
+      width: 100%;
+      --border-radius: 12px;
+      text-align: left;
   }
     
   .searchbox {
-    max-width: 420px;
     width: 100%;
     --border-radius: 12px;
   }
   ion-modal#search-modal {
     --height: 450px; 
-    --max-width: 420px;
+    --max-width: 560px;
      --width: 100%;
     --border-radius: 12px;
     --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
@@ -129,7 +94,7 @@ import { isTimeLeft } from 'src/app/shared/utils/remaining-time';
 
   .modal-container {
     width: 100%;
-    max-width: 420px;
+    max-width: 560px;
     height: 450px;
   }
   
@@ -153,23 +118,21 @@ import { isTimeLeft } from 'src/app/shared/utils/remaining-time';
 })
 export class SearchComponent {
   @ViewChild(IonModal) modal!: IonModal;
+  @ViewChild('search') search!: IonSearchbar;
+
+  onDidPresent() {
+    this.search.setFocus();
+  }
 
   protected flightService = inject(FlightService);
 
-  activeFlights = computed(() => {
-    console.log(
-      this.flightService
-        .state()
-        .flights.filter((flight) =>
-          isTimeLeft(flight.$createdAt, flight.duration)
-        )
-    );
-    return this.flightService
-      .state()
-      .flights.filter((flight) =>
-        isTimeLeft(flight.$createdAt, flight.duration)
-      );
-  });
+  activeFlights = computed(() => this.flightService
+    .state()
+    .flights
+    .filter((flight) =>
+      isTimeLeft(flight.$createdAt, flight.duration)
+    )
+  );
 
   close() {
     this.modal.dismiss(null, 'cancel');
