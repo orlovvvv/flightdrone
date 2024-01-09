@@ -96,8 +96,9 @@ import { DroneService } from './../data-access/drone.service';
                   color="danger"
                   (click)="close()"
                   slot="end"
+                  size="small"
                 >
-                  <ion-icon name="close" />
+                  <ion-icon name="close" size="small"/>
                 </ion-button>
           </div>
         

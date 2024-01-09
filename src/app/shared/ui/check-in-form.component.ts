@@ -84,7 +84,7 @@ import { OptionsPopoverComponent } from './options-popover.component';
             tabindex="2"
           />
         </ion-item>
-        <ion-item >
+        <ion-item>
           <ion-label>Wybierz drona</ion-label>
           <!-- <app-options-popover [optionsList]="userDrones" /> -->
           <ion-select
@@ -133,6 +133,10 @@ import { OptionsPopoverComponent } from './options-popover.component';
       background: none!important;
     }
 
+    ion-item {
+      border-radius: 12px;
+      margin:6px 6px;
+  }
 
     ion-label {
         width: fit-content;
@@ -144,13 +148,12 @@ import { OptionsPopoverComponent } from './options-popover.component';
       max-width: 384px;
     }
 
-     ion-item {
-      margin-inline: 12px;
-      border-radius: 12px;
-      padding-top: 6px;
-  }
+ 
     ion-input {
-      background: none;
+            background: none!important;
+
+      border-radius: 12px;
+      padding-bottom: 2px;
     }
 
   `,

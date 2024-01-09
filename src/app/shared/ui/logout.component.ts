@@ -15,7 +15,7 @@ import {
     changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'app-logout',
     template: ` 
-    <ion-button style="width: 100%; padding-inline: 24px" color="tertiary" (click)="logout.emit()">
+    <ion-button style="width: 100%; padding-inline: 24px" size="small" color="tertiary" (click)="logout.emit()">
     Wyloguj się
     </ion-button>`,
     styles: ``,

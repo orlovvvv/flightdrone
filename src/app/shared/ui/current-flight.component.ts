@@ -52,7 +52,7 @@ import { remainingTime, timeToMinutes } from '../utils/remaining-time';
           }}</ion-card-subtitle
         >
         <ion-button class="cancel" color="danger" id="end-flight" size="small">
-          <ion-icon name="close" />
+          <ion-icon name="close" size="small" />
         </ion-button>
       </ion-card-header>
       <ion-card-content style="height: 160px;" @inOut>

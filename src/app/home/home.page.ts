@@ -22,7 +22,6 @@ import { HeaderComponent } from '../shared/ui/header.component';
 import { MapSettingsComponent } from '../shared/ui/map-settings.component';
 import { ToastErrorComponent } from '../shared/ui/toast-error.component';
 import { WidgetsComponent } from '../shared/ui/widgets.component';
-import { MenuHeaderComponent } from 'src/app/shared/ui/menu-header.component';
 import { LogoutComponent } from 'src/app/shared/ui/logout.component';
 
 @Component({
@@ -30,10 +29,10 @@ import { LogoutComponent } from 'src/app/shared/ui/logout.component';
   template: `
     <ion-menu contentId="main-content">
       <ion-toolbar class="menu-header" role="menu-header">
-        <ion-title slot="start"> FlightDrone </ion-title>
+        <ion-title slot="start" size="small"> FlightDrone </ion-title>
         <ion-menu-toggle slot="end">
-          <ion-button class="cancel" color="danger" id="present-alert">
-            <ion-icon name="close" />
+          <ion-button class="cancel" color="danger" id="present-alert" size="small">
+            <ion-icon name="close" size="small"/>
           </ion-button>
         </ion-menu-toggle>
       </ion-toolbar>

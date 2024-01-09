@@ -36,7 +36,7 @@ import { SearchComponent } from '../feature/search.component'
       color="none"
       style="position: absolute; top: 0;"
     >
-    <ion-title slot="start" color="light"> FlightDrone </ion-title>
+    <ion-title slot="start" > FlightDrone </ion-title>
     <app-search slot="end" />
        <ion-buttons slot="end">
         <ion-menu-button></ion-menu-button>
