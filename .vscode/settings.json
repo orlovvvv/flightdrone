@@ -15,6 +15,7 @@
     "geolocation",
     "functions",
     "search",
-    "menu"
+    "menu",
+    "ci/di"
   ]
 }
