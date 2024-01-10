@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { Marker } from '@capacitor/google-maps';
@@ -16,11 +15,13 @@ type MapState = {
   providedIn: 'root',
 })
 export class MapService {
-  // dependencies
-  private flightService = inject(FlightService);
-  private http = inject(HttpClient);
+  // options
+  markerOptions: google.maps.MarkerOptions = {
+    draggable: false,
+    icon: '../../../assets/png/drone.png',
+  };
 
-  options: google.maps.MapOptions = {
+  mapOptions: google.maps.MapOptions = {
     center: {
       lat: 52.237049,
       lng: 21.017532,
@@ -41,6 +42,9 @@ export class MapService {
     // zoomControl: false,
     zoom: 7,
   };
+
+  // dependencies
+  private flightService = inject(FlightService);
 
   // initial state
   private initialState: MapState = {

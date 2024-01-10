@@ -39,3 +39,13 @@ ion-skeleton-text
 {
   --border-radius: 12px;
 }
+
+body
+{
+  background: url('/assets/png/background.png') no-repeat center center fixed;
+}
+
+ion-content
+{
+  --background: none;
+}

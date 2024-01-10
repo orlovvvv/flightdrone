@@ -15,14 +15,14 @@ import { MapService } from '../data-access/map.service';
     <google-map
       height="100vh"
       width="100vw"
-      [options]="mapService.options"
+      [options]="mapService.mapOptions"
       style="z-index: 1;"
     >
       @for(marker of mapService.state().markers; track marker.coordinate){
 
       <map-marker
         [position]="marker.coordinate"
-        [options]="{ draggable: false }"
+        [options]="mapService.markerOptions"
       />
 
       }

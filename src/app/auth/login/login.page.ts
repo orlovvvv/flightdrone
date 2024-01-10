@@ -84,13 +84,14 @@ ion-icon {
 }
 
 .login-card {
-  margin: auto;
-  width: 100%;
- max-width: 420px;
-  min-height: 234px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+    background: rgba(0, 0, 0, 0.75);
+    margin: auto;
+    width: 100%;
+    max-width: 420px;
+    min-height: 234px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   
   
 }

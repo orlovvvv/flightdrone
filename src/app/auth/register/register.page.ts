@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -39,37 +40,40 @@ import { RegisterFormComponent } from './ui/register-form.component';
     IonRow,
     RegisterFormComponent,
     ToastErrorComponent,
+    NgOptimizedImage,
   ],
   template: `
     <ion-content class="ion-page">
       <ion-grid style="height: 100%">
         <ion-row justify-content-center align-items-center style="height: 100%">
           <ion-card class="register-card ion-no-margin" @fadeInOut>
-            @if(!authService.state.user()){
-            <ion-card-header>
-              <ion-card-title> Rejestracja </ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <app-register-form
-                [registerStatus]="registerService.state.status()"
-                (register)="registerService.state.createUser($event)"
-              />
-              <ion-note>
-                Masz już konto?
-                <ion-text routerLink="/auth/login" color="primary">
-                  Zaloguj się
-                </ion-text>
-              </ion-note>
-            </ion-card-content>
-            } @else {
-            <ion-card-content>
-              <ion-spinner
-                class="login-spinner"
-                name="circular"
-                color="primary"
-              ></ion-spinner>
-            </ion-card-content>
-            }
+            <div class="ion-content">
+              @if(!authService.state.user()){
+              <ion-card-header>
+                <ion-card-title> Rejestracja </ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <app-register-form
+                  [registerStatus]="registerService.state.status()"
+                  (register)="registerService.state.createUser($event)"
+                />
+                <ion-note>
+                  Masz już konto?
+                  <ion-text routerLink="/auth/login" color="primary">
+                    Zaloguj się
+                  </ion-text>
+                </ion-note>
+              </ion-card-content>
+              } @else {
+              <ion-card-content>
+                <ion-spinner
+                  class="login-spinner"
+                  name="circular"
+                  color="primary"
+                ></ion-spinner>
+              </ion-card-content>
+              }
+            </div>
           </ion-card>
         </ion-row>
       </ion-grid>
@@ -81,20 +85,22 @@ import { RegisterFormComponent } from './ui/register-form.component';
     </ion-content>
   `,
   styles: `
+
+
 ion-icon {
   width: 24px;
   height: 24px;
 }
 
 .register-card {
-
-  margin: auto;
-  width: 100%;
-  max-width: 480px;
-  min-height: 558px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+    background: rgba(0, 0, 0, 0.75);
+    margin: auto;
+    width: 100%;
+    max-width: 480px;
+    min-height: 558px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
 }
 

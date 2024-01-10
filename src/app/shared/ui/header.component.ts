@@ -34,7 +34,7 @@ import { SearchComponent } from '../feature/search.component';
       <img
         class="logo"
         slot="start"
-        ngSrc="../../../assets/FlightDrone_logo.png"
+        ngSrc="/../../../assets/png/FlightDrone_logo.png"
         width="auto"
         height="42"
         priority
