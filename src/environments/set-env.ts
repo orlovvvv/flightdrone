@@ -7,7 +7,7 @@ const setEnv = () => {
   // Load node modules
   const colors = require('colors');
   require('dotenv').config({
-    path: 'src/environments/.env',
+    path: '.env',
   });
   // `environment.ts` file structure
   const envConfigFile = `export const environment = {

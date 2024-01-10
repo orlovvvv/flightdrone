@@ -20,7 +20,7 @@ log.txt
 # Env
 src/environments/environment.prod.ts
 src/environments/environment.ts
-src/environments/.env
+.env
 
 # Ionic
 /.ionic
