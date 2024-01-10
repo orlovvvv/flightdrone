@@ -1,5 +1,8 @@
 import { MapService } from './../data-access/map.service';
 import {
+  AfterContentChecked,
+  AfterContentInit,
+  AfterViewChecked,
   AfterViewInit,
   CUSTOM_ELEMENTS_SCHEMA,
   Component,
@@ -12,6 +15,7 @@ import {
 import { toObservable } from '@angular/core/rxjs-interop';
 import { GoogleMap, Marker } from '@capacitor/google-maps';
 import { GoogleMapConfig } from '@capacitor/google-maps/dist/typings/definitions';
+import { IonButton } from '@ionic/angular/standalone';
 import { signalSlice } from 'ngxtension/signal-slice';
 import {
   Subject,
@@ -27,7 +31,14 @@ import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-map',
-  template: `<capacitor-google-map #map /> `,
+  template: `
+    <ion-button
+      style="position: fixed; top: 6px; left: 10rem; z-index: 1003"
+      (click)="addMarker()"
+      >D hn fufngsernfuiserbngsernguhwerfburb</ion-button
+    >
+    <capacitor-google-map #map />
+  `,
   styles: `
   capacitor-google-map {
   display: block;
@@ -38,6 +49,7 @@ import { environment } from 'src/environments/environment';
   `,
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [IonButton],
 })
 
 /*
@@ -52,24 +64,22 @@ export class MapComponent implements AfterViewInit {
   private mapService = inject(MapService);
   @ViewChild('map') ref!: ElementRef<HTMLElement>;
 
-
-  constructor() {
-    effect(
-      () => console.log(this.state().markers)
-    )
-  }
-
+  marker: Marker = {
+    coordinate: {
+      lat: 51.64027,
+      lng: 22.90032,
+    },
+    title: 'TEST',
+  };
   ngAfterViewInit() {
-    const marker: Marker = {
-      coordinate: {
-        lat: 51.64027,
-        lng: 22.90032
-      },
-      title: 'TEST'
-    }
-    this.state.createMap().then(map => map.map?.addMarker(marker))
+    this.state.createMap()
   }
 
+
+  async addMarker() {
+    console.log('added');
+    await this.state.addMarker(this.marker)
+  }
   async createMap() {
     const head = document.head;
     //* Prevent font download when map requests data
@@ -96,6 +106,7 @@ export class MapComponent implements AfterViewInit {
       apiKey: environment.apiKey!,
       region: 'pl',
       config: this.mapService.config,
+
     });
 
     return map;
@@ -165,7 +176,8 @@ export class MapComponent implements AfterViewInit {
         $.pipe(
           switchMap(() =>
             scheduled(this.createMap(), asapScheduler).pipe(
-              map((map) => ({ map }))
+              map((map) => ({ map })),
+
             )
           )
         ),
