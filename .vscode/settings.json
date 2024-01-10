@@ -16,6 +16,7 @@
     "functions",
     "search",
     "menu",
-    "ci/di"
+    "ci/di",
+    "profile"
   ]
 }
