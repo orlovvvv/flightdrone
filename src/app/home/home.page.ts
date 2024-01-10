@@ -19,11 +19,11 @@ import { FlightService } from '../shared/data-access/flight.service';
 import { GeolocationService } from '../shared/data-access/geolocation.service';
 import { ProfileService } from '../shared/data-access/profile.service';
 import { CheckInComponent } from '../shared/feature/check-in.component';
-import { MapComponent } from '../shared/feature/map.component';
 import { WidgetsComponent } from '../shared/feature/widgets.component';
 import { HeaderComponent } from '../shared/ui/header.component';
 import { MapSettingsComponent } from '../shared/ui/map-settings.component';
 import { ToastErrorComponent } from '../shared/ui/toast-error.component';
+import { GoogleMapsComponent } from 'src/app/shared/feature/google-map.component';
 
 @Component({
   selector: 'app-home',
@@ -57,7 +57,7 @@ import { ToastErrorComponent } from '../shared/ui/toast-error.component';
       id="main-content"
       style="overflow-y: hidden;"
     >
-      <app-map style="overflow-y: hidden;" />
+      <!-- <app-map style="overflow-y: hidden;" /> -->
       <app-header />
       <!-- <app-map-settings /> -->
       <app-check-in />
@@ -84,7 +84,6 @@ import { ToastErrorComponent } from '../shared/ui/toast-error.component';
     CheckInComponent,
     MapSettingsComponent,
     WidgetsComponent,
-    MapComponent,
     IonButton,
     ToastErrorComponent,
     IonMenu,
@@ -104,7 +103,7 @@ export default class HomePage {
   protected droneService = inject(DroneService);
   protected geolocationService = inject(GeolocationService);
   protected flightsService = inject(FlightService);
-
+  protected mapService = inject(MapService)
   private router = inject(Router);
 
   constructor() {
@@ -113,8 +112,6 @@ export default class HomePage {
       if (!this.authService.state.user()) {
         this.router.navigate(['auth', 'login']);
       }
-
-      console.log(this.geolocationService.state().position)
     });
   }
 

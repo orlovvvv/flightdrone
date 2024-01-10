@@ -42,4 +42,4 @@ bootstrapApplication(AppComponent, {
       registrationStrategy: 'registerWhenStable:30000',
     }),
   ],
-});
+}).catch((err) => console.error(err));;
