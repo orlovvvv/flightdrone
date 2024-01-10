@@ -1,3 +1,4 @@
+import { MapService } from './../shared/data-access/map.service';
 import { Component, effect, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import {
@@ -103,6 +104,7 @@ export default class HomePage {
   protected droneService = inject(DroneService);
   protected geolocationService = inject(GeolocationService);
   protected flightsService = inject(FlightService);
+
   private router = inject(Router);
 
   constructor() {
@@ -111,6 +113,9 @@ export default class HomePage {
       if (!this.authService.state.user()) {
         this.router.navigate(['auth', 'login']);
       }
+
+      console.log(this.geolocationService.state().position)
     });
   }
+
 }

@@ -33,10 +33,9 @@ import { ProfileService } from './profile.service';
 export class FlightService {
   // depedencies
   private appwrite = inject(APPWRITE);
-  private authService = inject(AuthService);
   private profileService = inject(ProfileService);
   private geolocationService = inject(GeolocationService);
-  private http = inject(HttpClient);
+
 
   apiFLights =
     environment.apiEndpoint + environment.flightCollectionId + '/documents';
