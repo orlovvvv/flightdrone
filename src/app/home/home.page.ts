@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import { Component, effect, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import {
@@ -27,20 +28,37 @@ import { MapService } from './../shared/data-access/map.service';
 
 @Component({
   selector: 'app-home',
+  standalone: true,
+  imports: [
+    IonContent,
+    HeaderComponent,
+    CheckInComponent,
+    MapSettingsComponent,
+    WidgetsComponent,
+    IonButton,
+    ToastErrorComponent,
+    IonMenu,
+    LogoutComponent,
+    IonFooter,
+    IonToolbar,
+    IonTitle,
+    IonMenuToggle,
+    IonIcon,
+    GoogleMapsComponent,
+    NgOptimizedImage,
+  ],
   template: `
     <ion-menu contentId="main-content">
       <ion-toolbar class="menu-header" role="menu-header">
-        <ion-title slot="start" size="small"> FlightDrone </ion-title>
-        <ion-menu-toggle slot="end">
-          <ion-button
-            class="cancel"
-            color="danger"
-            id="present-alert"
-            size="small"
-          >
-            <ion-icon name="close" size="small" />
-          </ion-button>
-        </ion-menu-toggle>
+        <img
+          class="logo"
+          slot="start"
+          ngSrc="/../../../assets/png/FlightDrone_logo.png"
+          width="auto"
+          height="42"
+          priority
+          alt="FlightDrone"
+        />
       </ion-toolbar>
       <ion-content>
         <app-widgets />
@@ -73,28 +91,16 @@ import { MapService } from './../shared/data-access/map.service';
       border-radius: 0 12px 12px 0;
       --min-width:300px;
     }
+    
     .menu-header {
       padding-inline: 6px;
     }
+    
+    .logo{
+    margin: 7px; 
+    border-radius: 12px; 
+    }
   `,
-  standalone: true,
-  imports: [
-    IonContent,
-    HeaderComponent,
-    CheckInComponent,
-    MapSettingsComponent,
-    WidgetsComponent,
-    IonButton,
-    ToastErrorComponent,
-    IonMenu,
-    LogoutComponent,
-    IonFooter,
-    IonToolbar,
-    IonTitle,
-    IonMenuToggle,
-    IonIcon,
-    GoogleMapsComponent,
-  ],
 })
 export default class HomePage {
   // dependencies
