@@ -1,4 +1,3 @@
-import { MapService } from './../shared/data-access/map.service';
 import { Component, effect, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import {
@@ -11,6 +10,7 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
+import { GoogleMapsComponent } from 'src/app/shared/feature/google-map.component';
 import { LogoutComponent } from 'src/app/shared/ui/logout.component';
 import { APPWRITE } from 'src/main';
 import { AuthService } from '../shared/data-access/auth.service';
@@ -23,7 +23,7 @@ import { WidgetsComponent } from '../shared/feature/widgets.component';
 import { HeaderComponent } from '../shared/ui/header.component';
 import { MapSettingsComponent } from '../shared/ui/map-settings.component';
 import { ToastErrorComponent } from '../shared/ui/toast-error.component';
-import { GoogleMapsComponent } from 'src/app/shared/feature/google-map.component';
+import { MapService } from './../shared/data-access/map.service';
 
 @Component({
   selector: 'app-home',
@@ -51,7 +51,6 @@ import { GoogleMapsComponent } from 'src/app/shared/feature/google-map.component
         </ion-toolbar>
       </ion-footer>
     </ion-menu>
-
     <ion-content
       [fullscreen]="true"
       id="main-content"
@@ -59,6 +58,7 @@ import { GoogleMapsComponent } from 'src/app/shared/feature/google-map.component
     >
       <!-- <app-map style="overflow-y: hidden;" /> -->
       <app-header />
+      <app-google-map style="z-index: 0;" />
       <!-- <app-map-settings /> -->
       <app-check-in />
     </ion-content>
@@ -93,6 +93,7 @@ import { GoogleMapsComponent } from 'src/app/shared/feature/google-map.component
     IonTitle,
     IonMenuToggle,
     IonIcon,
+    GoogleMapsComponent,
   ],
 })
 export default class HomePage {
@@ -103,7 +104,7 @@ export default class HomePage {
   protected droneService = inject(DroneService);
   protected geolocationService = inject(GeolocationService);
   protected flightsService = inject(FlightService);
-  protected mapService = inject(MapService)
+  protected mapService = inject(MapService);
   private router = inject(Router);
 
   constructor() {
@@ -114,5 +115,4 @@ export default class HomePage {
       }
     });
   }
-
 }

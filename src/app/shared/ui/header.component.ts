@@ -1,10 +1,5 @@
-import { AsyncPipe } from '@angular/common'
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Output
-} from '@angular/core'
+import { NgOptimizedImage } from '@angular/common';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   IonButton,
   IonButtons,
@@ -12,8 +7,8 @@ import {
   IonMenuButton,
   IonTitle,
   IonToolbar,
-} from '@ionic/angular/standalone'
-import { SearchComponent } from '../feature/search.component'
+} from '@ionic/angular/standalone';
+import { SearchComponent } from '../feature/search.component';
 
 @Component({
   standalone: true,
@@ -25,7 +20,7 @@ import { SearchComponent } from '../feature/search.component'
     IonButton,
     IonButtons,
     IonMenuButton,
-    AsyncPipe,
+    NgOptimizedImage,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-header',
@@ -36,16 +31,22 @@ import { SearchComponent } from '../feature/search.component'
       color="none"
       style="position: absolute; top: 0;"
     >
-    <ion-title slot="start" > FlightDrone </ion-title>
-    <app-search slot="end" />
-       <ion-buttons slot="end">
+      <img
+        ngSrc="../../../assets/FlightDrone_logo.png"
+        width="auto"
+        height="48"
+        style="margin: 4px; border-radius: 12px"
+        priority
+        alt="FlightDrone"
+      />
+
+      <app-search slot="end" />
+      <ion-buttons slot="end">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
-     
     </ion-toolbar>
   `,
   styles: ``,
 })
-export class HeaderComponent {
-
-}
+export class HeaderComponent {}
+//      ngSrc = '../FlightDrone_logo.png';

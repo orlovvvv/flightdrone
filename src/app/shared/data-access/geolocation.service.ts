@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core'
-import { Geolocation, Position } from '@capacitor/geolocation'
-import { signalSlice } from 'ngxtension/signal-slice'
+import { Injectable } from '@angular/core';
+import { Geolocation, Position } from '@capacitor/geolocation';
+import { signalSlice } from 'ngxtension/signal-slice';
 import {
   EMPTY,
   Observable,
@@ -11,11 +11,11 @@ import {
   merge,
   scheduled,
   switchMap,
-} from 'rxjs'
+} from 'rxjs';
 
 type GeolocationState = {
-  position: Position | null | undefined
-}
+  position: Position | null | undefined;
+};
 
 @Injectable({
   providedIn: 'root',
@@ -51,7 +51,7 @@ export class GeolocationService {
             )
               .pipe(
                 catchError(() => {
-                  return EMPTY
+                  return EMPTY;
                 })
               )
               .pipe(map((position) => ({ position })))

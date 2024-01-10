@@ -1,4 +1,4 @@
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withJsonpSupport } from '@angular/common/http';
 import { InjectionToken, enableProdMode, isDevMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -36,10 +36,10 @@ bootstrapApplication(AppComponent, {
     provideIonicAngular({ mode: 'md' }),
     provideRouter(routes),
     provideAnimations(),
-    provideHttpClient(),
+    provideHttpClient(withJsonpSupport()),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',
     }),
   ],
-}).catch((err) => console.error(err));;
+}).catch((err) => console.error(err));

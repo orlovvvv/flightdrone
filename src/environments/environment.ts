@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiKey: 'AIzaSyC9-cY48c21WRCSR2z-kcO3nWKEXe7Bg0M' + 'adniufnsiugnfiuerngiuwehfkjw cuwbfjhasberub87',
+  apiKey: 'AIzaSyC9-cY48c21WRCSR2z-kcO3nWKEXe7Bg0M',
   host: 'http://localhost:4200/',
   endpoint: 'https://cloud.appwrite.io/v1',
   projectId: '657a24b8ec6728d79a07',

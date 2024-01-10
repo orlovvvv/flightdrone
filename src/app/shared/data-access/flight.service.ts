@@ -1,5 +1,4 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, computed, inject } from '@angular/core';
 import { ID } from 'appwrite';
 import { signalSlice } from 'ngxtension/signal-slice';
 import {
@@ -12,8 +11,8 @@ import {
   merge,
   scheduled,
   switchMap,
+  tap,
 } from 'rxjs';
-import { AuthService } from 'src/app/shared/data-access/auth.service';
 import { environment } from 'src/environments/environment';
 import { APPWRITE } from 'src/main';
 import {
@@ -23,6 +22,7 @@ import {
   Flights,
   RemoveFlight,
 } from '../types/flight';
+import { isTimeLeft } from '../utils/remaining-time';
 import { AddFlight } from './../types/flight';
 import { GeolocationService } from './geolocation.service';
 import { ProfileService } from './profile.service';
@@ -35,10 +35,6 @@ export class FlightService {
   private appwrite = inject(APPWRITE);
   private profileService = inject(ProfileService);
   private geolocationService = inject(GeolocationService);
-
-
-  apiFLights =
-    environment.apiEndpoint + environment.flightCollectionId + '/documents';
 
   // initial state
   private initialState: FlightState = {
@@ -71,13 +67,17 @@ export class FlightService {
         $.pipe().pipe(
           switchMap((flight) =>
             scheduled(
-              this.geolocationService.state.locate().then((geolocation) => ({
-                ...flight,
-                latitude: geolocation.position?.coords.latitude,
-                longitude: geolocation.position?.coords.longitude,
-              })),
+              this.geolocationService.state.locate().then((geolocation) => {
+                console.log(geolocation);
+                return {
+                  ...flight,
+                  latitude: geolocation.position?.coords.latitude,
+                  longitude: geolocation.position?.coords.longitude,
+                };
+              }),
               asapScheduler
             ).pipe(
+              tap((value) => console.log(value)),
               switchMap((flight) =>
                 scheduled(
                   this.appwrite.database
@@ -156,4 +156,12 @@ export class FlightService {
         ),
     },
   });
+
+  //   utils
+
+  activeFlights = computed(() =>
+    this.state().flights.filter((flight) =>
+      isTimeLeft(flight.$createdAt, flight.duration)
+    )
+  );
 }

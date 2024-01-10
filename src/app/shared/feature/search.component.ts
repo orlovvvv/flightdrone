@@ -2,8 +2,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   ViewChild,
-  computed,
+  effect,
   inject,
+  signal,
 } from '@angular/core';
 import {
   IonButton,
@@ -13,7 +14,6 @@ import {
 } from '@ionic/angular/standalone';
 import { FlightService } from 'src/app/shared/data-access/flight.service';
 import { ListFlightsComponent } from 'src/app/shared/ui/list-flights.component';
-import { isTimeLeft } from 'src/app/shared/utils/remaining-time';
 
 @Component({
   standalone: true,
@@ -59,7 +59,7 @@ import { isTimeLeft } from 'src/app/shared/utils/remaining-time';
         </div>
         <div class="content">
           <app-list-flights
-            [flights]="activeFlights()"
+            [flights]="flightService.activeFlights()"
             [loaded]="flightService.state().loaded"
           />
         </div>
@@ -113,23 +113,17 @@ import { isTimeLeft } from 'src/app/shared/utils/remaining-time';
 export class SearchComponent {
   @ViewChild(IonModal) modal!: IonModal;
   @ViewChild('search') search!: IonSearchbar;
-
   protected flightService = inject(FlightService);
 
-  value: string = '';
-  onDidPresent() {
-    setTimeout(() => this.search.setFocus(), 300);
+  constructor() {
+    effect(() => {
+      console.log('Wyszukiwarka', this.value());
+    });
   }
-
-  activeFlights = computed(() =>
-    this.flightService
-      .state()
-      .flights.filter(
-        (flight) =>
-          isTimeLeft(flight.$createdAt, flight.duration) &&
-          JSON.stringify(flight).includes(this.value)
-      )
-  );
+  value = signal<string>('');
+  onDidPresent() {
+    return this.search.setFocus();
+  }
 
   close() {
     this.modal.dismiss(null, 'cancel');
