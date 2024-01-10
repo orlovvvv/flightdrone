@@ -25,9 +25,6 @@ export class ProfileService {
   private appwrite = inject(APPWRITE);
   private authService = inject(AuthService);
 
-  apiProfile =
-    environment.apiEndpoint + environment.profileCollectionId + '/documents'; // + documentId
-
   // initial state
   private initialState: ProfileState = {
     profile: undefined,
