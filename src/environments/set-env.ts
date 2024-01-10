@@ -12,7 +12,7 @@ const setEnv = () => {
   // `environment.ts` file structure
   const envConfigFile = `export const environment = {
   apiKey: '${process.env.API_KEY}',
-  apiEndpoint: '${process.env.ENDPOINT}',
+  endpoint: '${process.env.ENDPOINT}',
   projectId: '${process.env.PORJECT_ID}',
   weatherApi: '${process.env.WEATHER_SERCRET}',
   databaseId: '${process.env.DATABASE_ID}',
@@ -46,7 +46,7 @@ const setEnv = () => {
     } else {
       console.log(
         colors.magenta(
-          `Angular environment.ts file generated correctly at ${targetPath} \n`
+          `Angular environment.prod.ts file generated correctly at ${targetPathProd} \n`
         )
       );
     }
