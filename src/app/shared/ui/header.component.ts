@@ -32,10 +32,11 @@ import { SearchComponent } from '../feature/search.component';
       style="position: absolute; top: 0;"
     >
       <img
+        class="logo"
+        slot="start"
         ngSrc="../../../assets/FlightDrone_logo.png"
         width="auto"
-        height="48"
-        style="margin: 4px; border-radius: 12px"
+        height="42"
         priority
         alt="FlightDrone"
       />
@@ -46,7 +47,11 @@ import { SearchComponent } from '../feature/search.component';
       </ion-buttons>
     </ion-toolbar>
   `,
-  styles: ``,
+  styles: `
+  .logo{
+    margin: 7px; 
+    border-radius: 12px; 
+  }
+  `,
 })
 export class HeaderComponent {}
-//      ngSrc = '../FlightDrone_logo.png';
