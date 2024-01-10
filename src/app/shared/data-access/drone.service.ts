@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { ID } from 'appwrite';
 import { signalSlice } from 'ngxtension/signal-slice';
@@ -22,7 +21,6 @@ import {
   EditDrone,
   RemoveDrone,
 } from '../types/drone';
-import { ProfileService } from './profile.service';
 
 @Injectable({
   providedIn: 'root',
@@ -30,11 +28,6 @@ import { ProfileService } from './profile.service';
 export class DroneService {
   // dependencies
   private appwrite = inject(APPWRITE);
-  private http = inject(HttpClient);
-  private profileService = inject(ProfileService);
-
-  apiDrones =
-    environment.apiEndpoint + environment.droneCollectionId + '/documents';
 
   // initial state
   private initialState: DroneState = {
