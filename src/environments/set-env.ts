@@ -3,6 +3,7 @@ const setEnv = () => {
   const writeFile = fs.writeFile;
   // Configure Angular `environment.ts` file path
   const targetPath = './src/environments/environment.ts';
+  const targetPathProd = './src/environments/environment.prod.ts';
   // Load node modules
   const colors = require('colors');
   require('dotenv').config({
@@ -27,6 +28,18 @@ const setEnv = () => {
     )
   );
   writeFile(targetPath, envConfigFile, (err: any) => {
+    if (err) {
+      console.error(err);
+      throw err;
+    } else {
+      console.log(
+        colors.magenta(
+          `Angular environment.ts file generated correctly at ${targetPath} \n`
+        )
+      );
+    }
+  });
+  writeFile(targetPathProd, envConfigFile, (err: any) => {
     if (err) {
       console.error(err);
       throw err;
