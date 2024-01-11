@@ -22,7 +22,7 @@ export const APPWRITE = new InjectionToken('Appwrite client', {
   factory: () => {
     const client = new Client()
       .setEndpoint('https://cloud.appwrite.io/v1')
-      .setProject(environment.projectId);
+      .setProject('657a24b8ec6728d79a07');
 
     const account = new Account(client);
     const database = new Databases(client);
