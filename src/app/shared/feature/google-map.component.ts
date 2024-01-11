@@ -67,7 +67,7 @@ export class GoogleMapsComponent {
         flight,
       },
       presentingElement: await this.modalController.getTop(),
-      breakpoints: [0, 0.25, 0.5, 0.75],
+      breakpoints: [0, 0.25, 0.5, 0.75, 1],
       initialBreakpoint: 0.25,
     });
 
