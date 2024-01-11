@@ -10,7 +10,6 @@ import {
   locate,
   removeOutline,
 } from 'ionicons/icons';
-import { environment } from 'src/environments/environment';
 import { Animations } from './shared/animation/animation';
 
 @Component({
@@ -36,7 +35,6 @@ export class AppComponent {
       removeOutline,
       eyeOutline,
     });
-    console.log(environment.endpoint);
   }
 
   getRouteAnimationData() {
