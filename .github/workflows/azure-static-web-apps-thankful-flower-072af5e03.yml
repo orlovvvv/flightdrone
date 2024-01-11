@@ -19,22 +19,6 @@ jobs:
         with:
           submodules: true
           lfs: false
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: "20"
-      - name: Create environment.prod.ts
-        run: |
-          echo "export const environment = {" > src/environments/environment.prod.ts
-          echo "  apiKey: '$API_KEY'," >> src/environments/environment.prod.ts
-          echo "  endpoint: '$ENDPOINT'," >> src/environments/environment.prod.ts
-          echo "  projectId: '$PORJECT_ID'," >> src/environments/environment.prod.ts
-          echo "  weatherSecret: '$WEATHER_SERCRET'," >> src/environments/environment.prod.ts
-          echo "  databaseId: '$DATABASE_ID'," >> src/environments/environment.prod.ts
-          echo "  profileCollection: '$PROFILE_COLLECTION'," >> src/environments/environment.prod.ts
-          echo "  flightCollection: '$FLIGHT_COLLECTION'," >> src/environments/environment.prod.ts
-          echo "  droneCollection: '$DRONE_COLLECTION'" >> src/environments/environment.prod.ts
-          echo "};" >> src/environments/environment.prod.ts
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -47,6 +31,7 @@ jobs:
           app_location: "/" # App source code path
           api_location: "" # Api source code path - optional
           output_location: "www/browser" # Built app content directory - optional
+           skip_api_build: true
           ###### End of Repository/Build Configurations ######
         env:
           API_KEY: ${{ secrets.API_KEY }}
