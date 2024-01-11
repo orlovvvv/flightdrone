@@ -20,26 +20,6 @@ jobs:
         with:
           submodules: true
           lfs: false
-      - name: Create .env file
-        run: |
-          echo "NG_APP_API_KEY=${{ env.API_KEY }}" >> .env
-          echo "NG_APP_ENDPOINT=${{ env.ENDPOINT }}" >> .env
-          echo "NG_APP_PORJECT_ID=${{ env.PORJECT_ID }}" >> .env
-          echo "NG_APP_WEATHER_SERCRET=${{ env.WEATHER_SERCRET }}" >> .env
-          echo "NG_APP_DATABASE_ID=${{ env.DATABASE_ID }}" >> .env
-          echo "NG_APP_PROFILE_COLLECTION=${{ env.PROFILE_COLLECTION }}" >> .env
-          echo "NG_APP_FLIGHT_COLLECTION=${{ env.FLIGHT_COLLECTION }}" >> .env
-          echo "NG_APP_DRONE_COLLECTION=${{ env.DRONE_COLLECTION }}" >> .env
-          echo ${{ env.DRONE_COLLECTION }} | sed -e 's/\(.\)/\1 /g'
-        env:
-          API_KEY: ${{ secrets.API_KEY }}
-          ENDPOINT: ${{ vars.ENDPOINT }}
-          PORJECT_ID: ${{ secrets.PORJECT_ID }}
-          WEATHER_SERCRET: ${{ secrets.WEATHER_SERCRET }}
-          DATABASE_ID: ${{ secrets.DATABASE_ID }}
-          PROFILE_COLLECTION: ${{ secrets.PROFILE_COLLECTION }}
-          FLIGHT_COLLECTION: ${{ secrets.FLIGHT_COLLECTION }}
-          DRONE_COLLECTION: ${{ secrets.DRONE_COLLECTION }}
       - name: Display .env file
         run: echo ${{ secrets.DRONE_COLLECTION }} | sed -e 's/\(.\)/\1 /g'
       - name: Build And Deploy
@@ -55,15 +35,6 @@ jobs:
           api_location: "" # Api source code path - optional
           output_location: "www/browser" # Built app content directory - optional
           skip_api_build: true
-        env:
-          API_KEY: ${{ secrets.API_KEY }}
-          ENDPOINT: ${{ vars.ENDPOINT }}
-          PORJECT_ID: ${{ secrets.PORJECT_ID }}
-          WEATHER_SERCRET: ${{ secrets.WEATHER_SERCRET }}
-          DATABASE_ID: ${{ secrets.DATABASE_ID }}
-          PROFILE_COLLECTION: ${{ secrets.PROFILE_COLLECTION }}
-          FLIGHT_COLLECTION: ${{ secrets.FLIGHT_COLLECTION }}
-          DRONE_COLLECTION: ${{ secrets.DRONE_COLLECTION }}
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
