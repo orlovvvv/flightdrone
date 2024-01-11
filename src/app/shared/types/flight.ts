@@ -5,6 +5,7 @@ import { Profile } from './profile';
 export type Flights = Flight[];
 
 export type Flight = {
+  [key: string]: any;
   latitude: number;
   longitude: number;
   duration: number;

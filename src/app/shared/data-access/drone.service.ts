@@ -16,6 +16,7 @@ import { environment } from 'src/environments/environment';
 import { APPWRITE } from 'src/main';
 import {
   AddDrone,
+  Drone,
   DroneState,
   Drones,
   EditDrone,
@@ -67,14 +68,12 @@ export class DroneService {
                   ID.unique(),
                   add
                 )
-                .then((document) => ({
-                  $id: document.$id,
-                  $createdAt: document.$createdAt,
-                  $updatedAt: document.$updatedAt,
-                  $databaseId: document.$databaseId,
-                  $collectionId: document.$collectionId,
-                  ...add,
-                })),
+                .then(
+                  (document) =>
+                    ({
+                      document,
+                    } as unknown as Drone)
+                ),
               asapScheduler
             ).pipe(
               catchError((err) => {

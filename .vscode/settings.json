@@ -17,6 +17,7 @@
     "search",
     "menu",
     "ci/di",
-    "profile"
+    "profile",
+    "flight"
   ]
 }

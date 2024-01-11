@@ -19,9 +19,11 @@ export type DroneState = {
   error: string | null;
 };
 
-export type AddDrone = Omit<
-  Drone,
-  '$id' | '$createdAt' | '$updatedAt' | '$databaseId' | '$collectionId'
->;
+export type AddDrone = Partial<{
+  model: string;
+  serial: string;
+  manufacturer: string;
+  weight: number;
+}>;
 export type EditDrone = { id: Drone['$id']; data: AddDrone };
 export type RemoveDrone = Drone['$id'];
