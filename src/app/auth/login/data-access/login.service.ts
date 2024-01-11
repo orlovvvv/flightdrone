@@ -56,7 +56,7 @@ export class LoginService {
           switchMap(() =>
             scheduled(this.authService.state.signout(), asapScheduler).pipe(
               map(() => ({ status: 'pending' as const })),
-              catchError((error) => {
+              catchError(() => {
                 return of({ status: 'error' as const })
               })
             )

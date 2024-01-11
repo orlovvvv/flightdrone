@@ -13,11 +13,17 @@ export type Profile = {
 } & Collection;
 
 export type ProfileState = {
-  profile: Profile | null | undefined;
+  profile: Profile | undefined;
   loaded: boolean;
-  error: string | null;
+  error: Error | null;
 };
 
-export type AddProfile = Omit<Profile, '$id'>;
+export type AddProfile = Partial<{
+  pilotNumber: string;
+  operatorNumber: string;
+  licenseA1: boolean;
+  licenseA2: boolean;
+  licenseA3: boolean;
+}>;
 export type EditProfile = { id: Profile['$id']; data: AddProfile };
 export type RemoveProfile = Profile['$id'];

@@ -47,17 +47,6 @@ import { ProfileService } from './../data-access/profile.service';
           />
         </div>
       </ion-accordion>
-      <ion-accordion value="third">
-        <ion-item slot="header" color="light">
-          <ion-label>Historyczne check-in</ion-label>
-        </ion-item>
-        <div class="ion-no-padding" slot="content">
-          <app-list-flights
-            [flights]="flightHistory()"
-            [loaded]="flightService.state().loaded"
-          />
-        </div>
-      </ion-accordion>
     </ion-accordion-group>
   `,
   styles: '',

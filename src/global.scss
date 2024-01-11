@@ -25,27 +25,23 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
-ion-button
-{
+ion-button {
   --border-radius: 12px;
 }
 
-ion-card
-{
+ion-card {
   --border-radius: 12px;
 }
 
-ion-skeleton-text
-{
+ion-skeleton-text {
   --border-radius: 12px;
 }
 
-body
-{
-  background: url('/assets/png/background.png') no-repeat center center fixed;
+body {
+  background: url("/assets/png/background.png") no-repeat center center;
+  background-size: cover;
 }
 
-ion-content
-{
+ion-content {
   --background: none;
 }

@@ -6,6 +6,8 @@ import {
   IonContent,
   IonFooter,
   IonIcon,
+  IonItem,
+  IonLabel,
   IonMenu,
   IonMenuToggle,
   IonTitle,
@@ -25,6 +27,7 @@ import { HeaderComponent } from '../shared/ui/header.component';
 import { MapSettingsComponent } from '../shared/ui/map-settings.component';
 import { ToastErrorComponent } from '../shared/ui/toast-error.component';
 import { MapService } from './../shared/data-access/map.service';
+import { UserSettingsComponent } from 'src/app/shared/feature/user-settings.component';
 
 @Component({
   selector: 'app-home',
@@ -44,8 +47,11 @@ import { MapService } from './../shared/data-access/map.service';
     IonTitle,
     IonMenuToggle,
     IonIcon,
+    IonItem,
+    IonLabel,
     GoogleMapsComponent,
     NgOptimizedImage,
+    UserSettingsComponent,
   ],
   template: `
     <ion-menu contentId="main-content">
@@ -62,6 +68,7 @@ import { MapService } from './../shared/data-access/map.service';
       </ion-toolbar>
       <ion-content>
         <app-widgets />
+        <app-user-settings />
       </ion-content>
       <ion-footer class="menu-footer" role="menu-footer">
         <ion-toolbar>
@@ -82,8 +89,14 @@ import { MapService } from './../shared/data-access/map.service';
     </ion-content>
 
     <app-toast-error
-      [error]="this.flightsService.state().error"
-      [message]="this.flightsService.state().error"
+      [error]="
+        this.flightsService.state().error ||
+        this.profileService.state().error ||
+        this.droneService.state().error ||
+        this.flightsService.state().error ||
+        this.mapService.state().error
+      "
+      message="Coś poszło nie tak"
     />
   `,
   styles: `

@@ -33,12 +33,14 @@ export class ProfileService {
   };
 
   // sources
-  private error$ = new Subject<string>();
+  private error$ = new Subject<Error>();
   private profileLoaded$ = scheduled(
     this.appwrite.database.getDocument(
       environment.databaseId,
       environment.profileCollectionId,
       this.authService.state().user?.$id!
+    ).catch(
+      (err) => { this.error$.next(err); return err }
     ),
     asapScheduler
   ).pipe(map((document) => document as unknown as Profile));
@@ -63,8 +65,10 @@ export class ProfileService {
                   environment.profileCollectionId,
                   this.authService.state().user?.$id!,
                   profile
+                ).catch(
+                  (err) => err
                 )
-                .then((document) => ({ id: document.$id, ...profile })),
+                .then((document) => document as unknown as Profile),
               asapScheduler
             ).pipe(
               catchError((err) => {
@@ -85,8 +89,10 @@ export class ProfileService {
                   environment.profileCollectionId,
                   update.id,
                   update.data
+                ).catch(
+                  (err) => err
                 )
-                .then((document) => ({ $id: document.$id, ...update.data })),
+                .then((document) => document as unknown as Profile),
               asapScheduler
             ).pipe(
               catchError((err) => {
@@ -108,6 +114,8 @@ export class ProfileService {
                   environment.databaseId,
                   environment.profileCollectionId,
                   id
+                ).catch(
+                  (err) => err
                 )
                 .then(() => id),
               asapScheduler
@@ -116,7 +124,7 @@ export class ProfileService {
                 this.error$.next(err);
                 return EMPTY;
               }),
-              map(() => ({ profile: null }))
+              map(() => ({ profile: undefined }))
             )
           )
         ),

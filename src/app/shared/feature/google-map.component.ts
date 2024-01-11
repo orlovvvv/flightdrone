@@ -18,7 +18,8 @@ import { MapService } from '../data-access/map.service';
       [options]="mapService.mapOptions"
       style="z-index: 1;"
     >
-      @for(marker of mapService.state().markers; track marker.coordinate){
+        @if(mapService.state().markers){
+             @for(marker of mapService.state().markers; track marker.coordinate){
 
       <map-marker
         [position]="marker.coordinate"
@@ -26,6 +27,7 @@ import { MapService } from '../data-access/map.service';
       />
 
       }
+        }
     </google-map>
     }
   `,
