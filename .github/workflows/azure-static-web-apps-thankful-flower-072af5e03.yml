@@ -40,8 +40,8 @@ jobs:
           FLIGHT_COLLECTION: ${{ secrets.FLIGHT_COLLECTION }}
           DRONE_COLLECTION: ${{ secrets.DRONE_COLLECTION }}
 
-      # - name: Display .env file
-      #   run: cat .env
+      - name: Display .env file
+        run: cat .env
       # - name: Build And Deploy
       #   id: builddeploy
       #   uses: Azure/static-web-apps-deploy@v1
