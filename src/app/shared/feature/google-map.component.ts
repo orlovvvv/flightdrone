@@ -7,6 +7,7 @@ import { Observable, catchError, map, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MapService } from '../data-access/map.service';
 import { FlightDetailsModalComponent } from '../ui/flight-details-modal.component';
+import { isTimeLeft } from '../utils/remaining-time';
 import { FlightService } from './../data-access/flight.service';
 
 @Component({
@@ -59,7 +60,11 @@ export class GoogleMapsComponent {
   async openItemDetailsModal(marker: google.maps.MarkerOptions): Promise<void> {
     const flight = this.flightService.state
       .flights()
-      .filter((flight) => flight.drone.model === marker.title)[0];
+      .filter(
+        (flight) =>
+          flight.drone.model === marker.title &&
+          isTimeLeft(flight.$createdAt, flight.duration)
+      )[0];
 
     const modal = await this.modalController.create({
       component: FlightDetailsModalComponent, // replace with the actual component

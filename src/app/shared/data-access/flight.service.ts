@@ -1,5 +1,5 @@
 import { Injectable, computed, inject } from '@angular/core';
-import { ID } from 'appwrite';
+import { ID, Query } from 'appwrite';
 import { signalSlice } from 'ngxtension/signal-slice';
 import {
   EMPTY,
@@ -48,7 +48,8 @@ export class FlightService {
   private flightsLoaded$ = scheduled(
     this.appwrite.database.listDocuments(
       environment.databaseId,
-      environment.flightCollectionId
+      environment.flightCollectionId,
+      [Query.orderDesc('$createdAt')]
     ),
     asapScheduler
   ).pipe(map((documents) => documents.documents as unknown as Flights));
