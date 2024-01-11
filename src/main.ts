@@ -21,7 +21,7 @@ export const APPWRITE = new InjectionToken('Appwrite client', {
   providedIn: 'root',
   factory: () => {
     const client = new Client()
-      .setEndpoint(environment.endpoint)
+      .setEndpoint('https://cloud.appwrite.io/v1')
       .setProject(environment.projectId);
 
     const account = new Account(client);
