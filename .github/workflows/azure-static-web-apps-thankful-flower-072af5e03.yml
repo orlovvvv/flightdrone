@@ -20,15 +20,15 @@ jobs:
           submodules: true
           lfs: false
       - name: Create .env file
-      run: |
-        echo "NG_APP_API_KEY=${{ secrets.API_KEY }}" >> .env
-        echo "NG_APP_ENDPOINT=${{ secrets.ENDPOINT }}" >> .env
-        echo "NG_APP_PORJECT_ID=${{ secrets.PORJECT_ID }}" >> .env
-        echo "NG_APP_WEATHER_SERCRET=${{ secrets.WEATHER_SERCRET }}" >> .env
-        echo "NG_APP_DATABASE_ID=${{ secrets.DATABASE_ID }}" >> .env
-        echo "NG_APP_PROFILE_COLLECTION=${{ secrets.PROFILE_COLLECTION }}" >> .env
-        echo "NG_APP_FLIGHT_COLLECTION=${{ secrets.FLIGHT_COLLECTION }}" >> .env
-        echo "NG_APP_DRONE_COLLECTION=${{ secrets.DRONE_COLLECTION }}" >> .env
+        run: |
+          echo "NG_APP_API_KEY=${{ secrets.API_KEY }}" >> .env
+          echo "NG_APP_ENDPOINT=${{ secrets.ENDPOINT }}" >> .env
+          echo "NG_APP_PORJECT_ID=${{ secrets.PORJECT_ID }}" >> .env
+          echo "NG_APP_WEATHER_SERCRET=${{ secrets.WEATHER_SERCRET }}" >> .env
+          echo "NG_APP_DATABASE_ID=${{ secrets.DATABASE_ID }}" >> .env
+          echo "NG_APP_PROFILE_COLLECTION=${{ secrets.PROFILE_COLLECTION }}" >> .env
+          echo "NG_APP_FLIGHT_COLLECTION=${{ secrets.FLIGHT_COLLECTION }}" >> .env
+          echo "NG_APP_DRONE_COLLECTION=${{ secrets.DRONE_COLLECTION }}" >> .env
 
       - name: Build And Deploy
         id: builddeploy
