@@ -29,7 +29,8 @@ jobs:
           echo "NG_APP_PROFILE_COLLECTION=${{ secrets.PROFILE_COLLECTION }}" >> .env
           echo "NG_APP_FLIGHT_COLLECTION=${{ secrets.FLIGHT_COLLECTION }}" >> .env
           echo "NG_APP_DRONE_COLLECTION=${{ secrets.DRONE_COLLECTION }}" >> .env
-
+      - name: Display .env file
+        run: cat .env
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
