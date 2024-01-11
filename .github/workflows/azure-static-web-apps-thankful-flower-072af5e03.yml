@@ -26,16 +26,15 @@ jobs:
       - name: Create environment.ts
         run: |
           echo "export const environment = {" > src/environments/environment.ts
-          echo "  apiKey: '${{ secrets.API_KEY }}'," >> src/environments/environment.ts
-          echo "  endpoint: '${{ vars.ENDPOINT }}'," >> src/environments/environment.ts
-          echo "  projectId: '${{ secrets.PORJECT_ID }}'," >> src/environments/environment.ts
-          echo "  weatherSecret: '${{ secrets.WEATHER_SERCRET }}'," >> src/environments/environment.ts
-          echo "  databaseId: '${{ secrets.DATABASE_ID }}'," >> src/environments/environment.ts
-          echo "  profileCollection: '${{ secrets.PROFILE_COLLECTION }}'," >> src/environments/environment.ts
-          echo "  flightCollection: '${{ secrets.FLIGHT_COLLECTION }}'," >> src/environments/environment.ts
-          echo "  droneCollection: '${{ secrets.DRONE_COLLECTION }}'" >> src/environments/environment.ts
+          echo "  apiKey: '$API_KEY'," >> src/environments/environment.ts
+          echo "  endpoint: '$ENDPOINT'," >> src/environments/environment.ts
+          echo "  projectId: '$PORJECT_ID'," >> src/environments/environment.ts
+          echo "  weatherSecret: '$WEATHER_SERCRET'," >> src/environments/environment.ts
+          echo "  databaseId: '$DATABASE_ID'," >> src/environments/environment.ts
+          echo "  profileCollection: '$PROFILE_COLLECTION'," >> src/environments/environment.ts
+          echo "  flightCollection: '$FLIGHT_COLLECTION'," >> src/environments/environment.ts
+          echo "  droneCollection: '$DRONE_COLLECTION'" >> src/environments/environment.ts
           echo "};" >> src/environments/environment.ts
-
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
