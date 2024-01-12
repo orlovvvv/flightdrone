@@ -51,7 +51,7 @@ export class WeatherService {
   });
 
   getWeather(lat: number, log: number) {
-    const uri = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${log}/today?unitGroup=metric&elements=datetime%2Ctemp%2Cprecip%2Cconditions%2CdatetimeEpoch&include=days%2Cfcst%2Cobs&key=${environment.weatherApi}&options=preview&contentType=json&lang=pl`;
+    const uri = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${log}/today?unitGroup=metric&elements=temp%2Cprecipprob%2Cwindspeed%2Cwinddir%2Cconditions&key=${environment.weatherApi}&options=preview&contentType=json&lang=pl`;
     return this.http.get<Weather>(uri);
   }
 

@@ -6,7 +6,13 @@ export type Weather = {
     address: string
     timezone: string
     tzoffset: number
-    days: Day[]
+    currentConditions: {
+        temp: number
+        precipprob: number
+        windspeed: number
+        winddir: number
+        conditions: string
+    }
 }
 
 export type Day = {
@@ -15,6 +21,7 @@ export type Day = {
     temp: number
     precip: number
     conditions: string
+
 }
 export type WeatherState = {
     weather: Weather | undefined
