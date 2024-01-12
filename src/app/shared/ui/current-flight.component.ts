@@ -22,7 +22,7 @@ import {
 import { Observable, interval, map, tap } from 'rxjs';
 import { Animations } from 'src/app/shared/animation/animation';
 import { EditFlight, Flight } from '../types/flight';
-import { remainingTime, timeToMinutes } from '../utils/remaining-time';
+import { isTimeLeft, remainingTime, timeToMinutes } from '../utils/remaining-time';
 
 @Component({
   selector: 'app-current-flight',
@@ -111,13 +111,29 @@ export class CurrentFlightComponent {
   constructor() {
     this.timer$ = interval(1000).pipe(
       takeUntilDestroyed(),
-      map(() => remainingTime(this.flight!.$createdAt, this.flight!.duration)),
+      map(() => remainingTime(this.flight!.$createdAt, this.flight!.duration)
+      ),
       tap((time) =>
         this.durationUsed.update(
           () => this.flight!.duration - timeToMinutes(time)
-        )
+        ),
+      ),
+      tap((time) => {
+        const timeLeft = isTimeLeft(this.flight!.$createdAt, this.flight!.duration)
+        if (!timeLeft) {
+          this.endFlight.emit({
+            id: this.flight!.$id,
+            data: {
+              range: this.flight.range,
+              height: this.flight.height,
+              drone: this.flight.drone.$id,
+              duration: this.flight.duration,
+            },
+          });
+        }
+      }
       )
-    );
+    )
   }
 
   protected alertButtons = [

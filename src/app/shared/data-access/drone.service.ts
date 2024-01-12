@@ -70,9 +70,9 @@ export class DroneService {
                 )
                 .then(
                   (document) =>
-                    ({
-                      document,
-                    } as unknown as Drone)
+                  ({
+                    document,
+                  } as unknown as Drone)
                 ),
               asapScheduler
             ).pipe(
@@ -80,7 +80,7 @@ export class DroneService {
                 this.error$.next(err);
                 return EMPTY;
               }),
-              map((drone) => ({ drones: [..._().drones, drone] }))
+              map((drone) => ({ drones: [drone, ..._().drones] }))
             )
           )
         ),

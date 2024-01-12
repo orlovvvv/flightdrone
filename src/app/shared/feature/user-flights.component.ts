@@ -13,7 +13,8 @@ import {
 import { FlightService } from '../data-access/flight.service';
 import { ListFlightsComponent } from '../ui/list-flights.component';
 import { isTimeLeft } from '../utils/remaining-time';
-import { ProfileService } from './../data-access/profile.service';
+import { ProfileService } from '../data-access/profile.service';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -23,19 +24,12 @@ import { ProfileService } from './../data-access/profile.service';
     IonItem,
     IonLabel,
     ListFlightsComponent,
+    JsonPipe
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'app-widgets',
+  selector: 'app-user-flights',
   template: `
     <ion-accordion-group class="ion-no-padding" [multiple]="true">
-      <ion-accordion role="banner" value="first">
-        <ion-item slot="header" color="light">
-          <ion-label>Pogoda</ion-label>
-        </ion-item>
-        <div class="ion-no-padding ion-no-margin" slot="content">
-          Aktualna pozycja
-        </div>
-      </ion-accordion>
       <ion-accordion value="second">
         <ion-item slot="header" color="light">
           <ion-label>Twoje check-in</ion-label>
@@ -51,7 +45,7 @@ import { ProfileService } from './../data-access/profile.service';
   `,
   styles: '',
 })
-export class WidgetsComponent {
+export class UserFlightsComponent {
   protected flightService = inject(FlightService);
   protected profileService = inject(ProfileService);
 
@@ -63,6 +57,7 @@ export class WidgetsComponent {
           flight.profile.$id === this.profileService.state().profile?.$id
       )
   );
+
   flightHistory = computed(() =>
     this.flightService
       .state()
@@ -70,4 +65,5 @@ export class WidgetsComponent {
         (flight) => !isTimeLeft(flight.$createdAt, flight.duration)
       )
   );
+
 }

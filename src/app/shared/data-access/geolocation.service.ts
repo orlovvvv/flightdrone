@@ -12,10 +12,9 @@ import {
   scheduled,
   switchMap,
 } from 'rxjs';
+import { GeolocationState } from 'src/app/shared/types/geolocation';
 
-type GeolocationState = {
-  position: Position | null | undefined;
-};
+
 
 @Injectable({
   providedIn: 'root',

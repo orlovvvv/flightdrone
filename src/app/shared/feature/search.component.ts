@@ -115,11 +115,6 @@ export class SearchComponent {
   @ViewChild('search') search!: IonSearchbar;
   protected flightService = inject(FlightService);
 
-  constructor() {
-    effect(() => {
-      console.log('Wyszukiwarka', this.value());
-    });
-  }
   value = signal<string>('');
   onDidPresent() {
     return this.search.setFocus();

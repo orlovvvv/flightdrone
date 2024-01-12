@@ -69,7 +69,6 @@ export class FlightService {
           switchMap((flight) =>
             scheduled(
               this.geolocationService.state.locate().then((geolocation) => {
-                console.log(geolocation);
                 return {
                   ...flight,
                   latitude: geolocation.position?.coords.latitude,
@@ -78,7 +77,6 @@ export class FlightService {
               }),
               asapScheduler
             ).pipe(
-              tap((value) => console.log(value)),
               switchMap((flight) =>
                 scheduled(
                   this.appwrite.database
@@ -99,7 +97,7 @@ export class FlightService {
                     return EMPTY;
                   }),
                   map((flight) => ({
-                    flights: [..._().flights, flight],
+                    flights: [flight, ..._().flights],
                   }))
                 )
               )

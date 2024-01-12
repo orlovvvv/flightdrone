@@ -22,22 +22,19 @@ import { FlightService } from '../shared/data-access/flight.service';
 import { GeolocationService } from '../shared/data-access/geolocation.service';
 import { ProfileService } from '../shared/data-access/profile.service';
 import { CheckInComponent } from '../shared/feature/check-in.component';
-import { WidgetsComponent } from '../shared/feature/widgets.component';
+import { UserFlightsComponent } from '../shared/feature/user-flights.component';
 import { HeaderComponent } from '../shared/ui/header.component';
 import { MapSettingsComponent } from '../shared/ui/map-settings.component';
 import { ToastErrorComponent } from '../shared/ui/toast-error.component';
 import { MapService } from './../shared/data-access/map.service';
 import { UserSettingsComponent } from 'src/app/shared/feature/user-settings.component';
+import { WeatherComponent } from 'src/app/shared/feature/weather.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     IonContent,
-    HeaderComponent,
-    CheckInComponent,
-    MapSettingsComponent,
-    WidgetsComponent,
     IonButton,
     ToastErrorComponent,
     IonMenu,
@@ -52,6 +49,11 @@ import { UserSettingsComponent } from 'src/app/shared/feature/user-settings.comp
     GoogleMapsComponent,
     NgOptimizedImage,
     UserSettingsComponent,
+    HeaderComponent,
+    CheckInComponent,
+    MapSettingsComponent,
+    UserFlightsComponent,
+    WeatherComponent
   ],
   template: `
     <ion-menu contentId="main-content">
@@ -67,8 +69,9 @@ import { UserSettingsComponent } from 'src/app/shared/feature/user-settings.comp
         />
       </ion-toolbar>
       <ion-content>
-        <app-widgets />
+        <app-weather />
         <app-user-settings />
+        <app-user-flights />
       </ion-content>
       <ion-footer class="menu-footer" role="menu-footer">
         <ion-toolbar>

@@ -158,7 +158,6 @@ export default class RegisterPage {
       if (this.authService.state.user()) {
         this.router.navigate(['home']);
       }
-      console.log(this.registerService.state.status());
     });
   }
 }
