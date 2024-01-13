@@ -101,10 +101,10 @@ import { OptionsPopoverComponent } from './options-popover.component';
           </ion-select>
         </ion-item>
       </ion-list>
-      <ion-note class="ion-margin ion-padding"
-        >Dane dotyczące współrzędnych zostaną pobrane automatycznie po
-        zatwierdzeniu danych.</ion-note
-      >
+      <ion-note class="ion-margin ion-padding">
+        Dane dotyczące współrzędnych zostaną pobrane automatycznie po
+        zatwierdzeniu danych.
+      </ion-note>
       <ion-button
         color="tertiary"
         type="submit"
@@ -162,6 +162,7 @@ export class CheckInFormComponent {
   @Input() userDrones: Drones = [];
   @Output() flight = new EventEmitter<AddFlight>();
   @Output() dismiss = new EventEmitter<void>();
+
   checkInForm = inject(FormBuilder).nonNullable.group({
     range: [0, Validators.required],
     height: [0, Validators.required],

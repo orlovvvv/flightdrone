@@ -14,6 +14,7 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { GoogleMapsComponent } from 'src/app/shared/feature/google-map.component';
+import { WeatherComponent } from 'src/app/shared/feature/weather.component';
 import { LogoutComponent } from 'src/app/shared/ui/logout.component';
 import { APPWRITE } from 'src/main';
 import { AuthService } from '../shared/data-access/auth.service';
@@ -22,13 +23,13 @@ import { FlightService } from '../shared/data-access/flight.service';
 import { GeolocationService } from '../shared/data-access/geolocation.service';
 import { ProfileService } from '../shared/data-access/profile.service';
 import { CheckInComponent } from '../shared/feature/check-in.component';
+import { UserDronesComponent } from '../shared/feature/user-drones.component';
 import { UserFlightsComponent } from '../shared/feature/user-flights.component';
+import { UserSettingsComponent } from '../shared/feature/user-settings.component';
 import { HeaderComponent } from '../shared/ui/header.component';
 import { MapSettingsComponent } from '../shared/ui/map-settings.component';
 import { ToastErrorComponent } from '../shared/ui/toast-error.component';
 import { MapService } from './../shared/data-access/map.service';
-import { UserSettingsComponent } from 'src/app/shared/feature/user-settings.component';
-import { WeatherComponent } from 'src/app/shared/feature/weather.component';
 
 @Component({
   selector: 'app-home',
@@ -48,12 +49,13 @@ import { WeatherComponent } from 'src/app/shared/feature/weather.component';
     IonLabel,
     GoogleMapsComponent,
     NgOptimizedImage,
-    UserSettingsComponent,
     HeaderComponent,
     CheckInComponent,
     MapSettingsComponent,
     UserFlightsComponent,
-    WeatherComponent
+    UserDronesComponent,
+    WeatherComponent,
+    UserSettingsComponent,
   ],
   template: `
     <ion-menu contentId="main-content">
@@ -70,6 +72,7 @@ import { WeatherComponent } from 'src/app/shared/feature/weather.component';
       </ion-toolbar>
       <ion-content>
         <app-weather />
+        <app-user-drones />
         <app-user-flights />
       </ion-content>
       <ion-footer class="menu-footer" role="menu-footer">
@@ -131,6 +134,7 @@ export default class HomePage {
       if (!this.authService.state.user()) {
         this.router.navigate(['auth', 'login']);
       }
+      console.log(this.droneService.state.drones());
     });
   }
 }

@@ -1,5 +1,4 @@
 import {
-  AfterViewChecked,
   ChangeDetectionStrategy,
   Component,
   ViewChild,
@@ -22,7 +21,6 @@ import {
   IonList,
   IonModal,
   IonNote,
-  IonSearchbar,
   IonSelect,
   IonSelectOption,
   IonTitle,
@@ -73,48 +71,45 @@ import { DroneService } from './../data-access/drone.service';
         CHECK IN
       </ion-button>
     </ion-fab>
-  
 
-
-      <ion-modal
-        id="check-in-modal"
-        #modal
-        trigger="open-modal"
-        [showBackdrop]="false"
-      >
-        <ng-template class="modal-container">
-          <div class="header"> 
-                <div style="width: 100%;">
-                  <ion-title class="ion-margin-horizontal">Check in</ion-title>
-                <ion-note class="ion-margin-horizontal">
-                  Wprowadź dane lotu
-                </ion-note>
-                </div>
-
-                <ion-button
-                  class="cancel"
-                  color="danger"
-                  (click)="close()"
-                  slot="end"
-                  size="small"
-                >
-                  <ion-icon name="close" size="small"/>
-                </ion-button>
+    <ion-modal
+      id="check-in-modal"
+      #modal
+      trigger="open-modal"
+      [showBackdrop]="false"
+    >
+      <ng-template class="modal-container">
+        <div class="header">
+          <div style="width: 100%;">
+            <ion-title class="ion-margin-horizontal">Check in</ion-title>
+            <ion-note class="ion-margin-horizontal">
+              Wprowadź dane lotu
+            </ion-note>
           </div>
-        
-        
+
+          <ion-button
+            class="cancel"
+            color="danger"
+            (click)="close()"
+            slot="end"
+            size="small"
+          >
+            <ion-icon name="close" size="small" />
+          </ion-button>
+        </div>
+
         <div class="content">
-            <app-check-in-form
-              [userDrones]="drones()"
-              (flight)="flightService.state.add($event)"
-              (dismiss)="close()"
-            />
-          </div>
-        </ng-template>
-      </ion-modal>
+          <app-check-in-form
+            [userDrones]="drones()"
+            (flight)="flightService.state.add($event)"
+            (dismiss)="close()"
+          />
+        </div>
+      </ng-template>
+    </ion-modal>
 
     } @else {
-       <!-- Current flight UI -->
+    <!-- Current flight UI -->
     <app-current-flight
       [flight]="flight()"
       (endFlight)="flightService.state.edit($event)"
@@ -181,7 +176,6 @@ export class CheckInComponent {
   protected flightService = inject(FlightService);
   protected profileService = inject(ProfileService);
 
-
   flight = computed(() => {
     return this.flightService
       .state()
@@ -194,14 +188,7 @@ export class CheckInComponent {
       )[0];
   });
 
-  drones = computed(() =>
-    this.droneService
-      .state()
-      .drones.filter(
-        (drone) =>
-          drone.profile.$id === this.profileService.state().profile?.$id
-      )
-  );
+  drones = computed(() => this.droneService.state().drones);
 
   checkInModal: HTMLElement | null = null;
 
@@ -214,6 +201,6 @@ export class CheckInComponent {
   }
 
   constructor() {
-    effect(() => { });
+    effect(() => {});
   }
 }

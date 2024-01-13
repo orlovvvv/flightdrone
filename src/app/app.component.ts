@@ -6,6 +6,7 @@ import {
   addOutline,
   airplane,
   close,
+  cogOutline,
   eyeOutline,
   locate,
   removeOutline,
@@ -34,6 +35,7 @@ export class AppComponent {
       addOutline,
       removeOutline,
       eyeOutline,
+      cogOutline,
     });
   }
 

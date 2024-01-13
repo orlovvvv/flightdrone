@@ -29,8 +29,10 @@ import { UserSettingsFormComponent } from 'src/app/shared/ui/user-settings-form.
 import { Animations } from '../animation/animation';
 import { CheckInFormComponent } from '../ui/check-in-form.component';
 import { CurrentFlightComponent } from '../ui/current-flight.component';
+import { DroneFormComponent } from '../ui/drone-form.component';
 import { GeolocationButtonComponent } from '../ui/geolocation-button.component';
 import { DroneService } from './../data-access/drone.service';
+
 @Component({
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -56,26 +58,27 @@ import { DroneService } from './../data-access/drone.service';
     GeolocationButtonComponent,
     CurrentFlightComponent,
     UserSettingsFormComponent,
+    DroneFormComponent,
   ],
-  selector: 'app-user-settings',
+  selector: 'app-user-drones',
   animations: [Animations],
   template: `
-    <ion-item [button]="true" [detail]="true" id="open-settings" @inOut>
-      <ion-label>Ustawienia</ion-label>
+    <ion-item [button]="true" id="open-user-drones">
+      <ion-label>Dodawanie drona</ion-label>
     </ion-item>
 
     <ion-modal
-      id="user-settings-modal"
+      id="user-drones-modal"
       #modal
-      trigger="open-settings"
+      trigger="open-user-drones"
       [showBackdrop]="false"
     >
       <ng-template class="modal-container">
         <div class="header">
           <div style="width: 100%;">
-            <ion-title class="ion-margin-horizontal"> Ustawienia </ion-title>
+            <ion-title class="ion-margin-horizontal"> Dodaj drona </ion-title>
             <ion-note class="ion-margin-horizontal">
-              Zarządzaj kontem użytkownika
+              Dodaj nowe urządzenie do swojego profilu
             </ion-note>
           </div>
 
@@ -90,10 +93,9 @@ import { DroneService } from './../data-access/drone.service';
           </ion-button>
         </div>
         <div class="content">
-          <app-user-settings-form
-            [userProfile]="profileService.state().profile"
+          <app-drone-form
+            (drone)="droneService.state.add($event)"
             (dismiss)="close()"
-            (profile)="profileService.state.edit($event)"
           />
         </div>
       </ng-template>
@@ -101,7 +103,7 @@ import { DroneService } from './../data-access/drone.service';
   `,
   styles: `
 
-  ion-modal#user-settings-modal {
+  ion-modal#user-drones-modal {
     --height: fit-content;
     --max-width: 560px;
     --width: 100%;
@@ -148,7 +150,7 @@ import { DroneService } from './../data-access/drone.service';
  * * - passing data to flight.service
  * *
  */
-export class UserSettingsComponent {
+export class UserDronesComponent {
   // dependencies
 
   protected droneService = inject(DroneService);

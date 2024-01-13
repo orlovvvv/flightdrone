@@ -18,11 +18,8 @@ import {
   IonSelect,
   IonSelectOption,
 } from '@ionic/angular/standalone';
-import { Drones } from 'src/app/shared/types/drone';
-import { AddFlight } from '../types/flight';
 import { EditProfile, Profile } from '../types/profile';
 import { OptionsPopoverComponent } from './options-popover.component';
-import { ProfileService } from 'src/app/shared/data-access/profile.service';
 
 @Component({
   selector: 'app-user-settings-form',
@@ -40,16 +37,21 @@ import { ProfileService } from 'src/app/shared/data-access/profile.service';
     OptionsPopoverComponent,
   ],
   template: `
-  @if(userProfile){
-<form
+    @if(userProfile){
+    <form
       [formGroup]="userSettingsForm"
-      (ngSubmit)="profile.emit({id: userProfile.$id, data: userSettingsForm.getRawValue()})"
+      (ngSubmit)="
+        profile.emit({
+          id: userProfile.$id,
+          data: userSettingsForm.getRawValue()
+        })
+      "
       (submit)="dismiss.emit()"
     >
       <ion-list lines="none">
         <ion-item>
           <ion-input
-          formControlName="pilotNumber"
+            formControlName="pilotNumber"
             label="Numer pilota"
             labelPlacement="stacked"
             type="text"
@@ -61,7 +63,7 @@ import { ProfileService } from 'src/app/shared/data-access/profile.service';
         </ion-item>
         <ion-item>
           <ion-input
-          formControlName="operatorNumber"
+            formControlName="operatorNumber"
             label="Numer operatora"
             labelPlacement="stacked"
             type="text"
@@ -71,7 +73,7 @@ import { ProfileService } from 'src/app/shared/data-access/profile.service';
             tabindex="2"
           />
         </ion-item>
-         <ion-item>
+        <ion-item>
           <ion-label>Licencja A1</ion-label>
 
           <ion-select
@@ -79,18 +81,13 @@ import { ProfileService } from 'src/app/shared/data-access/profile.service';
             aria-label="select-popover"
             interface="popover"
             color="primary"
-             name="license-a1"
+            name="license-a1"
           >
-
-            <ion-select-option [value]="true">
-              Tak
-            </ion-select-option>
-            <ion-select-option [value]="false">
-              Nie
-            </ion-select-option>
+            <ion-select-option [value]="true"> Tak </ion-select-option>
+            <ion-select-option [value]="false"> Nie </ion-select-option>
           </ion-select>
         </ion-item>
-          <ion-item>
+        <ion-item>
           <ion-label>Licencja A2</ion-label>
 
           <ion-select
@@ -98,18 +95,13 @@ import { ProfileService } from 'src/app/shared/data-access/profile.service';
             aria-label="select-popover"
             interface="popover"
             color="primary"
-                         name="license-a2"
-
+            name="license-a2"
           >
-            <ion-select-option [value]="true">
-              Tak
-            </ion-select-option>
-            <ion-select-option [value]="false">
-              Nie
-            </ion-select-option>
+            <ion-select-option [value]="true"> Tak </ion-select-option>
+            <ion-select-option [value]="false"> Nie </ion-select-option>
           </ion-select>
         </ion-item>
-          <ion-item>
+        <ion-item>
           <ion-label>Licencja A3</ion-label>
 
           <ion-select
@@ -117,15 +109,10 @@ import { ProfileService } from 'src/app/shared/data-access/profile.service';
             aria-label="select-popover"
             interface="popover"
             color="primary"
-                         name="license-a3"
-
+            name="license-a3"
           >
-            <ion-select-option [value]="true">
-              Tak
-            </ion-select-option>
-            <ion-select-option [value]="false">
-              Nie
-            </ion-select-option>
+            <ion-select-option [value]="true"> Tak </ion-select-option>
+            <ion-select-option [value]="false"> Nie </ion-select-option>
           </ion-select>
         </ion-item>
       </ion-list>
@@ -137,8 +124,7 @@ import { ProfileService } from 'src/app/shared/data-access/profile.service';
         Zapisz
       </ion-button>
     </form>
-  }
-    
+    }
   `,
   styles: `
     form {
@@ -184,32 +170,26 @@ import { ProfileService } from 'src/app/shared/data-access/profile.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserSettingsFormComponent implements AfterViewInit {
-
-  @Input() userProfile: Profile | undefined
+  @Input() userProfile: Profile | undefined;
   @Output() profile = new EventEmitter<EditProfile>();
   @Output() dismiss = new EventEmitter<void>();
-  userSettingsForm =
-    inject(FormBuilder).nonNullable.group({
-      pilotNumber: ['', Validators.required],
-      operatorNumber: ['', Validators.required],
-      licenseA1: [false],
-      licenseA2: [false],
-      licenseA3: [false],
-    });
+  userSettingsForm = inject(FormBuilder).nonNullable.group({
+    pilotNumber: ['', Validators.required],
+    operatorNumber: ['', Validators.required],
+    licenseA1: [false],
+    licenseA2: [false],
+    licenseA3: [false],
+  });
 
   ngAfterViewInit() {
     if (this.userProfile) {
-      this.userSettingsForm.setValue(
-        {
-          pilotNumber: this.userProfile.pilotNumber,
-          operatorNumber: this.userProfile.operatorNumber,
-          licenseA1: this.userProfile.licenseA1,
-          licenseA2: this.userProfile.licenseA2,
-          licenseA3: this.userProfile.licenseA3
-        }
-      )
+      this.userSettingsForm.setValue({
+        pilotNumber: this.userProfile.pilotNumber,
+        operatorNumber: this.userProfile.operatorNumber,
+        licenseA1: this.userProfile.licenseA1,
+        licenseA2: this.userProfile.licenseA2,
+        licenseA3: this.userProfile.licenseA3,
+      });
     }
-
   }
-
 }

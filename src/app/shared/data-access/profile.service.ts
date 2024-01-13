@@ -70,7 +70,7 @@ export class ProfileService {
                   profile
                 )
                 .catch((err) => err)
-                .then((document) => document as unknown as Profile),
+                .then((document) => ({ ...document } as unknown as Profile)),
               asapScheduler
             ).pipe(
               catchError((err) => {

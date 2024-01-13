@@ -22,6 +22,7 @@ import {
   EditDrone,
   RemoveDrone,
 } from '../types/drone';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +30,7 @@ import {
 export class DroneService {
   // dependencies
   private appwrite = inject(APPWRITE);
-
+  private authService = inject(AuthService);
   // initial state
   private initialState: DroneState = {
     drones: [],
@@ -66,13 +67,13 @@ export class DroneService {
                   environment.databaseId,
                   environment.droneCollectionId,
                   ID.unique(),
-                  add
+                  { ...add, profile: this.authService.state.user()?.$id }
                 )
                 .then(
                   (document) =>
-                  ({
-                    document,
-                  } as unknown as Drone)
+                    ({
+                      ...document,
+                    } as unknown as Drone)
                 ),
               asapScheduler
             ).pipe(
@@ -80,7 +81,9 @@ export class DroneService {
                 this.error$.next(err);
                 return EMPTY;
               }),
-              map((drone) => ({ drones: [drone, ..._().drones] }))
+              map((drone) => ({
+                drones: [..._().drones, drone],
+              }))
             )
           )
         ),
