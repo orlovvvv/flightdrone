@@ -60,7 +60,8 @@ import { DroneService } from './../data-access/drone.service';
   selector: 'app-user-settings',
   animations: [Animations],
   template: `
-    <ion-item [button]="true" [detail]="true" id="open-settings" @inOut>
+    <ion-item [button]="true" id="open-settings" @inOut>
+      <ion-icon aria-hidden="true" name="cog-outline" slot="end"></ion-icon>
       <ion-label>Ustawienia</ion-label>
     </ion-item>
 
