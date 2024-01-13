@@ -72,7 +72,7 @@ import { Profile } from 'src/app/shared/types/profile';
     template: `
   @if (profileService.state().profile) {
  <ion-item [button]="true" [detail]="true" id="open-settings" @inOut>
-          <ion-label>Ustawienia konta</ion-label>
+          <ion-label>Ustawienia</ion-label>
  </ion-item>
 
       <ion-modal

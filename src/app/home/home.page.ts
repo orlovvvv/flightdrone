@@ -70,11 +70,11 @@ import { WeatherComponent } from 'src/app/shared/feature/weather.component';
       </ion-toolbar>
       <ion-content>
         <app-weather />
-        <app-user-settings />
         <app-user-flights />
       </ion-content>
       <ion-footer class="menu-footer" role="menu-footer">
         <ion-toolbar>
+          <app-user-settings />
           <app-logout (logout)="this.authService.state.signout()" />
         </ion-toolbar>
       </ion-footer>
