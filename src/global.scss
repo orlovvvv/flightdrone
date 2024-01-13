@@ -54,16 +54,35 @@ ion-modal#sheet-modal {
   --border-radius: 8px 8px 0 0;
 }
 
-ion-menu{
+ion-menu::part(container) {
+  border-radius: 0 8px 8px 0;
+  --min-width:300px;
   opacity: 0.95;
+  box-shadow: rgb(27, 27, 27) 4px 0px 16px !important;
+} 
+
+ion-menu{
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
 }
 
 ion-toolbar{
-  -webkit-box-shadow: inset 0px 50px 100px 0px rgba(66, 68, 90, 1);
-  -moz-box-shadow: inset 0px 50px 100px 0px rgba(66, 68, 90, 1);
-  box-shadow: inset 0px 50px 100px 0px rgba(66, 68, 90, 1);
-  color: var(--ion-color-contrast);
+  background: var(--background);
+  box-shadow: rgb(27, 27, 27) 0px 4px 16px;
+  opacity: 0.95;
+  //backdrop-filter: blur(10px) !important;
 }
+/* 
+ion-toolbar .menubar{
+  backdrop-filter: blur(10px) !important;
+} */
+
+ion-modal#user-settings-modal{
+  backdrop-filter: blur(10px) !important;
+  --box-shadow: 0 4px 16px rgb(27, 27, 27) !important;
+}
+
+
 
 
 

@@ -103,11 +103,7 @@ import { WeatherComponent } from 'src/app/shared/feature/weather.component';
     />
   `,
   styles: `
-    ion-menu::part(container) {
-      border-radius: 0 8px 8px 0;
-      --min-width:300px;
-    }
-    
+      
     .menu-header {
       padding-inline: 6px;
     }
