@@ -35,13 +35,16 @@ export class ProfileService {
   // sources
   private error$ = new Subject<Error>();
   private profileLoaded$ = scheduled(
-    this.appwrite.database.getDocument(
-      environment.databaseId,
-      environment.profileCollectionId,
-      this.authService.state().user?.$id!
-    ).catch(
-      (err) => { this.error$.next(err); return err }
-    ),
+    this.appwrite.database
+      .getDocument(
+        environment.databaseId,
+        environment.profileCollectionId,
+        this.authService.state().user?.$id!
+      )
+      .catch((err) => {
+        this.error$.next(err);
+        return err;
+      }),
     asapScheduler
   ).pipe(map((document) => document as unknown as Profile));
 
@@ -65,9 +68,8 @@ export class ProfileService {
                   environment.profileCollectionId,
                   this.authService.state().user?.$id!,
                   profile
-                ).catch(
-                  (err) => err
                 )
+                .catch((err) => err)
                 .then((document) => document as unknown as Profile),
               asapScheduler
             ).pipe(
@@ -75,7 +77,11 @@ export class ProfileService {
                 this.error$.next(err);
                 return EMPTY;
               }),
-              map((profile) => ({ profile, loaded: true, error: null }))
+              map((profile) => ({
+                profile: { ..._().profile, ...profile },
+                loaded: true,
+                error: null,
+              }))
             )
           )
         ),
@@ -89,9 +95,8 @@ export class ProfileService {
                   environment.profileCollectionId,
                   update.id,
                   update.data
-                ).catch(
-                  (err) => err
                 )
+                .catch((err) => err)
                 .then((document) => document as unknown as Profile),
               asapScheduler
             ).pipe(
@@ -100,7 +105,7 @@ export class ProfileService {
                 return EMPTY;
               }),
               map((profile) => ({
-                profile,
+                profile: { ..._().profile, ...profile },
               }))
             )
           )
@@ -114,9 +119,8 @@ export class ProfileService {
                   environment.databaseId,
                   environment.profileCollectionId,
                   id
-                ).catch(
-                  (err) => err
                 )
+                .catch((err) => err)
                 .then(() => id),
               asapScheduler
             ).pipe(
