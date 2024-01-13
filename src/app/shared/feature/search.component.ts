@@ -83,7 +83,7 @@ import { ListFlightsComponent } from 'src/app/shared/ui/list-flights.component';
     --max-width: 560px;
      --width: 100%;
     --border-radius: 12px;
-    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+    --box-shadow: 0 4px 16px rgb(27, 27, 27);
   }
 
   .modal-container {

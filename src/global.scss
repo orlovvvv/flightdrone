@@ -29,10 +29,6 @@ ion-button {
   --border-radius: 8px;
 }
 
-ion-card {
-  --border-radius: 8px;
-}
-
 ion-skeleton-text {
   --border-radius: 8px;
 }
@@ -44,10 +40,6 @@ body {
 
 ion-content {
   --background: none;
-}
-
-ion-modal {
-  --border-radius: 8px;
 }
 
 ion-modal#sheet-modal {
@@ -72,19 +64,18 @@ ion-toolbar{
   opacity: 0.95;
   //backdrop-filter: blur(10px) !important;
 }
-/* 
-ion-toolbar .menubar{
-  backdrop-filter: blur(10px) !important;
-} */
-
-ion-modal#user-settings-modal{
-  backdrop-filter: blur(10px) !important;
-  box-shadow: 0 4px 16px rgb(27, 27, 27) !important;
-} 
 
 ion-card{
   backdrop-filter: blur(10px) !important;
+  background-color: rgba(0, 0, 0, 0.3);
   box-shadow: 0 4px 16px rgb(27, 27, 27) !important; 
+  --border-radius: 8px;
+}
+
+ion-modal{
+  backdrop-filter: blur(10px) !important;
+  background-color: rgba(0, 0, 0, 0.3);
+  --border-radius: 8px;
 }
 
 
