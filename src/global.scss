@@ -26,15 +26,15 @@
 @import "@ionic/angular/css/flex-utils.css";
 
 ion-button {
-  --border-radius: 12px;
+  --border-radius: 8px;
 }
 
 ion-card {
-  --border-radius: 12px;
+  --border-radius: 8px;
 }
 
 ion-skeleton-text {
-  --border-radius: 12px;
+  --border-radius: 8px;
 }
 
 body {
@@ -47,9 +47,24 @@ ion-content {
 }
 
 ion-modal {
-  --border-radius: 12px;
+  --border-radius: 8px;
 }
 
 ion-modal#sheet-modal {
-  --border-radius: 12px 12px 0 0;
+  --border-radius: 8px 8px 0 0;
 }
+
+ion-menu{
+  opacity: 0.95;
+}
+
+ion-toolbar{
+  -webkit-box-shadow: inset 0px 50px 100px 0px rgba(66, 68, 90, 1);
+  -moz-box-shadow: inset 0px 50px 100px 0px rgba(66, 68, 90, 1);
+  box-shadow: inset 0px 50px 100px 0px rgba(66, 68, 90, 1);
+  color: var(--ion-color-contrast);
+}
+
+
+
+

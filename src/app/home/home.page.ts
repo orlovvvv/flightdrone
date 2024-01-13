@@ -104,7 +104,7 @@ import { WeatherComponent } from 'src/app/shared/feature/weather.component';
   `,
   styles: `
     ion-menu::part(container) {
-      border-radius: 0 12px 12px 0;
+      border-radius: 0 8px 8px 0;
       --min-width:300px;
     }
     
@@ -114,7 +114,7 @@ import { WeatherComponent } from 'src/app/shared/feature/weather.component';
     
     .logo{
     margin: 7px; 
-    border-radius: 12px; 
+    //border-radius: 12px; 
     }
   `,
 })
