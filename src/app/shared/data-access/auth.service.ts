@@ -13,6 +13,7 @@ import {
   switchMap,
 } from 'rxjs';
 import { Credentials } from 'src/app/shared/types/credentials';
+import { environment } from 'src/environments/environment';
 import { APPWRITE } from 'src/main';
 
 export type AuthUser = Models.User<Models.Preferences> | null | undefined;
@@ -47,7 +48,7 @@ export class AuthService {
   state = signalSlice({
     initialState: this.initialState,
     sources: [this.sources$],
-    // todo: implement actionSources
+
     actionSources: {
       signin: (_, $: Observable<Credentials>) =>
         $.pipe(
@@ -89,7 +90,27 @@ export class AuthService {
                   credentials.name
                 )
               )
-            ).pipe(map(() => ({ user: null })))
+            ).pipe(
+              switchMap((user) =>
+                from(
+                  defer(() =>
+                    this.appwrite.database.createDocument(
+                      environment.databaseId,
+                      environment.profileCollectionId,
+                      user.$id,
+                      {
+                        pilotNumber: '',
+                        operatorNumber: '',
+                        licenseA1: false,
+                        licenseA2: false,
+                        licenseA3: false,
+                      }
+                    )
+                  )
+                )
+              ),
+              map(() => ({ user: null }))
+            )
           )
         ),
     },

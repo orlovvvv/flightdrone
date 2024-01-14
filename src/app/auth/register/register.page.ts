@@ -79,7 +79,7 @@ import { RegisterFormComponent } from './ui/register-form.component';
       </ion-grid>
 
       <app-toast-error
-        [error]="this.registerService.state.status()"
+        [error]="this.registerService.state.status() === 'error'"
         [message]="'Na podany adres zostało już założone konto'"
       />
     </ion-content>
