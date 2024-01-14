@@ -67,7 +67,7 @@ import { DroneService } from './../data-access/drone.service';
     @if(!flight()){
     <ion-fab slot="fixed" vertical="bottom" horizontal="center" @inOut>
       <ion-button id="open-modal">
-        <ion-icon slot="start" name="airplane"></ion-icon>
+        <ion-icon slot="start" name="paper-plane-outline"></ion-icon>
         CHECK IN
       </ion-button>
     </ion-fab>

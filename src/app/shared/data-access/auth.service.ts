@@ -2,12 +2,11 @@ import { Injectable, inject } from '@angular/core';
 import { ID, Models } from 'appwrite';
 import { signalSlice } from 'ngxtension/signal-slice';
 import {
-  EMPTY,
   Observable,
   Subject,
   asapScheduler,
-  catchError,
   defer,
+  from,
   map,
   merge,
   scheduled,
@@ -53,39 +52,35 @@ export class AuthService {
       signin: (_, $: Observable<Credentials>) =>
         $.pipe(
           switchMap((credentials) =>
-            scheduled(
-              this.appwrite.account.createEmailSession(
-                credentials.email,
-                credentials.password
-              ),
-              asapScheduler
-            ).pipe(
-              switchMap(() =>
-                scheduled(
-                  this.appwrite.account.get().catch(() => null),
-                  asapScheduler
+            from(
+              defer(() =>
+                this.appwrite.account.createEmailSession(
+                  credentials.email,
+                  credentials.password
                 )
-              ),
-              map((user) => ({ user }))
+              ).pipe(
+                switchMap(() =>
+                  from(
+                    defer(() => this.appwrite.account.get().catch(() => null))
+                  )
+                ),
+                map((user) => ({ user }))
+              )
             )
           )
         ),
       signout: (_, $: Observable<void>) =>
         $.pipe(
           switchMap(() =>
-            scheduled(
-              this.appwrite.account.deleteSession('current'),
-              asapScheduler
-            ).pipe(
-              catchError(() => EMPTY),
-              map(() => ({ user: null }))
-            )
+            from(
+              defer(() => this.appwrite.account.deleteSession('current'))
+            ).pipe(map(() => ({ user: null })))
           )
         ),
       signup: (_, $: Observable<Credentials>) =>
         $.pipe(
           switchMap((credentials) =>
-            scheduled(
+            from(
               defer(() =>
                 this.appwrite.account.create(
                   ID.unique(),
@@ -93,12 +88,8 @@ export class AuthService {
                   credentials.password,
                   credentials.name
                 )
-              ),
-              asapScheduler
-            ).pipe(
-              catchError(() => EMPTY),
-              map(() => ({ user: null }))
-            )
+              )
+            ).pipe(map(() => ({ user: null })))
           )
         ),
     },

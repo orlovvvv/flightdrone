@@ -91,7 +91,9 @@ import { MapService } from './../shared/data-access/map.service';
       <app-header />
       <app-google-map style="z-index: 0;" />
       <!-- <app-map-settings /> -->
+      @if(profileService.state.profile()){
       <app-check-in />
+      }
     </ion-content>
 
     <app-toast-error
@@ -134,7 +136,6 @@ export default class HomePage {
       if (!this.authService.state.user()) {
         this.router.navigate(['auth', 'login']);
       }
-      console.log(this.droneService.state.drones());
     });
   }
 }

@@ -4,11 +4,12 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
   addOutline,
-  airplane,
   close,
+  cloudDownloadOutline,
   cogOutline,
   eyeOutline,
   locate,
+  paperPlaneOutline,
   removeOutline,
 } from 'ionicons/icons';
 import { Animations } from './shared/animation/animation';
@@ -29,13 +30,14 @@ export class AppComponent {
 
   constructor() {
     addIcons({
-      airplane,
       close,
       locate,
       addOutline,
       removeOutline,
       eyeOutline,
       cogOutline,
+      paperPlaneOutline,
+      cloudDownloadOutline,
     });
   }
 
