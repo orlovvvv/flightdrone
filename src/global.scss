@@ -78,13 +78,12 @@ ion-modal{
   --border-radius: 8px;
 }
 
-ion-modal.current-flight{
-  background-color: rgba(0, 0, 0, 0.3);
-  box-shadow: 0 4px 16px rgb(27, 27, 27) !important;
+.sc-ion-alert-md-h{
+  backdrop-filter: blur(10px) !important;
+  background-color: rgba(0, 0, 0, 0.3) !important;
 }
 
-ion-modal.alert-wrapper{
-  background-color: rgba(0, 0, 0, 0.3);
+.alert-wrapper.sc-ion-alert-md{
   box-shadow: 0 4px 16px rgb(27, 27, 27) !important; 
 }
 

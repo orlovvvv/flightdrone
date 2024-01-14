@@ -79,6 +79,8 @@ import { isTimeLeft, remainingTime, timeToMinutes } from '../utils/remaining-tim
         max-width: 420px;
         max-height: 160px;
         border-radius: 24px;
+        box-shadow: 0 4px 16px rgb(27, 27, 27) !important;
+        background: var(--background);
     }
 
     .time {
