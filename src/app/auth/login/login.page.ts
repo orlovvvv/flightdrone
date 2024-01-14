@@ -72,7 +72,7 @@ import { LoginFormComponent } from './ui/login-form.component';
             }
           </ion-card>
           <app-toast-error
-            [error]="this.loginService.state.status()"
+            [error]="this.loginService.state.status() === 'error'"
             [message]="'Nierpawidłowy login lub hasło'"
           /> </ion-row></ion-grid
     ></ion-content>

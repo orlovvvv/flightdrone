@@ -18,7 +18,7 @@ import {
   IonSelect,
   IonSelectOption,
 } from '@ionic/angular/standalone';
-import { EditProfile, Profile } from '../types/profile';
+import { AddProfile, Profile } from '../types/profile';
 import { OptionsPopoverComponent } from './options-popover.component';
 
 @Component({
@@ -37,15 +37,9 @@ import { OptionsPopoverComponent } from './options-popover.component';
     OptionsPopoverComponent,
   ],
   template: `
-    @if(userProfile){
     <form
       [formGroup]="userSettingsForm"
-      (ngSubmit)="
-        profile.emit({
-          id: userProfile.$id,
-          data: userSettingsForm.getRawValue()
-        })
-      "
+      (ngSubmit)="profile.emit(userSettingsForm.getRawValue())"
       (submit)="dismiss.emit()"
     >
       <ion-list lines="none">
@@ -124,7 +118,6 @@ import { OptionsPopoverComponent } from './options-popover.component';
         Zapisz
       </ion-button>
     </form>
-    }
   `,
   styles: `
     form {
@@ -171,7 +164,7 @@ import { OptionsPopoverComponent } from './options-popover.component';
 })
 export class UserSettingsFormComponent implements AfterViewInit {
   @Input() userProfile: Profile | undefined;
-  @Output() profile = new EventEmitter<EditProfile>();
+  @Output() profile = new EventEmitter<AddProfile>();
   @Output() dismiss = new EventEmitter<void>();
   userSettingsForm = inject(FormBuilder).nonNullable.group({
     pilotNumber: ['', Validators.required],

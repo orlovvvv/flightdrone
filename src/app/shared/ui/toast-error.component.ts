@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
-import { IonToast } from '@ionic/angular/standalone'
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { IonToast } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-toast-error',
@@ -7,8 +7,8 @@ import { IonToast } from '@ionic/angular/standalone'
   imports: [IonToast],
   template: `
     <ion-toast
-    class="error-toast"
-      [isOpen]="error === 'error'"
+      class="error-toast"
+      [isOpen]="error"
       [message]="message"
       [duration]="10000"
     >
@@ -28,6 +28,6 @@ import { IonToast } from '@ionic/angular/standalone'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToastErrorComponent {
-  @Input({ required: true }) error: string | null = null;
-  @Input() message: string = 'Coś poszło nie tak'
+  @Input({ required: true }) error: boolean = false;
+  @Input() message: string = 'Coś poszło nie tak';
 }

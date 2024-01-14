@@ -188,7 +188,14 @@ export class CheckInComponent {
       )[0];
   });
 
-  drones = computed(() => this.droneService.state().drones);
+  drones = computed(() =>
+    this.droneService
+      .state()
+      .drones.filter(
+        (drone) =>
+          drone.profile.$id === this.profileService.state.profile()?.$id
+      )
+  );
 
   checkInModal: HTMLElement | null = null;
 

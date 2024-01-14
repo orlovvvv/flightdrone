@@ -60,6 +60,8 @@ import { DroneService } from './../data-access/drone.service';
   selector: 'app-user-settings',
   animations: [Animations],
   template: `
+    @if(profileService.state().profile){ }
+
     <ion-item [button]="true" id="open-settings" @inOut>
       <ion-icon aria-hidden="true" name="cog-outline" slot="end"></ion-icon>
       <ion-label>Ustawienia</ion-label>
@@ -94,7 +96,12 @@ import { DroneService } from './../data-access/drone.service';
           <app-user-settings-form
             [userProfile]="profileService.state().profile"
             (dismiss)="close()"
-            (profile)="profileService.state.edit($event)"
+            (profile)="
+              profileService.state.edit({
+                id: profileService.state.profile()?.$id!,
+                data: $event
+              })
+            "
           />
         </div>
       </ng-template>

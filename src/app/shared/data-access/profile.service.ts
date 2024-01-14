@@ -14,7 +14,12 @@ import {
 import { AuthService } from 'src/app/shared/data-access/auth.service';
 import { environment } from 'src/environments/environment';
 import { APPWRITE } from 'src/main';
-import { EditProfile, Profile, ProfileState } from '../types/profile';
+import {
+  AddProfile,
+  EditProfile,
+  Profile,
+  ProfileState,
+} from '../types/profile';
 import { RemoveProfile } from './../types/profile';
 
 @Injectable({
@@ -43,7 +48,7 @@ export class ProfileService {
       )
       .catch((err) => {
         this.error$.next(err);
-        return err;
+        return null;
       }),
     asapScheduler
   ).pipe(map((document) => document as unknown as Profile));
@@ -58,7 +63,7 @@ export class ProfileService {
     initialState: this.initialState,
     sources: [this.sources$],
     actionSources: {
-      add: (_, $: Observable<Omit<Profile, 'id'>>) =>
+      add: (_, $: Observable<AddProfile>) =>
         $.pipe(
           switchMap((profile) =>
             scheduled(
@@ -80,7 +85,6 @@ export class ProfileService {
               map((profile) => ({
                 profile: { ..._().profile, ...profile },
                 loaded: true,
-                error: null,
               }))
             )
           )

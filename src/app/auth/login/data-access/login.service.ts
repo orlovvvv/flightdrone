@@ -48,15 +48,11 @@ export class LoginService {
         $.pipe(
           switchMap((credentials) =>
             scheduled(
-              this.authService.state.signin(credentials),
+              this.authService.state
+                .signin(credentials)
+                .catch(() => ({ status: 'error' as const })),
               asapScheduler
-            ).pipe(
-              catchError((err) => {
-                this.error$.next(err);
-                return EMPTY;
-              }),
-              startWith({ status: 'authenticating' as const })
-            )
+            ).pipe(startWith({ status: 'authenticating' as const }))
           ),
 
           map(() => ({ status: 'success' as const }))

@@ -95,16 +95,9 @@ import { MapService } from './../shared/data-access/map.service';
       <app-check-in />
       }
     </ion-content>
-
     <app-toast-error
-      [error]="
-        this.flightsService.state().error ||
-        this.profileService.state().error ||
-        this.droneService.state().error ||
-        this.flightsService.state().error ||
-        this.mapService.state().error
-      "
-      message="Coś poszło nie tak"
+      [error]="this.profileService.state.profile() === null"
+      message="Utwórz profil użytkownika aby zgłaszać loty"
     />
   `,
   styles: `
@@ -136,6 +129,7 @@ export default class HomePage {
       if (!this.authService.state.user()) {
         this.router.navigate(['auth', 'login']);
       }
+      console.log(this.profileService.state.profile());
     });
   }
 }
