@@ -6,22 +6,12 @@ import {
 } from '@angular/core';
 import {
   IonButton,
-  IonButtons,
-  IonContent,
-  IonFab,
-  IonFooter,
-  IonHeader,
   IonIcon,
-  IonInput,
   IonItem,
   IonLabel,
-  IonList,
   IonModal,
   IonNote,
-  IonSelect,
-  IonSelectOption,
   IonTitle,
-  IonToolbar,
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/shared/data-access/auth.service';
 import { ProfileService } from 'src/app/shared/data-access/profile.service';
@@ -37,23 +27,13 @@ import { DroneService } from './../data-access/drone.service';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    IonFab,
     IonButton,
     IonIcon,
     IonModal,
-    IonHeader,
-    IonToolbar,
     IonTitle,
     IonNote,
-    IonButtons,
     IonItem,
-    IonInput,
-    IonContent,
-    IonList,
     IonLabel,
-    IonSelect,
-    IonSelectOption,
-    IonFooter,
     CheckInFormComponent,
     GeolocationButtonComponent,
     CurrentFlightComponent,
@@ -64,6 +44,7 @@ import { DroneService } from './../data-access/drone.service';
   animations: [Animations],
   template: `
     <ion-item [button]="true" id="open-user-drones">
+      <ion-icon name="add-circle-outline" slot="end"></ion-icon>
       <ion-label>Dodawanie drona</ion-label>
     </ion-item>
 

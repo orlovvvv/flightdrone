@@ -1,14 +1,14 @@
-import { CommonModule, JsonPipe } from '@angular/common';
+import { JsonPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   inject,
 } from '@angular/core';
 import {
-  IonAccordionGroup,
   IonAccordion,
+  IonAccordionGroup,
+  IonIcon,
   IonItem,
   IonLabel,
   IonList,
@@ -22,6 +22,7 @@ import { ListFlightsComponent } from 'src/app/shared/ui/list-flights.component';
   selector: 'app-weather',
   standalone: true,
   imports: [
+    IonIcon,
     IonAccordionGroup,
     IonAccordion,
     IonList,
@@ -52,9 +53,13 @@ import { ListFlightsComponent } from 'src/app/shared/ui/list-flights.component';
     } @else {
     <ion-item
       [button]="true"
-      [detail]="true"
       (click)="weatherService.state.get(geolocationService.state.position()!)"
     >
+      <ion-icon
+        aria-hidden="true"
+        name="cloud-download-outline"
+        slot="end"
+      ></ion-icon>
       <ion-label> Pobierz pogodę </ion-label>
     </ion-item>
     }`,

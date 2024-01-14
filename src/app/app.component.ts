@@ -3,6 +3,7 @@ import { ChildrenOutletContexts } from '@angular/router';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
+  addCircleOutline,
   addOutline,
   close,
   cloudDownloadOutline,
@@ -38,6 +39,7 @@ export class AppComponent {
       cogOutline,
       paperPlaneOutline,
       cloudDownloadOutline,
+      addCircleOutline,
     });
   }
 
