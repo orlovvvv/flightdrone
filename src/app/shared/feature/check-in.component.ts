@@ -125,6 +125,7 @@ import { DroneService } from './../data-access/drone.service';
     --width: 100%;
     --border-radius: 12px;
     --box-shadow: 0 4px 16px rgb(27, 27, 27);
+    background-color: rgba(0, 0, 0, 0.3);
     }
 
     .modal-container {
